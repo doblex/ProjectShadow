@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8941399435754002853}
   - component: {fileID: 8624497273596759175}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: SoundRepresentation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
