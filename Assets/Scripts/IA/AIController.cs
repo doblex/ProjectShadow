@@ -396,26 +396,6 @@ public class AIController : MonoBehaviour
 
         StartInvestigation(spottedPosition);
     }
-    void ExitAlarmToPatrol()
-    {
-        player = null;
-
-        if (enemyType == EnemyType.Sentry)
-        {
-            agent.SetDestination(sentryOriginalPosition);
-            StartCoroutine(ReturnSentryToPost());
-        }
-        else
-        {
-            patrolIndex = lastPatrolIndex;
-            if (patrolPoints != null && patrolPoints.Length > 0)
-                agent.SetDestination(patrolPoints[patrolIndex].position);
-            currentState = State.Patrol;
-        }
-
-        alarmTriggered = false;
-        alarmDelayTimer = 0f;
-    }
     #endregion
     #region gyzmos
     void OnDrawGizmosSelected()
