@@ -18,6 +18,7 @@ public class SoundSpawnerManager : MonoBehaviour
         else
         {
             Instance = this;
+            DontDestroyOnLoad(this);
         }
     }
 

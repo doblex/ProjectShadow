@@ -25,8 +25,6 @@ public class ActionManager : MonoBehaviour
     public OnPlayerCrouch onPlayerCrouch;
 
     [SerializeField] private Options Options;
-    [SerializeField] private GameObject CameraPrefab;
-    [SerializeField] private GameObject PlayerPrefab;
 
     private InputAction MoveVisual;
     private InputAction RotateVisual;
@@ -58,16 +56,6 @@ public class ActionManager : MonoBehaviour
     private void Start()
     {
         SetupCommands();
-
-        if (CameraPrefab != null)
-        { 
-            CameraPrefab.SetActive(true);
-        }
-
-        if (PlayerPrefab != null)
-        {
-            PlayerPrefab.SetActive(true);
-        }
     }
 
     private void SetupCommands()
