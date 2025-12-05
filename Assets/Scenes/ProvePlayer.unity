@@ -520,7 +520,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08cac79893646244397407a8630e3d80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActionManager
-  options: {fileID: 11400000, guid: 4ebef669509ca9c448f94c8d2f3f7adb, type: 2}
+  Options: {fileID: 11400000, guid: 4ebef669509ca9c448f94c8d2f3f7adb, type: 2}
   CameraPrefab: {fileID: 1129763179}
   PlayerPrefab: {fileID: 368095864}
 --- !u!4 &34454151

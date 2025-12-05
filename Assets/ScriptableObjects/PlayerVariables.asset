@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e4b93b1434d4a948aeab8a4719ddebb, type: 3}
   m_Name: PlayerVariables
   m_EditorClassIdentifier: Assembly-CSharp::PlayerVariables
-  moveSpeed: 3
+  walkMoveSpeed: 5
+  walkSoundInterval: 1
+  walkSoundOptions: {fileID: 11400000, guid: 1253d4ff88b729748a8233cd13eefa38, type: 2}
+  crouchSpeed: 2.5
   dashSpeed: 7
-  SoundInterval: 2
-  SoundDashInterval: 0.5
-  soundOptions: {fileID: 11400000, guid: 1253d4ff88b729748a8233cd13eefa38, type: 2}
+  DashSoundInterval: 0.2
+  dashSoundOptions: {fileID: 11400000, guid: 1253d4ff88b729748a8233cd13eefa38, type: 2}
