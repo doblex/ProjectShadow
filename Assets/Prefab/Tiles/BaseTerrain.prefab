@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 571437167365468339}
   - component: {fileID: 3020411639663628818}
   - component: {fileID: 7657997901811744580}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BaseTerrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -142,7 +142,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 564838929266938571}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BaseTerrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}

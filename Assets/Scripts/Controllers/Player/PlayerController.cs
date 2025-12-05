@@ -7,18 +7,13 @@ using UnityEngine.AI;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] public PlayerVariables playerVariables;
-
-    [SerializeField] PlayerState currentState;
-    [SerializeField] PlayerState nextState;
+    [SerializeField,Layer] public LayerMask terrainLayer;
 
     [HideInInspector] public NavMeshAgent navMeshAgent;
-
-    Coroutine movementCoroutine;
-    Coroutine dashCoroutine;
+    PlayerState currentState;
 
     bool isCrouching = false;
     bool isInBush = false;
-    bool isDashing = false;
 
 
     private void Awake()
@@ -74,6 +69,8 @@ public class PlayerController : MonoBehaviour
     {
         isCrouching = !isCrouching;
 
+        Debug.Log("Crouch toggled. Now crouching: " + isCrouching);
+
         UpdateStates( new IdlePlayerState(this, playerVariables, isCrouching));
 
     }
@@ -84,7 +81,7 @@ public class PlayerController : MonoBehaviour
 
         RaycastHit hit;
 
-        if(! Physics.Raycast(ray, out hit, 100f)) return;
+        if(!Physics.Raycast(ray, out hit, 100f, terrainLayer)) return;
 
         if (dash)
         {
