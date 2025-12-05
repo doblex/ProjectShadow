@@ -1,56 +1,68 @@
-using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class SoundOrigin : MonoBehaviour
 {
-    [SerializeField] private float baseScaling = 0.1f;
-    [SerializeField] private float maxDistance = 20f;
-    [SerializeField] private float scaleDuration = 1f;
+    [SerializeField] GameObject SphereCollider;
 
-    [SerializeField] private AnimationCurve scalingCurve;
-    [SerializeField] private bool useCurve = false;
+    ParticleSystem particle;
+    ParticleSystem.MainModule main;
+    ParticleSystem.SizeOverLifetimeModule sizeOverLifetime;
 
-    [SerializeField] private GameObject visualRepresentation;
-
-
-    private GameObject currentGO;
-
-    private void Start()
+    public bool Setup(SoundOptions options, Vector3 position)
     {
-        ActionManager.Instance.onInteract += ScaleSoundOrigin;
-    }
+        transform.position = position;
 
-    private void ScaleSoundOrigin()
-    {
-        if (currentGO == null)
-        { 
-            currentGO = Instantiate(visualRepresentation, transform.position, Quaternion.identity);
-            currentGO.transform.localScale = Vector3.one * baseScaling;
-            StartCoroutine(ScaleOverTime(Vector3.one * maxDistance, scaleDuration));
-        }
-    }
+        particle = GetComponentInChildren<ParticleSystem>();
 
-    IEnumerator ScaleOverTime(Vector3 targetScale, float duration)
-    {
-        Vector3 initialScale = currentGO.transform.localScale;
-        float elapsedTime = 0f;
-        while (elapsedTime < duration)
+        if (particle == null)
         {
-            if (useCurve)
-            {
-                currentGO.transform.localScale = Vector3.Lerp(initialScale, targetScale, scalingCurve.Evaluate(elapsedTime / duration));
-            }
-            else
-            {
-                currentGO.transform.localScale = Vector3.Lerp(initialScale, targetScale, elapsedTime / duration);
-            }
-            elapsedTime += Time.deltaTime;
+            Debug.LogError("Particle System not found");
+            return false;
+        }
+
+        if (SphereCollider == null)
+        {
+            Debug.LogError("Sphere Collider not found");
+            return false;
+        }
+
+        main = particle.main;
+        main.duration = options.duration;
+        main.startSize = options.startSize;
+
+        sizeOverLifetime = particle.sizeOverLifetime;
+        sizeOverLifetime.size = options.sizeOverLifeTime;
+
+        SphereCollider.transform.localScale = Vector3.zero;
+
+        return true;
+    }
+
+    public void PlayEffect()
+    {
+        particle.Play();
+        StartCoroutine(ExpandCollider());
+    }
+
+    private IEnumerator ExpandCollider()
+    {
+        float duration = main.duration;
+        float startSize = main.startSize.constant;
+
+        float sizeMultiplier = 0;
+        float size = 0;
+
+        while (particle.time < duration)
+        {
+            sizeMultiplier = sizeOverLifetime.size.Evaluate(particle.time);
+            size = startSize * sizeMultiplier;
+
+            SphereCollider.transform.localScale = Vector3.one * size;
+
             yield return null;
         }
-        currentGO.transform.localScale = targetScale;
 
-        Destroy(currentGO);
-        currentGO = null;
+        gameObject.SetActive(false);
     }
 }

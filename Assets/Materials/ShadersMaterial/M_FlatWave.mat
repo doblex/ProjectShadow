@@ -7,18 +7,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Highlight
-  m_Shader: {fileID: -6465566751694194690, guid: b1ee46a900124864b9a141c629e5ec6b, type: 3}
+  m_Name: M_FlatWave
+  m_Shader: {fileID: -6465566751694194690, guid: e2dfb46fa07726147a65a7bd7ee23a5a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap:
-    RenderType: Opaque
+  stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
   m_LockedProperties: 
@@ -39,33 +38,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AlphaClip: 0
-    - _AlphaToMask: 0
-    - _Blend: 0
-    - _BlendModePreserveSpecular: 1
-    - _CastShadows: 1
-    - _Cull: 2
-    - _DstBlend: 0
-    - _DstBlendAlpha: 0
-    - _EffectPower: 3.5
+    - _Depth: 0.4
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
-    - _Size: 0.1
-    - _SrcBlend: 1
-    - _SrcBlendAlpha: 1
-    - _Step: 0
-    - _Surface: 0
-    - _Thickness: 1.28
-    - _WorkflowMode: 1
-    - _ZTest: 4
-    - _ZWrite: 1
-    - _ZWriteControl: 0
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 5.992157, g: 5.992157, b: 5.992157, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &2438666741490966563
+--- !u!114 &436350526511271264
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
