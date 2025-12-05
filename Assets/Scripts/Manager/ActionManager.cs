@@ -8,28 +8,36 @@ public class ActionManager : MonoBehaviour
 {
     public static ActionManager Instance;
 
-    public delegate void OnMovementChanged(Vector3 movement);
-    public delegate void OnRotationChanged(Quaternion rotation);
-    public delegate void OnInteract();
+    public delegate void OnCameraMovementChanged(Vector3 movement);
+    public delegate void OnCameraRotationChanged(Quaternion rotation);
+
     public delegate void OnPlayerMovement(Vector2 mousePos, bool dash);
 
-    public OnMovementChanged onMovementChanged;
-    public OnRotationChanged onRotationChanged;
-    public OnInteract onInteract;
+    public delegate void OnInteract();
+    public delegate void OnPlayerCrouch();
+
+    public OnCameraMovementChanged onMovementChanged;
+    public OnCameraRotationChanged onRotationChanged;
+
     public OnPlayerMovement onPlayerMovement;
 
-    [SerializeField] private PlayerOptions options;
-    [SerializeField] private GameObject CameraPrefab;
+    public OnInteract onInteract;
+    public OnPlayerCrouch onPlayerCrouch;
 
-    private InputAction moveVisual;
-    private InputAction rotateVisual;
+    [SerializeField] private Options Options;
+    [SerializeField] private GameObject CameraPrefab;
+    [SerializeField] private GameObject PlayerPrefab;
+
+    private InputAction MoveVisual;
+    private InputAction RotateVisual;
 
     private InputAction InteractAction;
 
     private InputAction PlayerMovementAction;
     private InputAction PlayerDashAction;
-    private InputAction mousePositionAction;
+    private InputAction MousePositionAction;
 
+    private InputAction CrouchAction;
 
     Coroutine MovementCoroutine;
     Coroutine RotationCoroutine;
@@ -55,17 +63,22 @@ public class ActionManager : MonoBehaviour
         { 
             CameraPrefab.SetActive(true);
         }
+
+        if (PlayerPrefab != null)
+        {
+            PlayerPrefab.SetActive(true);
+        }
     }
 
     private void SetupCommands()
     {
-        moveVisual = InputSystem.actions.FindAction("MoveCamera");
-        moveVisual.performed += OnMoveDown;
-        moveVisual.canceled += OnMoveUp;
+        MoveVisual = InputSystem.actions.FindAction("MoveCamera");
+        MoveVisual.performed += OnMoveDown;
+        MoveVisual.canceled += OnMoveUp;
 
-        rotateVisual = InputSystem.actions.FindAction("RotateCamera");
-        rotateVisual.performed += OnRotateDown;
-        rotateVisual.canceled += OnRotateUp;
+        RotateVisual = InputSystem.actions.FindAction("RotateCamera");
+        RotateVisual.performed += OnRotateDown;
+        RotateVisual.canceled += OnRotateUp;
 
         InteractAction = InputSystem.actions.FindAction("Interact");
         InteractAction.performed += OnInteractInput;
@@ -73,8 +86,13 @@ public class ActionManager : MonoBehaviour
         PlayerMovementAction = InputSystem.actions.FindAction("MovePlayer");
         PlayerMovementAction.performed += OnMovePlayer;
 
-        mousePositionAction = InputSystem.actions.FindAction("MousePosition");
+        MousePositionAction = InputSystem.actions.FindAction("MousePosition");
+
+        CrouchAction = InputSystem.actions.FindAction("Crouch");
+        CrouchAction.performed += OnCrouch;
+
     }
+
 
     // -------------------------------
     //   CALLBACKS
@@ -109,13 +127,11 @@ public class ActionManager : MonoBehaviour
     {
         while (true)
         {
-            Vector3 move = movement * Time.deltaTime * options.MoveSpeed;
+            Vector3 move = movement * Time.deltaTime * Options.MoveSpeed;
             onMovementChanged?.Invoke(move);
             yield return null;
         }
     }
-
-
 
     private void OnRotateDown(InputAction.CallbackContext ctx)
     {
@@ -148,7 +164,7 @@ public class ActionManager : MonoBehaviour
         while (true)
         {
             Quaternion turn = Quaternion.AngleAxis(
-            rotation * Time.deltaTime * options.AngleSpeed,
+            rotation * Time.deltaTime * Options.AngleSpeed,
             Vector3.up
         );
 
@@ -164,7 +180,7 @@ public class ActionManager : MonoBehaviour
 
     private void OnMovePlayer(InputAction.CallbackContext ctx)
     {
-        Vector2 v = mousePositionAction.ReadValue<Vector2>();
+        Vector2 v = MousePositionAction.ReadValue<Vector2>();
         bool isDoubleClick = false;
 
         if (ctx.interaction is MultiTapInteraction)
@@ -182,5 +198,10 @@ public class ActionManager : MonoBehaviour
         }
 
         onPlayerMovement?.Invoke(v, isDoubleClick);
+    }
+
+    private void OnCrouch(InputAction.CallbackContext ctx)
+    {
+        onPlayerCrouch?.Invoke();
     }
 }

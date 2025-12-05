@@ -5,18 +5,17 @@ using UnityEngine.AI;
 [CreateAssetMenu(fileName = "PlayerVariables", menuName = "Scriptable Objects/PlayerVariables")]
 public class PlayerVariables : ScriptableObject
 {
-    public float moveSpeed = 5f;
+    [Header("Walk movement")]
+    public float walkMoveSpeed = 5f;
+    public float walkSoundInterval = 1f;
+    public SoundOptions walkSoundOptions;
+
+    [Header("Crouch movement")]
+    public float crouchSpeed = 2.5f;
+
+    [Header("Dash movement")]
     public float dashSpeed = 10f;
+    public float DashSoundInterval = 0.2f;
+    public SoundOptions dashSoundOptions;
 
-    public SerializableDictionary<string, float> AreaSpeedModifier = new SerializableDictionary<string, float>();
-
-    private void Awake()
-    {
-        string[] areaNames = NavMesh.GetAreaNames();
-
-        foreach (string areaName in areaNames)
-        {
-            AreaSpeedModifier.Add(areaName, 0f);
-        }
-    }
 }
