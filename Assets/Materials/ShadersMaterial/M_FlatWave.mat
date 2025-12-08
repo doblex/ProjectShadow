@@ -7,13 +7,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_SoundWaveMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: f3240a00f5a5fee42a131651d22b9bfa, type: 3}
+  m_Name: M_FlatWave
+  m_Shader: {fileID: -6465566751694194690, guid: e2dfb46fa07726147a65a7bd7ee23a5a, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -38,15 +38,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Fresnell_power: 1
-    - _Offset: -0.23
+    - _Depth: 0.4
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _Emission: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 5.992157, g: 5.992157, b: 5.992157, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &7255173809498437196
+--- !u!114 &436350526511271264
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
