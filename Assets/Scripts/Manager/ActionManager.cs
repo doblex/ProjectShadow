@@ -113,6 +113,8 @@ public class ActionManager : MonoBehaviour
 
         RBaitAction = InputSystem.actions.FindAction("RBait");
         RBaitAction.performed += OnRBaitCall;
+
+        // TODO make mouse position tracking delegate
     }
 
 

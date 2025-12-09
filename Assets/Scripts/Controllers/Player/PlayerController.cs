@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     bool isCrouching = false;
     bool isInBush = false;
 
+    bool isCasting = false;
 
     private void Awake()
     {
@@ -43,6 +44,8 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateStates(PlayerState forcedState = null)
     {
+        // TODO Force casting state first
+
         if (forcedState != null)
         {
             currentState?.Exit();
@@ -62,8 +65,15 @@ public class PlayerController : MonoBehaviour
         currentState?.Update();
     }
 
+    public void SetCast(bool value)
+    {
+        isCasting = value;
+    }
+
     private void HandleCrouch()
     {
+        if (isCasting) return;
+
         isCrouching = !isCrouching;
 
         Debug.Log("Crouch toggled. Now crouching: " + isCrouching);
@@ -74,6 +84,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePlayerMovement(Vector2 mousePos, bool dash)
     {
+        if (isCasting) return;
+
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
         RaycastHit hit;

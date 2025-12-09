@@ -2,6 +2,12 @@ using UnityEngine;
 
 public class AbilityController : MonoBehaviour
 {
+    // Throw height
+    [Header("Throw Height")]
+    [SerializeField] private float raycastHeight; // horizontal raycast height from player center
+
+    // Use linerenderer for throwing arc display
+
     //Throwable stone
     [Header("Throwable Stone")]
     [SerializeField] private GameObject throwableStonePrefab;
@@ -9,6 +15,7 @@ public class AbilityController : MonoBehaviour
     [SerializeField] private float stoneThrowSpeed;
     [SerializeField] private float stoneThrowHeight;
     [SerializeField] private float stoneThrowCooldown;
+    // TODO add soundOptions for ability
     private float stoneThrowTimer;
     private bool stoneThrowEnabled;
 
@@ -49,7 +56,7 @@ public class AbilityController : MonoBehaviour
     {
         if (!stoneThrowEnabled) return;
         
-        //TODO Display range and throwing arc preview, then intercept ActionManager delegate for left click to confirm instead of move?
+        //TODO Display range and throwing arc preview, then use PlayerState to make a Casting state and decide what to throw/execute the throw
         
 
     }
