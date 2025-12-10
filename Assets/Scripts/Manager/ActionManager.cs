@@ -48,16 +48,19 @@ public class ActionManager : MonoBehaviour
     public delegate void OnWhistle();
     public delegate void OnThrowIBait();
     public delegate void OnRBait();
+    public delegate void OnCancelSkill();
 
     public OnThrowStone onThrowStone;
     public OnWhistle onWhistle;
     public OnThrowIBait onThrowIBait;
     public OnRBait onRBait;
+    public OnCancelSkill onCancelSkill;
 
     private InputAction ThrowStoneAction;
     private InputAction WhistleAction;
     private InputAction ThrowIBaitAction;
     private InputAction RBaitAction;
+    private InputAction CancelSkillAction;
 
     Coroutine MovementCoroutine;
     Coroutine RotationCoroutine;
@@ -114,7 +117,10 @@ public class ActionManager : MonoBehaviour
         RBaitAction = InputSystem.actions.FindAction("RBait");
         RBaitAction.performed += OnRBaitCall;
 
-        // TODO make mouse position tracking delegate
+        CancelSkillAction = InputSystem.actions.FindAction("CancelAbility");
+        CancelSkillAction.performed += OnCancelSkillCall;
+
+        // TODO make mouse position tracking delegate for ability targeting
     }
 
 
@@ -257,5 +263,10 @@ public class ActionManager : MonoBehaviour
     private void OnRBaitCall(InputAction.CallbackContext ctx)
     {
         onRBait?.Invoke();
+    }
+
+    private void OnCancelSkillCall(InputAction.CallbackContext ctx)
+    {
+        onCancelSkill?.Invoke();
     }
 }

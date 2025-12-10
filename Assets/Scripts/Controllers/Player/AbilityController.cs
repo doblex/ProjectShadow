@@ -4,7 +4,7 @@ public class AbilityController : MonoBehaviour
 {
     // Throw height
     [Header("Throw Height")]
-    [SerializeField] private float raycastHeight; // horizontal raycast height from player center
+    [SerializeField] private float raycastHeight; // horizontal raycast height from player center to determine if skill can be cast
 
     // Use linerenderer for throwing arc display
 
@@ -36,10 +36,10 @@ public class AbilityController : MonoBehaviour
     private void Update()
     {
         // Update ability timers
-        UpdateTImers();
+        UpdateTimers();
     }
 
-    private void UpdateTImers()
+    private void UpdateTimers()
     {
         // stone throw
         if (stoneThrowTimer > 0)
@@ -56,7 +56,8 @@ public class AbilityController : MonoBehaviour
     {
         if (!stoneThrowEnabled) return;
         
-        //TODO Display range and throwing arc preview, then use PlayerState to make a Casting state and decide what to throw/execute the throw
+        // TODO make player enter Casting state, display range and throwing arc preview,
+        // then use PlayerState to make a Casting state and decide what to throw/execute the throw
         
 
     }
