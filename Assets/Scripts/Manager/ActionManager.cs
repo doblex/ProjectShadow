@@ -1,17 +1,44 @@
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Interactions;
 
 public class ActionManager : MonoBehaviour
 {
     public static ActionManager Instance;
 
-    public delegate void OnInteract();
-    
-    public OnInteract onInteract;
+    public delegate void OnCameraMovementChanged(Vector3 movement);
+    public delegate void OnCameraRotationChanged(Quaternion rotation);
 
-    [SerializeField] private InputActionAsset _action;
+    public delegate void OnPlayerMovement(Vector2 mousePos, bool dash);
+
+    public delegate void OnInteract();
+    public delegate void OnPlayerCrouch();
+
+    public OnCameraMovementChanged onMovementChanged;
+    public OnCameraRotationChanged onRotationChanged;
+
+    public OnPlayerMovement onPlayerMovement;
+
+    public OnInteract onInteract;
+    public OnPlayerCrouch onPlayerCrouch;
+
+    [SerializeField] private Options Options;
+
+    private InputAction MoveVisual;
+    private InputAction RotateVisual;
 
     private InputAction InteractAction;
+
+    private InputAction PlayerMovementAction;
+    private InputAction PlayerDashAction;
+    private InputAction MousePositionAction;
+
+    private InputAction CrouchAction;
+
+    Coroutine MovementCoroutine;
+    Coroutine RotationCoroutine;
 
     private void Awake()
     {
@@ -19,7 +46,7 @@ public class ActionManager : MonoBehaviour
         {
             Destroy(this);
         }
-        else 
+        else
         {
             Instance = this;
             DontDestroyOnLoad(this);
@@ -31,21 +58,138 @@ public class ActionManager : MonoBehaviour
         SetupCommands();
     }
 
-    private void Update()
-    {
-        CheckForCommands();
-    }
-
     private void SetupCommands()
     {
+        MoveVisual = InputSystem.actions.FindAction("MoveCamera");
+        MoveVisual.performed += OnMoveDown;
+        MoveVisual.canceled += OnMoveUp;
+
+        RotateVisual = InputSystem.actions.FindAction("RotateCamera");
+        RotateVisual.performed += OnRotateDown;
+        RotateVisual.canceled += OnRotateUp;
+
         InteractAction = InputSystem.actions.FindAction("Interact");
+        InteractAction.performed += OnInteractInput;
+
+        PlayerMovementAction = InputSystem.actions.FindAction("MovePlayer");
+        PlayerMovementAction.performed += OnMovePlayer;
+
+        MousePositionAction = InputSystem.actions.FindAction("MousePosition");
+
+        CrouchAction = InputSystem.actions.FindAction("Crouch");
+        CrouchAction.performed += OnCrouch;
+
     }
 
-    private void CheckForCommands()
+
+    // -------------------------------
+    //   CALLBACKS
+    // -------------------------------
+
+    private void OnMoveDown(InputAction.CallbackContext ctx)
     {
-        if (InteractAction.IsPressed())
+        Vector2 movement2D = ctx.ReadValue<Vector2>();
+        Vector3 converted = new Vector3(movement2D.x, 0, movement2D.y);
+
+        if (MovementCoroutine != null)
         {
-            onInteract.Invoke();
+            StopCoroutine(MovementCoroutine);
         }
+        MovementCoroutine = StartCoroutine(OnMove(converted));
+    }
+
+    private void OnMoveUp(InputAction.CallbackContext ctx)
+    {
+        Vector2 movement2D = ctx.ReadValue<Vector2>();
+        Vector3 converted = new Vector3(movement2D.x, 0, movement2D.y);
+
+        if (MovementCoroutine != null)
+        { 
+            StopCoroutine(MovementCoroutine);
+        }
+
+        MovementCoroutine = StartCoroutine(OnMove(converted));
+    }
+
+    private IEnumerator OnMove(Vector3 movement)
+    {
+        while (true)
+        {
+            Vector3 move = movement * Time.deltaTime * Options.MoveSpeed;
+            onMovementChanged?.Invoke(move);
+            yield return null;
+        }
+    }
+
+    private void OnRotateDown(InputAction.CallbackContext ctx)
+    {
+        float rotationValue = ctx.ReadValue<float>();
+
+
+        if (RotationCoroutine != null)
+        {
+            StopCoroutine(RotationCoroutine);
+        }
+
+        RotationCoroutine = StartCoroutine(OnRotate(rotationValue));
+    }
+
+    private void OnRotateUp(InputAction.CallbackContext ctx)
+    {
+        float rotationValue = ctx.ReadValue<float>();
+
+
+        if (RotationCoroutine != null)
+        {
+            StopCoroutine(RotationCoroutine);
+        }
+
+        RotationCoroutine = StartCoroutine(OnRotate(rotationValue));
+    }
+
+    private IEnumerator OnRotate(float rotation)
+    {
+        while (true)
+        {
+            Quaternion turn = Quaternion.AngleAxis(
+            rotation * Time.deltaTime * Options.AngleSpeed,
+            Vector3.up
+        );
+
+            onRotationChanged?.Invoke(turn);
+            yield return null;
+        }
+    }
+
+    private void OnInteractInput(InputAction.CallbackContext ctx)
+    {
+        onInteract?.Invoke();
+    }
+
+    private void OnMovePlayer(InputAction.CallbackContext ctx)
+    {
+        Vector2 v = MousePositionAction.ReadValue<Vector2>();
+        bool isDoubleClick = false;
+
+        if (ctx.interaction is MultiTapInteraction)
+        { 
+            isDoubleClick = true; 
+        }
+
+        if (isDoubleClick)
+        {
+            Debug.Log("Dash Move");
+        }
+        else
+        {
+            Debug.Log("Normal Move");
+        }
+
+        onPlayerMovement?.Invoke(v, isDoubleClick);
+    }
+
+    private void OnCrouch(InputAction.CallbackContext ctx)
+    {
+        onPlayerCrouch?.Invoke();
     }
 }
