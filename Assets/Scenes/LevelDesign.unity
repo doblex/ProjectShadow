@@ -6144,6 +6144,8 @@ GameObject:
   - component: {fileID: 369667244}
   - component: {fileID: 369667246}
   - component: {fileID: 369667245}
+  - component: {fileID: 369667248}
+  - component: {fileID: 369667247}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -6805,6 +6807,42 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!64 &369667247
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369667243}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 62400839c8aee794bb84eebe1fe91d1b, type: 2}
+--- !u!114 &369667248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 369667243}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c4b767689dd94f41b3f4eb25d00eaca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ColliderCombiner
+  cellSize: 1
+  saveMeshAsset: 1
 --- !u!1001 &369962803
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13623,7 +13661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshSurface
   m_SerializedVersion: 0
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_CollectObjects: 3
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 2, z: 0}
@@ -13638,7 +13676,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.1
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: db6247ba40663f1468536238cc8676eb, type: 2}
   m_BuildHeightMesh: 0
@@ -40421,6 +40459,7 @@ GameObject:
   - component: {fileID: 2109992308}
   - component: {fileID: 2109992307}
   - component: {fileID: 2109992310}
+  - component: {fileID: 2109992311}
   m_Layer: 0
   m_Name: Walls
   m_TagString: Untagged
@@ -40656,6 +40695,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MeshColliderCombiner
   cellSize: 1
   saveMeshAsset: 1
+--- !u!64 &2109992311
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109992305}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 5510a5d6ec82dbf4797a5109215589d9, type: 2}
 --- !u!1001 &2112952956
 PrefabInstance:
   m_ObjectHideFlags: 0
