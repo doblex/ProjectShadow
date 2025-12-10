@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class SoundOrigin : MonoBehaviour
+public class NoiseOrigin : MonoBehaviour
 {
     [SerializeField] GameObject SphereCollider;
 
