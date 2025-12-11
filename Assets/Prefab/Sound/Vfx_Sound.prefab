@@ -4951,6 +4951,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7728840059503392715}
   - component: {fileID: 2678113414048453306}
+  - component: {fileID: 7076574170679112205}
   m_Layer: 0
   m_Name: SpereCollision
   m_TagString: Untagged
@@ -4994,3 +4995,15 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7076574170679112205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9048606715149203723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c20917576a40db4ca98ffccc840ec0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'

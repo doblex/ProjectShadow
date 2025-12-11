@@ -3,7 +3,7 @@ using UnityEngine;
 public class Stone : MonoBehaviour
 {
     [SerializeField] private float lifetime = 5f;
-    [SerializeField] private SoundOptions stoneSound;
+    [SerializeField] private NoiseOptions stoneSound;
     private Vector3 destination;
     private float speed;
     private float lifeTimer;

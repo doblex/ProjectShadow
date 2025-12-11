@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class IBait : MonoBehaviour
 {
-    [SerializeField] private SoundOptions iBaitSound;
+    [SerializeField] private NoiseOptions iBaitSound;
     Vector3 destination;
     float speed;
 
