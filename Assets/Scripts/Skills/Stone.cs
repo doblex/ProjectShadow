@@ -44,6 +44,7 @@ public class Stone : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        NoiseSpawnerManager.Instance.SpawnNoiseOrigin(transform.position, stoneSound);
+        Debug.Log($"Collided, position {transform.position}");
+        NoiseSpawnerManager.Instance.SpawnNoiseOrigin(collision.GetContact(0).point, stoneSound);
     }
 }

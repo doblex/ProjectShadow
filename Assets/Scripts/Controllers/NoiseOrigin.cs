@@ -65,4 +65,13 @@ public class NoiseOrigin : MonoBehaviour
 
         gameObject.SetActive(false);
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 0.5f);
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, SphereCollider.transform.localScale.x);
+    }
 }
