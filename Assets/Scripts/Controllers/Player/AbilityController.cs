@@ -14,7 +14,7 @@ public class AbilityController : MonoBehaviour
 
     //Throwable stone
     [Header("Throwable Stone")]
-    [SerializeField] private GameObject throwableStonePrefab;
+    [SerializeField] public GameObject throwableStonePrefab;
     [SerializeField] private float stoneThrowRadius;
     [SerializeField] private float stoneThrowNoiseRadius;
     [SerializeField] private float stoneThrowSpeed;
@@ -33,15 +33,16 @@ public class AbilityController : MonoBehaviour
 
     // Irreplaceable Bait
     [Header("Irreplaceable Bait")]
-    [SerializeField] private GameObject iBaitPrefab;
+    [SerializeField] public GameObject iBaitPrefab;
     [SerializeField] private float iBaitCount;
     [SerializeField] private float iBaitThrowRadius;
+    [SerializeField] private float iBaitThrowNoiseRadius;
     [SerializeField] private float iBaitThrowSpeed;
     [SerializeField] private float iBaitThrowHeight;
 
     // Replaceable Bait
     [Header("Replaceable Bait")]
-    [SerializeField] private GameObject rBaitPrefab;
+    [SerializeField] public GameObject rBaitPrefab;
     [SerializeField] private float rBaitCooldown;
     private float rBaitTimer;
     private bool rBaitEnabled = true;
@@ -109,7 +110,7 @@ public class AbilityController : MonoBehaviour
         if (!stoneThrowEnabled) return;
 
         currentCast = new CastingPlayerState(controller, controller.playerVariables, CastTypes.Stone, controller.IsCrouching(),
-            stoneThrowRadius, stoneThrowNoiseRadius, raycastHeight);
+            stoneThrowRadius, stoneThrowNoiseRadius, raycastHeight, stoneThrowSpeed, stoneThrowHeight);
         controller.SetCast(true);
 
     }
@@ -123,8 +124,9 @@ public class AbilityController : MonoBehaviour
     public void PrepareWhistle()
     {
        if (!whistleEnabled) return;
+
        currentCast = new CastingPlayerState(controller, controller.playerVariables, CastTypes.Whistle, controller.IsCrouching(),
-            stoneThrowRadius, stoneThrowNoiseRadius, raycastHeight);
+            whistleRadius);
        controller.SetCast(true);
 
     }
@@ -140,7 +142,7 @@ public class AbilityController : MonoBehaviour
         if (iBaitCount <= 0) return;
 
         currentCast = new CastingPlayerState(controller, controller.playerVariables, CastTypes.IBait, controller.IsCrouching(),
-            stoneThrowRadius, stoneThrowNoiseRadius, raycastHeight);
+            iBaitThrowRadius, iBaitThrowNoiseRadius, raycastHeight, iBaitThrowSpeed, iBaitThrowHeight);
         controller.SetCast(true);
     }
 
@@ -153,8 +155,7 @@ public class AbilityController : MonoBehaviour
     {
         if (!rBaitEnabled) return;
 
-        currentCast = new CastingPlayerState(controller, controller.playerVariables, CastTypes.RBait, controller.IsCrouching(),
-            stoneThrowRadius, stoneThrowNoiseRadius, raycastHeight);
+        currentCast = new CastingPlayerState(controller, controller.playerVariables, CastTypes.RBait, controller.IsCrouching());
         controller.SetCast(true);
     }
 
@@ -163,6 +164,4 @@ public class AbilityController : MonoBehaviour
         rBaitTimer = rBaitCooldown;
         rBaitEnabled = false;
     }
-
-
 }

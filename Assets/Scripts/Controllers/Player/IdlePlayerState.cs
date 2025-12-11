@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class IdlePlayerState : PlayerState
 {
     bool IsCrouching;
@@ -9,6 +11,8 @@ public class IdlePlayerState : PlayerState
     }
     public override void Enter()
     {
+        Debug.Log("Idle state");
+
         if (IsCrouching)
         {
             // TODO : SetPlayerModel crouch

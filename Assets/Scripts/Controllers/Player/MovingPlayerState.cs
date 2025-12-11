@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class MovingPlayerState : PlayerState
 {
@@ -22,6 +21,8 @@ public class MovingPlayerState : PlayerState
     }
     public override void Enter()
     {
+        Debug.Log("Moving state");
+
         Controller.navMeshAgent.isStopped = false;
         Controller.navMeshAgent.speed = Speed;
 

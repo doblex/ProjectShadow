@@ -48,18 +48,21 @@ public class ActionManager : MonoBehaviour
     public delegate void OnWhistle();
     public delegate void OnThrowIBait();
     public delegate void OnRBait();
+    public delegate void OnCastAbility();
     public delegate void OnCancelSkill();
 
     public OnThrowStone onThrowStone;
     public OnWhistle onWhistle;
     public OnThrowIBait onThrowIBait;
     public OnRBait onRBait;
+    public OnCastAbility onCastAbility;
     public OnCancelSkill onCancelSkill;
 
     private InputAction ThrowStoneAction;
     private InputAction WhistleAction;
     private InputAction ThrowIBaitAction;
     private InputAction RBaitAction;
+    private InputAction CastAbilityAction;
     private InputAction CancelSkillAction;
 
     Coroutine MovementCoroutine;
@@ -116,6 +119,9 @@ public class ActionManager : MonoBehaviour
 
         RBaitAction = InputSystem.actions.FindAction("RBait");
         RBaitAction.performed += OnRBaitCall;
+
+        CastAbilityAction = InputSystem.actions.FindAction("FireAbility");
+        CastAbilityAction.performed += OnCastAbilityCall;
 
         CancelSkillAction = InputSystem.actions.FindAction("CancelAbility");
         CancelSkillAction.performed += OnCancelSkillCall;
@@ -239,6 +245,11 @@ public class ActionManager : MonoBehaviour
         isMoving = false;
     }
 
+    public Vector2 GetMousePosition()
+    {
+        return MousePositionAction.ReadValue<Vector2>();
+    }
+
     private void OnCrouch(InputAction.CallbackContext ctx)
     {
         onPlayerCrouch?.Invoke();
@@ -268,5 +279,10 @@ public class ActionManager : MonoBehaviour
     private void OnCancelSkillCall(InputAction.CallbackContext ctx)
     {
         onCancelSkill?.Invoke();
+    }
+
+    private void OnCastAbilityCall(InputAction.CallbackContext ctx)
+    {
+        onCastAbility?.Invoke();
     }
 }

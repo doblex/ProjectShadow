@@ -1,6 +1,8 @@
+using System.Collections;
 using System.Collections.Concurrent;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Apple;
 using UnityEngine.InputSystem.XR.Haptics;
 
 [RequireComponent(typeof(NavMeshAgent))]
@@ -15,7 +17,7 @@ public class PlayerController : MonoBehaviour
     bool isCrouching = false;
     bool isInBush = false;
 
-    [SerializeField] bool isCasting;
+    bool isCasting;
 
     private void Awake()
     {
@@ -73,6 +75,17 @@ public class PlayerController : MonoBehaviour
         currentState?.Update();
     }
 
+    public void CallUncastWithDelay(float delay)
+    {
+        StartCoroutine(UncastWithDelay(delay));
+    }
+
+    private IEnumerator UncastWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isCasting = false;
+    }
+
     public void SetCast(bool value)
     {
         isCasting = value;
@@ -120,5 +133,13 @@ public class PlayerController : MonoBehaviour
                 UpdateStates(new WalkMovePlayerState(this, hit.point, playerVariables));
             }
         }
+    }
+
+    public void ThrowStone(Vector3 destination, float speed)
+    {
+        Stone stone = Instantiate(GetComponent<AbilityController>().throwableStonePrefab, transform).
+            GetComponent<Stone>().SetDestination(destination).SetSpeed(speed);
+
+        stone.transform.parent = null;
     }
 }
