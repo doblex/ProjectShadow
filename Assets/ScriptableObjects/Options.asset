@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 923d2daaa6895b34c937a952f0cb11d8, type: 3}
   m_Name: Options
   m_EditorClassIdentifier: Assembly-CSharp::PlayerOptions
-  _moveSpeed: 5
-  _angleSpeed: 5
+  _moveSpeed: 10
+  _angleSpeed: 10

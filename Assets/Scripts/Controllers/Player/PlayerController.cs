@@ -58,7 +58,6 @@ public class PlayerController : MonoBehaviour
                 currentState.Enter();
             }
         }
-
         
         currentState?.Update();
     }
@@ -69,8 +68,8 @@ public class PlayerController : MonoBehaviour
 
         Debug.Log("Crouch toggled. Now crouching: " + isCrouching);
 
+        SoundManager.Instance?.ChangeOstOnCrouch(isCrouching);
         UpdateStates( new IdlePlayerState(this, playerVariables, isCrouching));
-
     }
 
     private void HandlePlayerMovement(Vector2 mousePos, bool dash)
