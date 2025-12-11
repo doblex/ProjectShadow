@@ -6,7 +6,6 @@ public class NoiseSpawnerManager : MonoBehaviour
     public static NoiseSpawnerManager Instance;
 
     [SerializeField] private GameObject noiseOriginPrefab;
-    [SerializeField] AudioClip clip;
 
     private List<GameObject> NoiseOrigins = new List<GameObject>();
 
@@ -23,7 +22,7 @@ public class NoiseSpawnerManager : MonoBehaviour
         }
     }
 
-    public void SpawnNoiseOrigin(Vector3 position, SoundOptions options)
+    public void SpawnNoiseOrigin(Vector3 position, NoiseOptions options)
     {
         GameObject noiseOrigin = GetPooledNoiseOrigin();
 
@@ -37,9 +36,9 @@ public class NoiseSpawnerManager : MonoBehaviour
             noiseOriginScript.PlayEffect();
         }
 
-        if (clip != null)
+        if (options.SFX != null)
         { 
-           SoundManager.Instance.PlaySFXOnPos(clip, position);
+           SoundManager.Instance.PlaySFXOnPos(options.SFX, position);
         }
     }
 
