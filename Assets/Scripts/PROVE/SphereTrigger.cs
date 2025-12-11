@@ -11,11 +11,10 @@ public class SphereTrigger : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        AIController ai = other.GetComponent<AIController>();
+        AIController ai = other.GetComponentInParent<AIController>();
         if (ai != null)
         {
-            ai.StartInvestigation(transform.position);
-            Debug.Log("Enemy triggered investigation.");
+            ai.OnSoundHeard(transform.position);
         }
     }
 }
