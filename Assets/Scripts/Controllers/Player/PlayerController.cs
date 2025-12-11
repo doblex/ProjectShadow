@@ -1,5 +1,7 @@
+using System.Collections.Concurrent;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.XR.Haptics;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class PlayerController : MonoBehaviour
@@ -13,11 +15,12 @@ public class PlayerController : MonoBehaviour
     bool isCrouching = false;
     bool isInBush = false;
 
-    bool isCasting = false;
+    [SerializeField] bool isCasting;
 
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        isCasting = false;
     }
 
     private void OnEnable()
@@ -45,11 +48,16 @@ public class PlayerController : MonoBehaviour
     private void UpdateStates(PlayerState forcedState = null)
     {
         // TODO Force casting state first
-
         if (forcedState != null)
         {
             currentState?.Exit();
             currentState = forcedState;
+            currentState.Enter();
+        }
+        else if (isCasting && (currentState.GetType() != typeof(CastingPlayerState)))  // check that currentState is not of type CastingPlayerState
+        {
+            currentState?.Exit();
+            currentState = GetComponent<AbilityController>().currentCast;
             currentState.Enter();
         }
         else
@@ -68,6 +76,11 @@ public class PlayerController : MonoBehaviour
     public void SetCast(bool value)
     {
         isCasting = value;
+    }
+
+    public bool IsCrouching()
+    {
+        return isCrouching;
     }
 
     private void HandleCrouch()

@@ -258,14 +258,16 @@ GameObject:
   - component: {fileID: 1428032197}
   - component: {fileID: 1428032196}
   - component: {fileID: 1428032195}
+  - component: {fileID: 1428032201}
   - component: {fileID: 1428032199}
+  - component: {fileID: 1428032200}
   m_Layer: 0
   m_Name: MockPlayer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!136 &1428032195
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -372,12 +374,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae79d3f2e3118be46b20aa9e5ee2027b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AbilityController
+  controller: {fileID: 1428032201}
+  raycastHeight: 1
   throwableStonePrefab: {fileID: 0}
-  stoneThrowRadius: 0
+  stoneThrowRadius: 5
+  stoneThrowNoiseRadius: 2
   stoneThrowSpeed: 0
   stoneThrowHeight: 0
   stoneThrowCooldown: 5
   whistleRadius: 0
+  whistleCooldown: 10
+  iBaitPrefab: {fileID: 0}
+  iBaitCount: 5
+  iBaitThrowRadius: 0
+  iBaitThrowSpeed: 0
+  iBaitThrowHeight: 0
+  rBaitPrefab: {fileID: 0}
+  rBaitCooldown: 10
+--- !u!195 &1428032200
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428032194}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &1428032201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428032194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37898a785faf57848a2bb0174d05eda6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  playerVariables: {fileID: 11400000, guid: cf59b51771c6b154e86312606af21eb8, type: 2}
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  navMeshAgent: {fileID: 0}
 --- !u!1 &1855699584
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,6 +442,7 @@ GameObject:
   - component: {fileID: 1855699587}
   - component: {fileID: 1855699586}
   - component: {fileID: 1855699585}
+  - component: {fileID: 1855699589}
   m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
@@ -490,6 +543,38 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1855699589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855699584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.AI.Navigation::Unity.AI.Navigation.NavMeshSurface
+  m_SerializedVersion: 0
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_GenerateLinks: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 0
+  m_TileSize: 256
+  m_OverrideVoxelSize: 0
+  m_VoxelSize: 0.16666667
+  m_MinRegionArea: 2
+  m_NavMeshData: {fileID: 23800000, guid: f6f8c6be39ba08249b9a68867a81727e, type: 2}
+  m_BuildHeightMesh: 0
 --- !u!1 &1996782782
 GameObject:
   m_ObjectHideFlags: 0
