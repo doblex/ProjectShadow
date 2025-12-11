@@ -56,7 +56,7 @@ public class MovingPlayerState : PlayerState
     {
         while (true)
         {
-            NoiseSpawnerManager.Instance.SpawnNoiseOrigin(Controller.transform.position, soundOptions);
+            NoiseSpawnerManager.Instance?.SpawnNoiseOrigin(Controller.transform.position, soundOptions);
             //TODO : SoundImplementation
             yield return new WaitForSeconds(interval);
         }
