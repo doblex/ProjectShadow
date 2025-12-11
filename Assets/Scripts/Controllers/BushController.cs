@@ -1,7 +1,14 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class BushController : MonoBehaviour
 {
+    private void Awake()
+    {
+        Collider sc = GetComponent<Collider>();
+        sc.isTrigger = true;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -18,5 +25,4 @@ public class BushController : MonoBehaviour
             pc.SetHiding(false);
         }
     }
-
 }
