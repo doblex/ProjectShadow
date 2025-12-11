@@ -1,20 +1,25 @@
-using UnityEngine;
-using UnityEngine.AI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.InputSystem.XR;
 
 public class AIController : MonoBehaviour
 {
     #region Variables
-    public enum State { Patrol, Investigation, Alarm }
-    public enum EnemyType { Patrol, Sentry }
+    public enum Phase { Patrol, Investigation, Alarm }
+    public enum EnemyRole { Patrol, Sentry }
+    public enum EnemyType { Sentinel, ParanoidSentinel, Guard}
+
+    [Header("Enemy Phase")]
+    public EnemyRole role = EnemyRole.Patrol;
+
+    [Header("Role")]
+    public Phase phase = Phase.Patrol;
 
     [Header("Enemy Type")]
-    public EnemyType enemyType = EnemyType.Patrol;
-
-    [Header("State")]
-    public State currentState = State.Patrol;
+    public EnemyType enemyType = EnemyType.Sentinel;
 
     [Header("Patrol")]
     public Transform[] patrolPoints;
@@ -24,13 +29,13 @@ public class AIController : MonoBehaviour
     [Header("Field of View")]
     public float viewRadius = 10f;
     [Range(0, 360)] public float viewAngle = 110f;
-    public LayerMask targetMask;
+    public LayerMask playerAndBaitMask;
     public LayerMask obstacleMask;
     [HideInInspector] public List<Transform> visibleTargets = new List<Transform>();
 
     [Header("Investigation")]
     public float investigationTime = 20f;
-    float investigationTimer;
+    public float investigationTimer;
     public Vector3 investigationPosition;
     public float searchAreaRadius = 5f;
     public float searchPauseTime = 2f;
@@ -43,19 +48,17 @@ public class AIController : MonoBehaviour
     float headLookTimer;
     float headLookAngle;
 
-    [Header("Global Alarm Response")]
-    public float alarmInvestigationRadiusMin = 3f;
-    public float alarmInvestigationRadiusMax = 8f;
-
     [Header("Alarm")]
     public float alarmSearchTime = 15f;
-    float alarmTimer;
+    public float alarmTimer;
     Vector3 lastSeenPlayerPosition;
     Vector3 lastAlarmPosition;
     public float alarmMinMoveDist = 2f;
+    public float alarmRadius = 5f;
+    public LayerMask enemyMask;
 
     [Header("Reaction Priority")]
-    public float reactionDelay = 2f;   // 2s prima di Alarm
+    public float reactionDelay = 2f;
     float alarmDelayTimer = 0f;
     bool alarmTriggered = false;
 
@@ -81,8 +84,7 @@ public class AIController : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
-        if (enemyType == EnemyType.Sentry)
+        if (role == EnemyRole.Sentry)
         {
             sentryOriginalPosition = transform.position;
             sentryOriginalRotation = transform.rotation;
@@ -99,40 +101,36 @@ public class AIController : MonoBehaviour
         }
 
         StartCoroutine(FindTargetsWithDelay(0.2f));
-        GlobalAlarm.OnPlayerSpotted += OnGlobalAlarm;
 
         alarmTimer = alarmSearchTime;
         sentryLookTimer = sentryLookInterval;
     }
 
-    void OnDestroy()
-    {
-        GlobalAlarm.OnPlayerSpotted -= OnGlobalAlarm;
-    }
 
     void Update()
     {
         LookForPlayer();
 
-        switch (currentState)
+        switch (phase)
         {
-            case State.Patrol:
-                if (enemyType == EnemyType.Sentry)
+            case Phase.Patrol:
+                if (role == EnemyRole.Sentry)
                     SentryBehavior();
                 else
                     Patrol();
                 break;
 
-            case State.Investigation:
+            case Phase.Investigation:
                 Investigate();
                 break;
 
-            case State.Alarm:
+            case Phase.Alarm:
                 Alarm();
                 break;
         }
     }
     #region look for player
+
     IEnumerator FindTargetsWithDelay(float delay)
     {
         while (true)
@@ -145,23 +143,31 @@ public class AIController : MonoBehaviour
     void FindVisibleTargets()
     {
         visibleTargets.Clear();
-        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, targetMask);
+        Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, playerAndBaitMask);
 
         for (int i = 0; i < targetsInViewRadius.Length; i++)
         {
             Transform target = targetsInViewRadius[i].transform;
             Vector3 dirToTarget = (target.position - transform.position).normalized;
 
-            if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle * 0.5f)
+            if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2f)
             {
                 float dstToTarget = Vector3.Distance(transform.position, target.position);
                 if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
                 {
-                    visibleTargets.Add(target);
+                    if (target.CompareTag("Player"))
+                    {
+                        visibleTargets.Add(target);
+                    }
+                    else if (target.CompareTag("Bait"))
+                    {
+                        OnBaitSeen(target.position);
+                    }
                 }
             }
         }
     }
+
     void LookForPlayer()
     {
         if (visibleTargets.Count > 0)
@@ -170,25 +176,38 @@ public class AIController : MonoBehaviour
             Vector3 currentPlayerPos = player.position;
             lastSeenPlayerPosition = currentPlayerPos;
 
-            if (currentState == State.Patrol || currentState == State.Investigation)
+            if (phase == Phase.Patrol || phase == Phase.Investigation)
             {
                 alarmDelayTimer += Time.deltaTime;
                 agent.isStopped = true;
 
                 if (alarmDelayTimer >= reactionDelay)
                 {
-                    currentState = State.Alarm;
-                    alarmDelayTimer = 0f;
+                    bool canRaise =
+                        lastAlarmPosition == Vector3.zero ||
+                        Vector3.Distance(currentPlayerPos, lastAlarmPosition) >= alarmMinMoveDist;
+
+                    if (canRaise)
+                    {
+                        phase = Phase.Alarm;
+                        alarmDelayTimer = 0f;
+                    }
+                    else
+                    {
+                        agent.isStopped = false;
+                        alarmDelayTimer = 0f;
+                    }
                 }
             }
         }
         else
         {
             alarmDelayTimer = 0f;
-            if (currentState != State.Alarm && agent.isStopped)
+            if (phase != Phase.Alarm && agent.isStopped)
                 agent.isStopped = false;
         }
     }
+
     #endregion
     #region patrol
     void Patrol()
@@ -223,7 +242,7 @@ public class AIController : MonoBehaviour
     public void StartInvestigation(Vector3 position)
     {
         investigationPosition = position;
-        currentState = State.Investigation;
+        phase = Phase.Investigation;
 
         isSearchingArea = false;
         searchCenter = position;
@@ -259,7 +278,7 @@ public class AIController : MonoBehaviour
             investigationTimer -= Time.deltaTime;
             if (investigationTimer <= 0f)
             {
-                if (enemyType == EnemyType.Sentry)
+                if (role == EnemyRole.Sentry)
                 {
                     agent.SetDestination(sentryOriginalPosition);
                     StartCoroutine(ReturnSentryToPost());
@@ -269,7 +288,7 @@ public class AIController : MonoBehaviour
                     patrolIndex = lastPatrolIndex;
                     if (patrolPoints != null && patrolPoints.Length > 0)
                         agent.SetDestination(patrolPoints[patrolIndex].position);
-                    currentState = State.Patrol;
+                    phase = Phase.Patrol;
                 }
 
                 isSearchingArea = false;
@@ -343,7 +362,7 @@ public class AIController : MonoBehaviour
     }
     IEnumerator ReturnSentryToPost()
     {
-        currentState = State.Patrol;
+        phase = Phase.Patrol;
 
         while (Vector3.Distance(transform.position, sentryOriginalPosition) > 0.2f)
             yield return null;
@@ -356,6 +375,49 @@ public class AIController : MonoBehaviour
         alarmDelayTimer = 0f;
     }
     #endregion
+    #region Bait
+    public void OnBaitSeen(Vector3 baitPos)
+    {
+        switch (enemyType)
+        {
+            case EnemyType.Sentinel:
+                StartInvestigation(baitPos);
+                break;
+
+            case EnemyType.ParanoidSentinel:
+                lastSeenPlayerPosition = baitPos;
+                lastAlarmPosition = baitPos;
+                alarmTriggered = true;
+                RaiseLocalAlarm(baitPos);
+                StartInvestigation(baitPos);
+                break;
+
+            case EnemyType.Guard:
+                break;
+        }
+    }
+    #endregion
+    #region Sound
+    public void OnSoundHeard(Vector3 soundPos)
+    {
+        switch (enemyType)
+        {
+            case EnemyType.Sentinel:
+                // investiga attorno al punto del suono
+                StartInvestigation(soundPos);
+                break;
+
+            case EnemyType.ParanoidSentinel:
+                // NON va al suono: investiga attorno alla sua posizione attuale
+                StartInvestigation(transform.position);
+                break;
+
+            case EnemyType.Guard:
+                // ignora
+                break;
+        }
+    }
+    #endregion
     #region Alarms
     void Alarm()
     {
@@ -363,38 +425,36 @@ public class AIController : MonoBehaviour
         {
             alarmTriggered = true;
             lastAlarmPosition = lastSeenPlayerPosition;
-            GlobalAlarm.RaiseAlarm(lastSeenPlayerPosition);
+            RaiseLocalAlarm(lastAlarmPosition);
             lastDistractionTime = Time.time;
             lastDistractionPosition = lastSeenPlayerPosition;
             agent.isStopped = false;
             StartInvestigation(lastSeenPlayerPosition);
-            currentState = State.Investigation;
+            phase = Phase.Investigation;
         }
     }
-    void OnGlobalAlarm(Vector3 spottedPosition)
+
+    void RaiseLocalAlarm(Vector3 alarmPos)
     {
-        if (currentState == State.Alarm)
-            return;
+        Collider[] hits = Physics.OverlapSphere(alarmPos, alarmRadius, enemyMask);
 
-        if (Time.time <= lastDistractionTime)
-            return;
-
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < hits.Length; i++)
         {
-            Vector2 offset2D = UnityEngine.Random.insideUnitCircle *
-                               UnityEngine.Random.Range(alarmInvestigationRadiusMin, alarmInvestigationRadiusMax);
-
-            Vector3 candidate = spottedPosition + new Vector3(offset2D.x, 0f, offset2D.y);
-
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(candidate, out hit, alarmInvestigationRadiusMax, NavMesh.AllAreas))
+            AIController otherAI = hits[i].GetComponent<AIController>();
+            if (otherAI != null && otherAI != this)
             {
-                StartInvestigation(hit.position);
-                return;
+                otherAI.OnAlarmHeard(alarmPos);
             }
         }
-
-        StartInvestigation(spottedPosition);
+    }
+    public void OnAlarmHeard(Vector3 alarmPos)
+    {
+        if (phase == Phase.Alarm)
+            return;
+        if (Time.time > lastDistractionTime)
+        {
+            StartInvestigation(alarmPos);
+        }
     }
     #endregion
     #region gyzmos
