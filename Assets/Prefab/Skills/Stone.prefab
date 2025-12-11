@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 8341944239297337019}
   - component: {fileID: 1274876045586633796}
   - component: {fileID: 1340721197598782709}
-  - component: {fileID: 32406488889098874}
   - component: {fileID: 3958844410828406169}
+  - component: {fileID: -7374710234988717288}
   m_Layer: 0
   m_Name: Stone
   m_TagString: Untagged
@@ -113,7 +113,21 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &32406488889098874
+--- !u!114 &3958844410828406169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2686772543481402752}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acecedfb9ef9b7849b2cc19e4020de4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stone
+  lifetime: 5
+  stoneSound: {fileID: 11400000, guid: ad7fe8ee005108b46ae8b0020621e58b, type: 2}
+--- !u!54 &-7374710234988717288
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -140,17 +154,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3958844410828406169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2686772543481402752}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acecedfb9ef9b7849b2cc19e4020de4b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Stone
-  lifetime: 5
-  stoneSound: {fileID: 11400000, guid: ad7fe8ee005108b46ae8b0020621e58b, type: 2}

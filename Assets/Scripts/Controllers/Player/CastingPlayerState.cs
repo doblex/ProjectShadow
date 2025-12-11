@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public enum CastTypes
@@ -95,6 +97,7 @@ public class CastingPlayerState : PlayerState
            case CastTypes.Stone:
                 DrawAbilityPreview(Color.red);
                 DrawNoisePreview(Color.blue);
+                DrawThrowArcPreview(Color.blue);
                 break;
 
             case CastTypes.Whistle:
@@ -104,6 +107,7 @@ public class CastingPlayerState : PlayerState
             case CastTypes.IBait:
                 DrawAbilityPreview(Color.red);
                 DrawNoisePreview(Color.blue);
+                DrawThrowArcPreview(Color.blue);
                 break;
 
             case CastTypes.RBait:
@@ -165,6 +169,26 @@ public class CastingPlayerState : PlayerState
         throwTarget = target;
     }
 
+    private void DrawThrowArcPreview(Color arcColor)
+    {
+        if (!canThrow)
+        {
+            throwArcPreview.positionCount = 0;
+            return;
+        }
+
+        throwArcPreview.positionCount = segments + 1;
+        throwArcPreview.useWorldSpace = true;
+        throwArcPreview.startColor = arcColor;
+        throwArcPreview.endColor = arcColor;
+        throwArcPreview.widthMultiplier = 0.1f;
+
+        Vector3 apex = .5f * Vector3.Normalize(throwTarget - Controller.transform.position) + Controller.transform.position;
+        apex.y += throwHeight;
+
+        DrawCurve(throwTarget, apex, Controller.transform.position, throwArcPreview);
+    }
+
     public void ThrowStone(Vector2 mousePos, bool dash)
     {
         if (!canThrow) return;
@@ -181,6 +205,8 @@ public class CastingPlayerState : PlayerState
     {
         Debug.Log("Used Whistle!");
 
+        Controller.Whistle();
+
         Controller.GetComponent<AbilityController>().ResetWhistleTimer();
         CallExit();
     }
@@ -191,6 +217,8 @@ public class CastingPlayerState : PlayerState
 
         Debug.Log("Threw Irreplaceable Bait");
 
+        Controller.ThrowIBait(throwTarget, throwSpeed);
+
         Controller.GetComponent<AbilityController>().ConsumeIBait();
         CallExit();
     }
@@ -198,6 +226,8 @@ public class CastingPlayerState : PlayerState
     public void DropRBait()
     {
         Debug.Log("Left Replaceable bait");
+
+        Controller.DropRBait();
 
         Controller.GetComponent<AbilityController>().ResetRBaitTimer();
         CallExit();
@@ -247,8 +277,7 @@ public class CastingPlayerState : PlayerState
 
     void CreateCircle(LineRenderer renderer, Vector3 center, float radius)
     {
-        float x;
-        float z;
+        float x, z;
 
         float angle = 20f;
 
@@ -262,4 +291,23 @@ public class CastingPlayerState : PlayerState
             angle += (360f / (segments/2));
         }
     }
+
+    void DrawCurve(Vector3 point1, Vector3 point2, Vector3 point3, LineRenderer MyL)
+    {
+
+        int samples = 30; // number of sampling points
+
+        List<Vector3> pointList = new List<Vector3>();
+
+        for (float ratio = 0; ratio <= 1; ratio += 1.0f / samples)
+        {
+            Vector3 tangentLineVertex1 = Vector3.Lerp(point1, point2, ratio);
+            Vector3 tangentLineVectex2 = Vector3.Lerp(point2, point3, ratio);
+            Vector3 bezierPoint = Vector3.Lerp(tangentLineVertex1, tangentLineVectex2, ratio);
+            pointList.Add(bezierPoint);
+        }
+        MyL.positionCount = pointList.Count;
+        MyL.SetPositions(pointList.ToArray());
+    }
+
 }

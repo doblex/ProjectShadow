@@ -10,7 +10,7 @@ public class Stone : MonoBehaviour
 
     public Stone SetDestination(Vector3 _destination)
     {
-        destination = _destination;
+        destination = new Vector3(_destination.x, _destination.y + .25f, _destination.z);
         return this;
     }
 
@@ -23,7 +23,6 @@ public class Stone : MonoBehaviour
     void Start()
     {
         lifeTimer = lifetime;
-        Debug.Log($"Stone at {transform.position}, going to {destination}, moving at speed {speed}");
     }
 
     void Update()
@@ -45,7 +44,6 @@ public class Stone : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"Collided, position {transform.position}");
         NoiseSpawnerManager.Instance.SpawnNoiseOrigin(transform.position, stoneSound);
     }
 }

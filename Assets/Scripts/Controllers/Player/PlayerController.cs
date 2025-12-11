@@ -1,15 +1,13 @@
 using System.Collections;
-using System.Collections.Concurrent;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Apple;
-using UnityEngine.InputSystem.XR.Haptics;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] public PlayerVariables playerVariables;
     [SerializeField,Layer] public LayerMask terrainLayer;
+    [SerializeField] SoundOptions whistleSound;
 
     [HideInInspector] public NavMeshAgent navMeshAgent;
     PlayerState currentState;
@@ -141,5 +139,24 @@ public class PlayerController : MonoBehaviour
             GetComponent<Stone>().SetDestination(destination).SetSpeed(speed);
 
         stone.transform.parent = null;
+    }
+
+    public void Whistle()
+    {
+        NoiseSpawnerManager.Instance.SpawnNoiseOrigin(transform.position, whistleSound);
+    }
+
+    public void ThrowIBait(Vector3 destination, float speed)
+    {
+       IBait iBait = Instantiate(GetComponent<AbilityController>().iBaitPrefab, transform).
+            GetComponent<IBait>().SetDestination(destination).SetSpeed(speed);
+
+        iBait.transform.parent = null;
+    }
+
+    public void DropRBait()
+    {
+        GameObject rBait = Instantiate(GetComponent<AbilityController>().rBaitPrefab, 
+            new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation);
     }
 }
