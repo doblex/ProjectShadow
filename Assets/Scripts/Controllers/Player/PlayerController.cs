@@ -181,6 +181,7 @@ public class PlayerController : MonoBehaviour
     public void SetHiding(bool isHiding)
     {
         halfCoverTable[1,1] = isHiding ? 1 : 0;
+        GlobalVolumeManager.Instance?.SetHiding(isHiding);
         Debug.Log("Set hiding to " + isHiding);
     }
 
