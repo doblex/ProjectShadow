@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
+using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Interactions;
+using static ActionManager;
 
 public class ActionManager : MonoBehaviour
 {
@@ -40,6 +42,28 @@ public class ActionManager : MonoBehaviour
     private InputAction MousePositionAction;
 
     private InputAction CrouchAction;
+
+    // Skills
+    public delegate void OnThrowStone();
+    public delegate void OnWhistle();
+    public delegate void OnThrowIBait();
+    public delegate void OnRBait();
+    public delegate void OnCastAbility();
+    public delegate void OnCancelSkill();
+
+    public OnThrowStone onThrowStone;
+    public OnWhistle onWhistle;
+    public OnThrowIBait onThrowIBait;
+    public OnRBait onRBait;
+    public OnCastAbility onCastAbility;
+    public OnCancelSkill onCancelSkill;
+
+    private InputAction ThrowStoneAction;
+    private InputAction WhistleAction;
+    private InputAction ThrowIBaitAction;
+    private InputAction RBaitAction;
+    private InputAction CastAbilityAction;
+    private InputAction CancelSkillAction;
 
     Coroutine MovementCoroutine;
     Coroutine RotationCoroutine;
@@ -83,6 +107,26 @@ public class ActionManager : MonoBehaviour
         CrouchAction = InputSystem.actions.FindAction("Crouch");
         CrouchAction.performed += OnCrouch;
 
+        // Ability bindings
+        ThrowStoneAction = InputSystem.actions.FindAction("Throw Stone");
+        ThrowStoneAction.performed += OnThrowStoneCall;
+
+        WhistleAction = InputSystem.actions.FindAction("Whistle");
+        WhistleAction.performed += OnWhistleCall;
+
+        ThrowIBaitAction = InputSystem.actions.FindAction("Throw IBait");
+        ThrowIBaitAction.performed += OnThrowIBaitCall;
+
+        RBaitAction = InputSystem.actions.FindAction("RBait");
+        RBaitAction.performed += OnRBaitCall;
+
+        CastAbilityAction = InputSystem.actions.FindAction("FireAbility");
+        CastAbilityAction.performed += OnCastAbilityCall;
+
+        CancelSkillAction = InputSystem.actions.FindAction("CancelAbility");
+        CancelSkillAction.performed += OnCancelSkillCall;
+
+        // TODO make mouse position tracking delegate for ability targeting
     }
 
 
@@ -201,8 +245,44 @@ public class ActionManager : MonoBehaviour
         isMoving = false;
     }
 
+    public Vector2 GetMousePosition()
+    {
+        return MousePositionAction.ReadValue<Vector2>();
+    }
+
     private void OnCrouch(InputAction.CallbackContext ctx)
     {
         onPlayerCrouch?.Invoke();
+    }
+
+
+    private void OnThrowStoneCall(InputAction.CallbackContext ctx)
+    {
+        onThrowStone?.Invoke();
+    }
+
+    private void OnWhistleCall(InputAction.CallbackContext ctx)
+    {
+        onWhistle?.Invoke();
+    }
+
+    private void OnThrowIBaitCall(InputAction.CallbackContext ctx)
+    {
+        onThrowIBait?.Invoke();
+    }
+
+    private void OnRBaitCall(InputAction.CallbackContext ctx)
+    {
+        onRBait?.Invoke();
+    }
+
+    private void OnCancelSkillCall(InputAction.CallbackContext ctx)
+    {
+        onCancelSkill?.Invoke();
+    }
+
+    private void OnCastAbilityCall(InputAction.CallbackContext ctx)
+    {
+        onCastAbility?.Invoke();
     }
 }

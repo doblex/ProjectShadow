@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,7 +7,8 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Options")]
     [SerializeField] public PlayerVariables playerVariables;
-    [SerializeField, Layer] public LayerMask terrainLayer;
+    [SerializeField,Layer] public LayerMask terrainLayer;
+    [SerializeField] NoiseOptions whistleSound;
 
     [HideInInspector] public NavMeshAgent navMeshAgent;
     PlayerState currentState;
@@ -31,10 +32,12 @@ public class PlayerController : MonoBehaviour
         { new Vector2(-1, 0), new Vector2(0, 0), new Vector2(1, 0) },
         { new Vector2(-1, -1), new Vector2(0, -1), new Vector2(1, -1) }
     };
+    bool isCasting;
 
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        isCasting = false;
     }
 
     private void OnEnable()
@@ -100,10 +103,17 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateStates(PlayerState forcedState = null)
     {
+        // TODO Force casting state first
         if (forcedState != null)
         {
             currentState?.Exit();
             currentState = forcedState;
+            currentState.Enter();
+        }
+        else if (isCasting && (currentState.GetType() != typeof(CastingPlayerState)))  // check that currentState is not of type CastingPlayerState
+        {
+            currentState?.Exit();
+            currentState = GetComponent<AbilityController>().currentCast;
             currentState.Enter();
         }
         else
@@ -119,8 +129,31 @@ public class PlayerController : MonoBehaviour
         currentState?.Update();
     }
 
+    public void CallUncastWithDelay(float delay)
+    {
+        StartCoroutine(UncastWithDelay(delay));
+    }
+
+    private IEnumerator UncastWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isCasting = false;
+    }
+
+    public void SetCast(bool value)
+    {
+        isCasting = value;
+    }
+
+    public bool IsCrouching()
+    {
+        return isCrouching;
+    }
+
     private void HandleCrouch()
     {
+        if (isCasting) return;
+
         isCrouching = !isCrouching;
 
         Debug.Log("Crouch toggled. Now crouching: " + isCrouching);
@@ -131,6 +164,8 @@ public class PlayerController : MonoBehaviour
 
     private void HandlePlayerMovement(Vector2 mousePos, bool dash)
     {
+        if (isCasting) return;
+
         Ray ray = Camera.main.ScreenPointToRay(mousePos);
 
         RaycastHit hit;
@@ -152,6 +187,33 @@ public class PlayerController : MonoBehaviour
                 UpdateStates(new WalkMovePlayerState(this, hit.point, playerVariables));
             }
         }
+    }
+
+    public void ThrowStone(Vector3 destination, float speed)
+    {
+        Stone stone = Instantiate(GetComponent<AbilityController>().throwableStonePrefab, transform).
+            GetComponent<Stone>().SetDestination(destination).SetSpeed(speed);
+
+        stone.transform.parent = null;
+    }
+
+    public void Whistle()
+    {
+        NoiseSpawnerManager.Instance.SpawnNoiseOrigin(transform.position, whistleSound);
+    }
+
+    public void ThrowIBait(Vector3 destination, float speed)
+    {
+       IBait iBait = Instantiate(GetComponent<AbilityController>().iBaitPrefab, transform).
+            GetComponent<IBait>().SetDestination(destination).SetSpeed(speed);
+
+        iBait.transform.parent = null;
+    }
+
+    public void DropRBait()
+    {
+        GameObject rBait = Instantiate(GetComponent<AbilityController>().rBaitPrefab, 
+            new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation);
     }
 
     public bool IsHidingInHalfCover(Vector3 enemyPos)
