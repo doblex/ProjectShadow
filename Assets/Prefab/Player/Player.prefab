@@ -130,7 +130,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4108403547803092565
 Transform:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8725282404745937860}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
@@ -182,3 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   playerVariables: {fileID: 11400000, guid: cf59b51771c6b154e86312606af21eb8, type: 2}
+  terrainLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  navMeshAgent: {fileID: 0}
