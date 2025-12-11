@@ -25,5 +25,4 @@ public class BushController : MonoBehaviour
             pc.SetHiding(false);
         }
     }
-
 }
