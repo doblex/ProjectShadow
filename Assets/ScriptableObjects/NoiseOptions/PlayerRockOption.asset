@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca3b78c47bfe3eb45b4ea29e94be42a5, type: 3}
-  m_Name: SoundOptions
-  m_EditorClassIdentifier: Assembly-CSharp::SoundOptions
+  m_Script: {fileID: 11500000, guid: 268023a7f4f76bb49a39aaa6b5458389, type: 3}
+  m_Name: PlayerRockOption
+  m_EditorClassIdentifier: Assembly-CSharp::NoiseOptions
   duration: 2
   startSize: 10
   sizeOverLifeTime:
@@ -29,18 +29,18 @@ MonoBehaviour:
       - serializedVersion: 3
         time: 0
         value: 0
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
       - serializedVersion: 3
         time: 1
         value: 1
-        inSlope: 1
-        outSlope: 1
-        tangentMode: 34
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
         weightedMode: 0
         inWeight: 0
         outWeight: 0
@@ -49,3 +49,4 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_ConstantMin: 0
     m_ConstantMax: 0
+  SFX: {fileID: 8300000, guid: 29df7f1bb49c5704382bb4426dfa148f, type: 3}

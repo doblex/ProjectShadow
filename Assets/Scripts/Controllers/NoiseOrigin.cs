@@ -9,7 +9,7 @@ public class NoiseOrigin : MonoBehaviour
     ParticleSystem.MainModule main;
     ParticleSystem.SizeOverLifetimeModule sizeOverLifetime;
 
-    public bool Setup(SoundOptions options, Vector3 position)
+    public bool Setup(NoiseOptions options, Vector3 position)
     {
         transform.position = position;
 
