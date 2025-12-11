@@ -27,6 +27,10 @@ public class ActionManager : MonoBehaviour
     [SerializeField] private Options Options;
 
     private InputAction MoveVisual;
+    private bool isMoving = false;
+    Coroutine playerMovementCoroutine;
+
+
     private InputAction RotateVisual;
 
     private InputAction InteractAction;
@@ -171,21 +175,30 @@ public class ActionManager : MonoBehaviour
         Vector2 v = MousePositionAction.ReadValue<Vector2>();
         bool isDoubleClick = false;
 
-        if (ctx.interaction is MultiTapInteraction)
-        { 
-            isDoubleClick = true; 
-        }
-
-        if (isDoubleClick)
+        if (isMoving)
         {
+            isDoubleClick = true;
+
+            StopCoroutine(playerMovementCoroutine);
+            playerMovementCoroutine = null;
+
             Debug.Log("Dash Move");
         }
         else
-        {
+        { 
+            isMoving = true;
+
             Debug.Log("Normal Move");
         }
 
         onPlayerMovement?.Invoke(v, isDoubleClick);
+        playerMovementCoroutine = StartCoroutine(ResetMovementFlag());
+    }
+
+    private IEnumerator ResetMovementFlag()
+    {
+        yield return new WaitForSeconds(0.3f);
+        isMoving = false;
     }
 
     private void OnCrouch(InputAction.CallbackContext ctx)
