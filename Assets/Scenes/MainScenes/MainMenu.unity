@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   ManagersScene: {fileID: 102900000, guid: e20ec09a485647c408b00065a82c2033, type: 3}
-  SceneToLoad: {fileID: 102900000, guid: 939f045a2ae790b4aa1232bf55b9505c, type: 3}
+  SceneToLoad: {fileID: 102900000, guid: b717df139c154c848a0d4c91ce3b6660, type: 3}
 --- !u!4 &1071918467
 Transform:
   m_ObjectHideFlags: 0

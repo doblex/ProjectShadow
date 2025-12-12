@@ -56,13 +56,13 @@ Material:
     - _SrcBlendAlpha: 1
     - _Step: 0
     - _Surface: 0
-    - _Thickness: 1.28
+    - _Thickness: 1.1
     - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 1
     - _ZWriteControl: 0
     m_Colors:
-    - _Color: {r: 0, g: 0, b: 0, a: 1}
+    - _Color: {r: 1, g: 0.4142865, b: 0, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &2438666741490966563

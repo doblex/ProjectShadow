@@ -1,3 +1,5 @@
+using UnityEditor;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -13,10 +15,11 @@ public class PlayerController : MonoBehaviour
     [HideInInspector] public NavMeshAgent navMeshAgent;
     PlayerState currentState;
 
-    [Header("Half Cover")]
+    [Header("Cover")]
     [SerializeField] float coverCheckDistance = 1.0f;
     [SerializeField] float coverCheckHeight = 1.0f;
     [SerializeField,Layer] LayerMask halfCoverLayer;
+    [SerializeField,Layer] LayerMask bushLayer;
 
 
     bool isCrouching = false;
@@ -44,12 +47,14 @@ public class PlayerController : MonoBehaviour
     {
         ActionManager.Instance.onPlayerMovement += HandlePlayerMovement;
         ActionManager.Instance.onPlayerCrouch += HandleCrouch;
+        ActionManager.Instance.onInteract += HandleInteract;
     }
 
     private void OnDisable()
     {
         ActionManager.Instance.onPlayerMovement -= HandlePlayerMovement;
         ActionManager.Instance.onPlayerCrouch -= HandleCrouch;
+        ActionManager.Instance.onInteract -= HandleInteract;
     }
 
     private void Start()
@@ -65,8 +70,23 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateCover()
     {
+        CheckForPlayerInBush();
+        CheckCoverAroundPlayer();
+    }
+
+    private void CheckForPlayerInBush()
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f, bushLayer, QueryTriggerInteraction.Collide);
+
+        bool isInBush = colliders.Length > 0;
+
+        SetHiding(isInBush);
+    }
+
+    private void CheckCoverAroundPlayer()
+    {
         Vector3 startPos;
-        Vector3 endPos;
+        Vector3 dir;
 
         string debugMsg = "Half Cover Table:\n";
 
@@ -76,7 +96,7 @@ public class PlayerController : MonoBehaviour
         {
             for (int j = 0; j < 3; j++)
             {
-                direction = directions[i,j];
+                direction = directions[i, j];
 
                 if (direction == Vector2.zero)
                 {
@@ -84,9 +104,9 @@ public class PlayerController : MonoBehaviour
                 }
 
                 startPos = transform.position + new Vector3(0, coverCheckHeight, 0);
-                endPos = new Vector3(direction.x, 0, direction.y);
+                dir = new Vector3(direction.x, 0, direction.y);
 
-                if (Physics.Raycast(startPos, endPos, out RaycastHit hit, coverCheckDistance, halfCoverLayer))
+                if (Physics.Raycast(startPos, dir, out RaycastHit hit, coverCheckDistance, halfCoverLayer))
                 {
                     halfCoverTable[i, j] = 1;
                 }
@@ -95,10 +115,12 @@ public class PlayerController : MonoBehaviour
                     halfCoverTable[i, j] = 0;
                 }
 
-                debugMsg += halfCoverTable[i,j] + " ";
+                debugMsg += halfCoverTable[i, j] + " ";
             }
             debugMsg += "\n";
         }
+
+        Debug.Log(debugMsg);
     }
 
     private void UpdateStates(PlayerState forcedState = null)
@@ -216,9 +238,34 @@ public class PlayerController : MonoBehaviour
             new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation);
     }
 
+    private void HandleInteract()
+    {
+        Collider[] objectsInRadius = Physics.OverlapSphere(transform.position, playerVariables.maxInteractDistance, ~0);
+
+        Interactable closestInteractable = null;
+        float shortestDistance = playerVariables.maxInteractDistance;
+
+        foreach (Collider obj in objectsInRadius)
+        {
+            Interactable interactable = obj.GetComponent<Interactable>();
+            if (interactable != null)
+            {
+                float objDistance = (obj.transform.position - transform.position).sqrMagnitude;
+                if (objDistance < shortestDistance)
+                {
+                    shortestDistance = objDistance;
+                    closestInteractable = interactable;
+                }
+            }
+        }
+
+        if (closestInteractable != null) 
+        { closestInteractable.Interact(); }
+    }
+
     public bool IsHidingInHalfCover(Vector3 enemyPos)
     {
-        // check se il personaggio è completamente coperto
+        // check se il personaggio ï¿½ completamente coperto
         if (halfCoverTable[1, 1] == 1)
         { 
             return true;
@@ -272,5 +319,11 @@ public class PlayerController : MonoBehaviour
                 Gizmos.DrawRay(startPos, endPos);
             }
         }
-    }   
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position, playerVariables.maxInteractDistance);
+    }
 }

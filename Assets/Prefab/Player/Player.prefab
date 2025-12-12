@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4497980939806704708}
   - component: {fileID: 7056030278021427147}
   - component: {fileID: 1955305527478262016}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PlayerModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ GameObject:
   - component: {fileID: 2769418333810459495}
   - component: {fileID: 3014211741085355850}
   - component: {fileID: 5386119233879636275}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -162,12 +162,16 @@ MonoBehaviour:
   terrainLayer:
     serializedVersion: 2
     m_Bits: 64
+  whistleSound: {fileID: 0}
   navMeshAgent: {fileID: 0}
   coverCheckDistance: 1
   coverCheckHeight: 1
   halfCoverLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 4096
+  bushLayer:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!136 &5386119233879636275
 CapsuleCollider:
   m_ObjectHideFlags: 0
