@@ -12,7 +12,7 @@ public class MovingPlayerState : PlayerState
     protected float Speed;
     protected float StepInterval;
 
-    protected SoundOptions SoundOptions;
+    protected NoiseOptions SoundOptions;
 
 
     public MovingPlayerState(PlayerController controller, Vector3 targetPos, PlayerVariables playerVariables) 
@@ -52,12 +52,11 @@ public class MovingPlayerState : PlayerState
         }
     }
 
-    private IEnumerator MovementSoundCue(float interval, SoundOptions soundOptions )
+    private IEnumerator MovementSoundCue(float interval, NoiseOptions soundOptions )
     {
         while (true)
         {
-            NoiseSpawnerManager.Instance.SpawnNoiseOrigin(Controller.transform.position, soundOptions);
-            //TODO : SoundImplementation
+            NoiseSpawnerManager.Instance?.SpawnNoiseOrigin(Controller.transform.position, soundOptions);
             yield return new WaitForSeconds(interval);
         }
     }

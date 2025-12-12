@@ -207,7 +207,7 @@
                     "name": "",
                     "id": "a13f6713-4a4c-4085-ae88-4d0245b1cc01",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "MultiTap,Tap",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "",
                     "action": "MovePlayer",

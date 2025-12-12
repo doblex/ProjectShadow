@@ -8,7 +8,7 @@ public class PlayerVariables : ScriptableObject
     [Header("Walk movement")]
     public float walkMoveSpeed = 5f;
     public float walkSoundInterval = 1f;
-    public SoundOptions walkSoundOptions;
+    public NoiseOptions walkSoundOptions;
 
     [Header("Crouch movement")]
     public float crouchSpeed = 2.5f;
@@ -16,7 +16,7 @@ public class PlayerVariables : ScriptableObject
     [Header("Dash movement")]
     public float dashSpeed = 10f;
     public float DashSoundInterval = 0.2f;
-    public SoundOptions dashSoundOptions;
+    public NoiseOptions dashSoundOptions;
 
     [Header("Interact")]
     public float maxInteractDistance = 10f;
