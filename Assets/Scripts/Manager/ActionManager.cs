@@ -14,6 +14,7 @@ public class ActionManager : MonoBehaviour
     public delegate void OnPlayerMovement(Vector2 mousePos, bool dash);
 
     public delegate void OnInteract();
+    public delegate void OnHighlight(bool active);
     public delegate void OnPlayerCrouch();
 
     public OnCameraMovementChanged onMovementChanged;
@@ -22,6 +23,7 @@ public class ActionManager : MonoBehaviour
     public OnPlayerMovement onPlayerMovement;
 
     public OnInteract onInteract;
+    public OnHighlight onHighlight;
     public OnPlayerCrouch onPlayerCrouch;
 
     [SerializeField] private Options Options;
@@ -30,6 +32,8 @@ public class ActionManager : MonoBehaviour
     private InputAction RotateVisual;
 
     private InputAction InteractAction;
+    private InputAction HighlightAction;
+    private bool HighlightActive = false;
 
     private InputAction PlayerMovementAction;
     private InputAction PlayerDashAction;
@@ -70,6 +74,9 @@ public class ActionManager : MonoBehaviour
 
         InteractAction = InputSystem.actions.FindAction("Interact");
         InteractAction.performed += OnInteractInput;
+
+        HighlightAction = InputSystem.actions.FindAction("Highlight");
+        HighlightAction.performed += OnHighlightInput;
 
         PlayerMovementAction = InputSystem.actions.FindAction("MovePlayer");
         PlayerMovementAction.performed += OnMovePlayer;
@@ -164,6 +171,11 @@ public class ActionManager : MonoBehaviour
     private void OnInteractInput(InputAction.CallbackContext ctx)
     {
         onInteract?.Invoke();
+    }
+    private void OnHighlightInput(InputAction.CallbackContext ctx)
+    {
+        HighlightActive = !HighlightActive;
+        onHighlight?.Invoke(HighlightActive);
     }
 
     private void OnMovePlayer(InputAction.CallbackContext ctx)

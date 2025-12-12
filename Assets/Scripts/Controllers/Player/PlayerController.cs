@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -23,12 +24,14 @@ public class PlayerController : MonoBehaviour
     {
         ActionManager.Instance.onPlayerMovement += HandlePlayerMovement;
         ActionManager.Instance.onPlayerCrouch += HandleCrouch;
+        ActionManager.Instance.onInteract += HandleInteract;
     }
 
     private void OnDisable()
     {
         ActionManager.Instance.onPlayerMovement -= HandlePlayerMovement;
         ActionManager.Instance.onPlayerCrouch -= HandleCrouch;
+        ActionManager.Instance.onInteract -= HandleInteract;
     }
 
     private void Start()
@@ -95,5 +98,36 @@ public class PlayerController : MonoBehaviour
                 UpdateStates(new WalkMovePlayerState(this, hit.point, playerVariables));
             }
         }
+    }
+
+    private void HandleInteract()
+    {
+        Collider[] objectsInRadius = Physics.OverlapSphere(transform.position, playerVariables.maxInteractDistance, ~0);
+
+        Interactable closestInteractable = null;
+        float shortestDistance = playerVariables.maxInteractDistance;
+
+        foreach (Collider obj in objectsInRadius)
+        {
+            Interactable interactable = obj.GetComponent<Interactable>();
+            if (interactable != null)
+            {
+                float objDistance = (obj.transform.position - transform.position).sqrMagnitude;
+                if (objDistance < shortestDistance)
+                {
+                    shortestDistance = objDistance;
+                    closestInteractable = interactable;
+                }
+            }
+        }
+
+        if (closestInteractable != null) 
+        { closestInteractable.Interact(); }
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position, playerVariables.maxInteractDistance);
     }
 }

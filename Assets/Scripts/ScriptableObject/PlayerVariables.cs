@@ -18,4 +18,6 @@ public class PlayerVariables : ScriptableObject
     public float DashSoundInterval = 0.2f;
     public SoundOptions dashSoundOptions;
 
+    [Header("Interact")]
+    public float maxInteractDistance = 10f;
 }

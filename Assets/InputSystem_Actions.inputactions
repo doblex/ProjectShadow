@@ -34,6 +34,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Highlight",
+                    "type": "Button",
+                    "id": "2e9de944-77d0-43a5-a7e6-3c7dcbce2450",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "MovePlayer",
                     "type": "Button",
                     "id": "91d8a926-dc72-4f74-bf6e-5a7fe2b4929d",
@@ -136,6 +145,17 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3b01692-7d2d-4281-bf09-c55f1b115d11",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Highlight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
