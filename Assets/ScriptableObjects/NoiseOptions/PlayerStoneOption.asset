@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 268023a7f4f76bb49a39aaa6b5458389, type: 3}
-  m_Name: PlayerRockOption
+  m_Name: PlayerStoneOption
   m_EditorClassIdentifier: Assembly-CSharp::NoiseOptions
   duration: 2
   startSize: 10
@@ -49,4 +49,4 @@ MonoBehaviour:
       m_RotationOrder: 4
     m_ConstantMin: 0
     m_ConstantMax: 0
-  SFX: {fileID: 8300000, guid: 29df7f1bb49c5704382bb4426dfa148f, type: 3}
+  SFX: {fileID: 8300000, guid: dff11d5bb51947b46a1b61c96feb0a13, type: 3}

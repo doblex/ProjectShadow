@@ -120,7 +120,7 @@ public class PlayerController : MonoBehaviour
             debugMsg += "\n";
         }
 
-        Debug.Log(debugMsg);
+        //Debug.Log(debugMsg);
     }
 
     private void UpdateStates(PlayerState forcedState = null)
@@ -211,10 +211,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ThrowStone(Vector3 destination, float speed)
+    public void ThrowStone(Vector3 destination, float speed, float throwHeight)
     {
         Stone stone = Instantiate(GetComponent<AbilityController>().throwableStonePrefab, transform).
-            GetComponent<Stone>().SetDestination(destination).SetSpeed(speed);
+            GetComponent<Stone>().SetDestination(destination).SetSpeed(speed).SetThrowHeight(throwHeight);
 
         stone.transform.parent = null;
     }
@@ -224,10 +224,10 @@ public class PlayerController : MonoBehaviour
         NoiseSpawnerManager.Instance.SpawnNoiseOrigin(transform.position, whistleSound);
     }
 
-    public void ThrowIBait(Vector3 destination, float speed)
+    public void ThrowIBait(Vector3 destination, float speed, float throwHeight)
     {
        IBait iBait = Instantiate(GetComponent<AbilityController>().iBaitPrefab, transform).
-            GetComponent<IBait>().SetDestination(destination).SetSpeed(speed);
+            GetComponent<IBait>().SetDestination(destination).SetSpeed(speed).SetThrowHeight(throwHeight);
 
         iBait.transform.parent = null;
     }
@@ -291,7 +291,7 @@ public class PlayerController : MonoBehaviour
     {
         halfCoverTable[1,1] = isHiding ? 1 : 0;
         GlobalVolumeManager.Instance?.SetHiding(isHiding);
-        Debug.Log("Set hiding to " + isHiding);
+        //Debug.Log("Set hiding to " + isHiding);
     }
 
     private void OnDrawGizmos()

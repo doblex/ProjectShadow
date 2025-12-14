@@ -183,10 +183,11 @@ public class CastingPlayerState : PlayerState
         throwArcPreview.endColor = arcColor;
         throwArcPreview.widthMultiplier = 0.1f;
 
-        Vector3 apex = .5f * Vector3.Normalize(throwTarget - Controller.transform.position) + Controller.transform.position;
+        //Vector3 apex = .5f * Vector3.Normalize(throwTarget - Controller.transform.position) + Controller.transform.position;
+        Vector3 apex = .5f * (throwTarget + Controller.transform.position);
         apex.y += throwHeight;
 
-        DrawCurve(throwTarget, apex, Controller.transform.position, throwArcPreview);
+        DrawCurve(Controller.transform.position, apex, throwTarget, throwArcPreview);
     }
 
     public void ThrowStone(Vector2 mousePos, bool dash)
@@ -195,7 +196,7 @@ public class CastingPlayerState : PlayerState
 
         Debug.Log("Threw Stone");
 
-        Controller.ThrowStone(throwTarget, throwSpeed);
+        Controller.ThrowStone(throwTarget, throwSpeed, throwHeight);
 
         Controller.GetComponent<AbilityController>().ResetStoneThrowTimer();
         CallExit();
@@ -217,7 +218,7 @@ public class CastingPlayerState : PlayerState
 
         Debug.Log("Threw Irreplaceable Bait");
 
-        Controller.ThrowIBait(throwTarget, throwSpeed);
+        Controller.ThrowIBait(throwTarget, throwSpeed, throwHeight);
 
         Controller.GetComponent<AbilityController>().ConsumeIBait();
         CallExit();
