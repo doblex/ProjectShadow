@@ -1,19 +1,43 @@
-using System;
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelLoaderManager : MonoBehaviour
 {
+    public static LevelLoaderManager Instance;
+
+    public bool fireEvent;
+
     [SerializeField] SceneAsset ManagersScene;
     [SerializeField] SceneAsset SceneToLoad;
 
     AsyncOperation managerAOp;
     AsyncOperation levelAOp;
 
-    private void Start()
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    private void Update()
+    {
+        if (fireEvent)
+        {
+            fireEvent = false;
+            StartSceneTransition();
+        }
+    }
+
+
+    public void StartSceneTransition()
     {
         StartCoroutine( LoadLevelAsync());
     }

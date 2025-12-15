@@ -4,12 +4,29 @@ using UnityEngine.UIElements;
 
 public class BaseUIController : MonoBehaviour
 {
+    public static BaseUIController Instance;
+
+
     [Header("Docs")]
     [SerializeField] List<BaseDocController> docControllers = new List<BaseDocController>();
     HashSet<BaseDocController> activedDocs = new HashSet<BaseDocController>();
 
     [Header("Templates")]
     [SerializeField] List<Template> templates = new List<Template>();
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+    }
+
 
     /// <summary>
     /// Retrieves a template by its name.

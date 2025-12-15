@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using UnityEditor.Timeline.Actions;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Interactions;
-using static ActionManager;
+
 
 public class ActionManager : MonoBehaviour
 {

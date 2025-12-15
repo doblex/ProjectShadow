@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.XR;
 
 [RequireComponent(typeof(NavMeshAgent))]
 public class PlayerController : MonoBehaviour, ISaveable
@@ -46,7 +44,7 @@ public class PlayerController : MonoBehaviour, ISaveable
     {
         // REGISTER AS SAVEABLE
         id = System.Guid.NewGuid().ToString();
-        PersistenceManager.Instance.RegisterSaveable(this);
+        PersistenceManager.Instance?.RegisterSaveable(this);
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         isCasting = false;

@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Script/Styles/BaseStyle.uss?fileID=7433441132597879392&amp;guid=68e07a90f95c56a49bc397c5316dfdba&amp;type=3#BaseStyle" />
+    <ui:VisualElement name="BackGround" style="flex-grow: 1; flex-direction: row; background-image: url(&quot;project://database/Assets/Texture/UI/Menu_art.jpg?fileID=2800000&amp;guid=02825665511ea8c43b6e708a5a38f3ec&amp;type=3#Menu_art&quot;);">
+        <ui:VisualElement name="Menu" style="flex-grow: 0; align-self: center; width: 30%; height: 100%;">
+            <ui:VisualElement name="Title_Image" style="flex-grow: 0; -unity-background-scale-mode: scale-to-fit;">
+                <ui:Label text="THE&#10;HIDDEN&#10;LAND" style="font-size: 124px; -unity-text-align: upper-center;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Menu" style="flex-grow: 0;">
+                <ui:Button text="New Game" name="NewGame" style="flex-grow: 0;" />
+                <ui:Button text="Continue" name="Continue" />
+                <ui:Button text="Options" name="Options" />
+                <ui:Button text="Credits" name="Credits" />
+                <ui:Button text="Exit" name="Exit" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
