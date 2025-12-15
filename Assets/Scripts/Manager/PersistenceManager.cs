@@ -25,8 +25,19 @@ public class PersistenceManager : MonoBehaviour
     private List<ISaveable> saveableObjects;
 
     // AES Key and IV (Initialization Vector) for encryption
-    private byte[] key = new byte[16];
+    private byte[] key;
     private byte[] iv;
+
+    // Dynamic object list
+    [System.Serializable]
+    public struct PrefabEntry
+    {
+        public string key;
+        public GameObject prefab;
+    }
+
+    [SerializeField] private List<PrefabEntry> prefabRegistryList; // Fill in inspector
+    private Dictionary<string, GameObject> prefabDictionary = new Dictionary<string, GameObject>();
 
     private void Awake()
     {
@@ -45,6 +56,15 @@ public class PersistenceManager : MonoBehaviour
             // encryption key and iv
             key = System.Text.Encoding.UTF8.GetBytes(encryptionKey.PadRight(16).Substring(0, 16));
             iv = System.Text.Encoding.UTF8.GetBytes(encryptionKey.PadRight(16).Substring(0, 16));
+
+            // Initialize dynamic prefabs dictionary
+            foreach (PrefabEntry entry in prefabRegistryList)
+            {
+                if (!prefabDictionary.ContainsKey(entry.key))
+                {
+                    prefabDictionary.Add(entry.key, entry.prefab);
+                }
+            }
         }
     }
 
@@ -148,6 +168,20 @@ public class PersistenceManager : MonoBehaviour
         }
 
         Debug.Log($"Loaded file {saveSlot} from path: {path}");
+    }
+
+    public void Delete(SaveSlot saveSlot)
+    {
+        string path = GetPath(saveSlot);
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+            Debug.Log($"Deleted save file at path: {path}");
+        }
+        else
+        {
+            Debug.Log($"No save file found at path: {path} to delete.");
+        }
     }
 
     private byte[] Encrypt(string plainText)

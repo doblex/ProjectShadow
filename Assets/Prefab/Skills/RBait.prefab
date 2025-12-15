@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5478754762340410280}
   - component: {fileID: 5334385740663469529}
   - component: {fileID: 8313291667737882553}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: RBait
   m_TagString: Untagged
   m_Icon: {fileID: 0}

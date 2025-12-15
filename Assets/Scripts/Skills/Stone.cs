@@ -59,7 +59,7 @@ public class Stone : MonoBehaviour
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (lifeTimer > 0)
         {
@@ -81,7 +81,7 @@ public class Stone : MonoBehaviour
             // movement code
             else if (Vector3.Distance(transform.position, pointList[pointIndex]) > .25f)
             {
-                transform.position = Vector3.MoveTowards(transform.position, pointList[pointIndex], speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, pointList[pointIndex], speed * Time.fixedDeltaTime);
             }
             else if (pointIndex < pointList.Count - 1)
             {
@@ -89,7 +89,7 @@ public class Stone : MonoBehaviour
             }
             else
             {
-                transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.fixedDeltaTime);
             }
         }
 
