@@ -2,7 +2,9 @@ using UnityEngine;
 
 public interface ISaveable
 {
-    public void Save();
+    string ID { get; }
 
-    public void Load();
+    public object Save();
+
+    public void Load(string stateJson);
 }

@@ -1,12 +1,17 @@
-using UnityEditor;
 using System;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.XR;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ISaveable
 {
+    // save ID
+    private string id;
+    public string ID => id;
+
     [Header("Options")]
     [SerializeField] public PlayerVariables playerVariables;
     [SerializeField,Layer] public LayerMask terrainLayer;
@@ -39,6 +44,10 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        // REGISTER AS SAVEABLE
+        id = System.Guid.NewGuid().ToString();
+        PersistenceManager.Instance.RegisterSaveable(this);
+
         navMeshAgent = GetComponent<NavMeshAgent>();
         isCasting = false;
     }
@@ -326,4 +335,38 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.white;
         Gizmos.DrawWireSphere(transform.position, playerVariables.maxInteractDistance);
     }
+
+
+    // Save data
+    [Serializable]
+    private struct PlayerControllerData
+    {
+        public Vector3 position;
+        public Vector3 rotation;
+        public bool isCrouching;
+    }
+    public object Save()
+    {
+        return new PlayerControllerData
+        {
+            position = this.transform.position,
+            rotation = this.transform.eulerAngles,
+            isCrouching = this.isCrouching
+        };
+    }
+
+    public void Load(string stateJson)
+    {
+        PlayerControllerData data = JsonUtility.FromJson<PlayerControllerData>(stateJson);
+
+        // stop navmesh agent
+        navMeshAgent.isStopped = true;
+        navMeshAgent.ResetPath();
+
+        // apply variables
+        transform.position = data.position;
+        transform.eulerAngles = data.rotation;
+        this.isCrouching = data.isCrouching;
+    }
+
 }

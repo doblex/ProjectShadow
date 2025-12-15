@@ -1,7 +1,7 @@
-using Unity.AI.Navigation;
+using System;
 using UnityEngine;
-using UnityEngine.AI;
 
+[Serializable]
 [CreateAssetMenu(fileName = "PlayerVariables", menuName = "Scriptable Objects/PlayerVariables")]
 public class PlayerVariables : ScriptableObject
 {

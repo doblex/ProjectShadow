@@ -1,3 +1,7 @@
+using System;
+using UnityEngine;
+
+[Serializable]
 public class PlayerState
 {
     protected PlayerController Controller;

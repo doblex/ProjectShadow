@@ -1,7 +1,13 @@
+using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
-public class AbilityController : MonoBehaviour
+public class AbilityController : MonoBehaviour, ISaveable
 {
+    // Save ID
+    private string id;
+    public string ID => id;
+
     // Setup variables
     [Header("Setup Variables")]
     [SerializeField] private PlayerController controller;
@@ -49,6 +55,13 @@ public class AbilityController : MonoBehaviour
 
     // Current cast state
     [HideInInspector] public CastingPlayerState currentCast;
+
+    private void Awake()
+    {
+        // REGISTER AS SAVEABLE
+        id = System.Guid.NewGuid().ToString();
+        PersistenceManager.Instance.RegisterSaveable(this);
+    }
 
     private void OnEnable()
     {
@@ -163,5 +176,40 @@ public class AbilityController : MonoBehaviour
     {
         rBaitTimer = rBaitCooldown;
         rBaitEnabled = false;
+    }
+
+    // Save data
+    [Serializable]
+    private struct AbilityControllerData
+    {
+        public float stoneThrowTimer;
+        public float whistleTimer;
+        public float iBaitCount;
+        public float rBaitTimer;
+    }
+
+    public object Save()
+    {
+        // create struct to save
+        return new AbilityControllerData
+        {
+            stoneThrowTimer = this.stoneThrowTimer,
+            whistleTimer = this.whistleTimer,
+            iBaitCount = this.iBaitCount,
+            rBaitTimer = this.rBaitTimer
+        };
+    }
+
+    public void Load(string stateJson)
+    {
+        AbilityControllerData data = JsonUtility.FromJson<AbilityControllerData>(stateJson);
+
+
+
+        // apply variables
+        this.stoneThrowTimer = data.stoneThrowTimer;
+        this.whistleTimer = data.whistleTimer;
+        this.iBaitCount = data.iBaitCount;
+        this.rBaitTimer = data.rBaitTimer;
     }
 }

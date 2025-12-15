@@ -72,6 +72,16 @@ public class ActionManager : MonoBehaviour
     Coroutine MovementCoroutine;
     Coroutine RotationCoroutine;
 
+    // Save system
+    public delegate void OnSaveRequested(SaveSlot saveSlot);
+    public delegate void OnLoadRequested(SaveSlot saveSlot);
+
+    public OnSaveRequested onSaveRequested;
+    public OnLoadRequested onLoadRequested;
+
+    private InputAction SaveAction;
+    private InputAction LoadAction;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -133,7 +143,12 @@ public class ActionManager : MonoBehaviour
         CancelSkillAction = InputSystem.actions.FindAction("CancelAbility");
         CancelSkillAction.performed += OnCancelSkillCall;
 
-        // TODO make mouse position tracking delegate for ability targeting
+        // Save and Load bindings
+        SaveAction = InputSystem.actions.FindAction("Save");
+        SaveAction.performed += OnSaveRequestedCall;
+
+        LoadAction = InputSystem.actions.FindAction("Load");
+        LoadAction.performed += OnLoadRequestedCall;
     }
 
 
@@ -296,5 +311,15 @@ public class ActionManager : MonoBehaviour
     private void OnCastAbilityCall(InputAction.CallbackContext ctx)
     {
         onCastAbility?.Invoke();
+    }
+
+    private void OnSaveRequestedCall(InputAction.CallbackContext ctx)
+    {
+        onSaveRequested?.Invoke(SaveSlot.Slot1);
+    }
+
+    private void OnLoadRequestedCall(InputAction.CallbackContext ctx)
+    {
+        onLoadRequested?.Invoke(SaveSlot.Slot1);
     }
 }
