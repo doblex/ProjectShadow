@@ -5,9 +5,9 @@ using UnityEngine;
 public class IBait : MonoBehaviour
 {
     [SerializeField] private NoiseOptions iBaitSound;
-    private Vector3 origin;
+    [SerializeField] private Vector3 origin;
     private Vector3 apex;
-    private Vector3 destination;
+    [SerializeField] private Vector3 destination;
     private float speed;
     private float throwHeight;
     Rigidbody rb;
@@ -56,21 +56,15 @@ public class IBait : MonoBehaviour
         }
     }
 
-    void FixedUpdate()
+    void Update()
     {
         // destination check
         if (reached) return;
-        if (Vector3.Distance(transform.position, destination) <= .25f)
-        {
-            rb.useGravity = true;
-            rb.linearVelocity = Vector3.zero;
-            reached = true;
-        }
 
         // movement code
-        else if (Vector3.Distance(transform.position, pointList[pointIndex]) > .25f)
+        else if (Vector3.Distance(transform.position, pointList[pointIndex]) > .001f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, pointList[pointIndex], speed * Time.fixedDeltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, pointList[pointIndex], speed * Time.deltaTime);
         }
         else if (pointIndex < pointList.Count - 1)
         {
@@ -78,7 +72,12 @@ public class IBait : MonoBehaviour
         }
         else
         {
-            transform.position = Vector3.MoveTowards(transform.position, destination, speed * Time.fixedDeltaTime);
+            reached = true;
+        }
+        if (reached)
+        {
+            rb.useGravity = true;
+            rb.linearVelocity = Vector3.zero;
         }
     }
 
