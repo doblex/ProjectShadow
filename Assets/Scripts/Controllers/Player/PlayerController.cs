@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour, ISaveable
     [Header("Options")]
     [SerializeField] public PlayerVariables playerVariables;
     [SerializeField,Layer] public LayerMask terrainLayer;
-    [SerializeField] NoiseOptions whistleSound;
 
     [HideInInspector] public NavMeshAgent navMeshAgent;
     PlayerState currentState;
@@ -23,6 +22,10 @@ public class PlayerController : MonoBehaviour, ISaveable
     [SerializeField] float coverCheckHeight = 1.0f;
     [SerializeField,Layer] LayerMask halfCoverLayer;
     [SerializeField,Layer] LayerMask bushLayer;
+
+    [Header("Skills")]
+    [SerializeField] NoiseOptions whistleSound;
+    [SerializeField] Transform throwOrigin;
 
 
     bool isCrouching = false;
@@ -220,7 +223,7 @@ public class PlayerController : MonoBehaviour, ISaveable
 
     public void ThrowStone(Vector3 destination, float speed, float throwHeight)
     {
-        Stone stone = Instantiate(GetComponent<AbilityController>().throwableStonePrefab, transform).
+        Stone stone = Instantiate(GetComponent<AbilityController>().throwableStonePrefab, throwOrigin).
             GetComponent<Stone>().SetDestination(destination).SetSpeed(speed).SetThrowHeight(throwHeight);
 
         stone.transform.parent = null;
@@ -228,12 +231,12 @@ public class PlayerController : MonoBehaviour, ISaveable
 
     public void Whistle()
     {
-        NoiseSpawnerManager.Instance.SpawnNoiseOrigin(transform.position, whistleSound);
+        NoiseSpawnerManager.Instance.SpawnNoiseOrigin(throwOrigin.position, whistleSound);
     }
 
     public void ThrowIBait(Vector3 destination, float speed, float throwHeight)
     {
-       IBait iBait = Instantiate(GetComponent<AbilityController>().iBaitPrefab, transform).
+       IBait iBait = Instantiate(GetComponent<AbilityController>().iBaitPrefab, throwOrigin).
             GetComponent<IBait>().SetDestination(destination).SetSpeed(speed).SetThrowHeight(throwHeight);
 
         iBait.transform.parent = null;
@@ -242,7 +245,7 @@ public class PlayerController : MonoBehaviour, ISaveable
     public void DropRBait()
     {
         GameObject rBait = Instantiate(GetComponent<AbilityController>().rBaitPrefab, 
-            new Vector3(transform.position.x, transform.position.y, transform.position.z), transform.rotation);
+            new Vector3(throwOrigin.position.x, throwOrigin.position.y, throwOrigin.position.z), throwOrigin.rotation);
     }
 
     private void HandleInteract()
