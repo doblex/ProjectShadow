@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 4f7b47753c1e49543bf7e64e8cd9752d
+guid: f9b3f305544e52f499c1125d350ae3db
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,8 +7,8 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Stone2_UV_defaultMat1
-    second: {fileID: 2100000, guid: 13c405400df358143854a9209157e93e, type: 2}
+      name: lambert29
+    second: {fileID: 2100000, guid: edbaa20a013bb0348ba1d6606ee5bde6, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
