@@ -127,6 +127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Stone
   lifetime: 5
   stoneSound: {fileID: 11400000, guid: a6583320cd64d2e43bab9b640a31045c, type: 2}
+  origin: {x: 0, y: 0, z: 0}
+  destination: {x: 0, y: 0, z: 0}
   reached: 0
 --- !u!54 &-7374710234988717288
 Rigidbody:

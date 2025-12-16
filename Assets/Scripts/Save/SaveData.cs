@@ -9,6 +9,7 @@ public struct DynamicObjectData
     public string prefabKey; // The name to find the prefab
     public string jsonState;
     public Vector3 position; // Helper to spawn it at right spot immediately
+    public Quaternion rotation; // Helper to spawn it with right rotation immediately
 }
 
 [Serializable]

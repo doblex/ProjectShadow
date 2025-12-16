@@ -24,4 +24,9 @@ public class SaveableEntity : MonoBehaviour
     {
         if (string.IsNullOrEmpty(id)) GenerateID();
     }
+
+    public void SetId(string value)
+    {
+        id = value;
+    }
 }

@@ -8,6 +8,8 @@ public class AbilityController : MonoBehaviour, ISaveable
     private string id;
     public string ID => id;
 
+    string ISaveable.ID { get => ID; }
+
     // Setup variables
     [Header("Setup Variables")]
     [SerializeField] private PlayerController controller;
@@ -60,7 +62,7 @@ public class AbilityController : MonoBehaviour, ISaveable
     {
         // REGISTER AS SAVEABLE
         id = System.Guid.NewGuid().ToString();
-        PersistenceManager.Instance.RegisterSaveable(this);
+        //PersistenceManager.Instance.RegisterSaveable(this);
     }
 
     private void OnEnable()

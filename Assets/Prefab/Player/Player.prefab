@@ -417,6 +417,7 @@ GameObject:
   - component: {fileID: 3014211741085355850}
   - component: {fileID: 5386119233879636275}
   - component: {fileID: 4590906193794844513}
+  - component: {fileID: 5857591385498563234}
   - component: {fileID: 4027193919763178576}
   m_Layer: 8
   m_Name: Player
@@ -424,7 +425,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4108403547803092565
 Transform:
   m_ObjectHideFlags: 0
@@ -546,6 +547,21 @@ MonoBehaviour:
   iBaitThrowHeight: 5
   rBaitPrefab: {fileID: 4143692173027679908, guid: 8d00399f940fb6546b7b87436603d109, type: 3}
   rBaitCooldown: 10
+--- !u!114 &5857591385498563234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8725282404745937860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 752fb2530ad9b434ca8cfd3b3e5225d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveableEntity
+  id: 
+  isDynamic: 1
+  prefabKey: Player
 --- !u!120 &4027193919763178576
 LineRenderer:
   serializedVersion: 2

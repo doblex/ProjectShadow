@@ -596,6 +596,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8725282404745937860, guid: eb6d8d37b94f6b846937889c07f6e7c4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -634,7 +638,15 @@ MonoBehaviour:
   - savegame1.sav
   useEncryption: 0
   encryptionKey: pippo
-  prefabRegistryList: []
+  prefabRegistryList:
+  - key: Player
+    prefab: {fileID: 8725282404745937860, guid: eb6d8d37b94f6b846937889c07f6e7c4, type: 3}
+  - key: Stone
+    prefab: {fileID: 2686772543481402752, guid: 4c540e55680472d418e4ffb4af721b5b, type: 3}
+  - key: IBait
+    prefab: {fileID: 7185442932511163888, guid: ca80fdc1895e9394e9df3f3e74f70b20, type: 3}
+  - key: RBait
+    prefab: {fileID: 4143692173027679908, guid: 8d00399f940fb6546b7b87436603d109, type: 3}
 --- !u!4 &909276152
 Transform:
   m_ObjectHideFlags: 0
