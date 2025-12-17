@@ -76,6 +76,11 @@ public class PersistenceManager : MonoBehaviour
         }
     }
 
+    public void SaveRequest(SaveSlot saveSlot = SaveSlot.Slot1)
+    {
+        Save(saveSlot);
+    }
+
     private void Save(SaveSlot saveSlot)
     {
         SaveData data = new SaveData();
@@ -104,6 +109,11 @@ public class PersistenceManager : MonoBehaviour
         }
         Debug.Log($"Saved file {saveSlot} at path: {path}");
 
+    }
+
+    public void LoadRequest(SaveSlot saveSlot = SaveSlot.Slot1)
+    {
+        Load(saveSlot);
     }
 
     private void Load(SaveSlot saveSlot)

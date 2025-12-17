@@ -2,7 +2,6 @@
     -unity-text-align: middle-left;
     -unity-font-style: bold;
     background-color: rgba(0, 119, 255, 0);
-    width: 50%;
     align-self: center;
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
@@ -32,5 +31,48 @@
 
 .unity-text-element {
     font-size: 100%;
-    -unity-font-definition: url("project://database/Assets/UI/Script/RockThornRegular-0WmjG.otf?fileID=12800000&guid=b2be72689baed7a4cadee9b887b46c29&type=3#RockThornRegular-0WmjG");
+    -unity-font-definition: url("project://database/Assets/UI/RockThornRegular-0WmjG.otf?fileID=12800000&guid=b2be72689baed7a4cadee9b887b46c29&type=3#RockThornRegular-0WmjG");
+}
+
+.whiteText {
+    color: rgb(255, 255, 255);
+}
+
+.MainMenuButton {
+    width: 50%;
+}
+
+.OptionHead {
+    width: 90%;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(111, 102, 55);
+    border-right-color: rgb(111, 102, 55);
+    border-top-color: rgb(111, 102, 55);
+    border-bottom-color: rgb(111, 102, 55);
+    align-self: center;
+}
+
+.OptionChild {
+    width: 80%;
+    align-self: center;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-left-color: rgb(248, 8, 8);
+    border-right-color: rgb(248, 8, 8);
+    border-top-color: rgb(248, 8, 8);
+    border-bottom-color: rgb(248, 8, 8);
+}
+
+.unity-slider__input {
+    flex-grow: 0;
+    width: 40%;
+}
+
+.unity-slider__label {
+    flex-grow: 1;
 }

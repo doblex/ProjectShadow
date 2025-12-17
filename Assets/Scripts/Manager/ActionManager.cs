@@ -25,7 +25,7 @@ public class ActionManager : MonoBehaviour
     public OnHighlight onHighlight;
     public OnPlayerCrouch onPlayerCrouch;
 
-    [SerializeField] private Options Options;
+    [SerializeField] private CameraOptions Options;
 
     private InputAction MoveVisual;
     private bool isMoving = false;

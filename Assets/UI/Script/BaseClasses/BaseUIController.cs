@@ -4,9 +4,6 @@ using UnityEngine.UIElements;
 
 public class BaseUIController : MonoBehaviour
 {
-    public static BaseUIController Instance;
-
-
     [Header("Docs")]
     [SerializeField] List<BaseDocController> docControllers = new List<BaseDocController>();
     HashSet<BaseDocController> activedDocs = new HashSet<BaseDocController>();
@@ -14,19 +11,29 @@ public class BaseUIController : MonoBehaviour
     [Header("Templates")]
     [SerializeField] List<Template> templates = new List<Template>();
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        if (Instance != null && Instance != this)
+        foreach (BaseDocController controller in docControllers)
         {
-            Destroy(this);
+            controller.Init(this);
         }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(this);
-        }
+
+        SetAllDocsHidden();
     }
 
+    /// <summary>
+    /// Exits the application and stops play mode in the Unity Editor.
+    /// </summary>
+    /// <remarks>In a built application, this method closes the application. When running in the Unity Editor,
+    /// it stops play mode instead of closing the editor. This method has no effect in WebGL builds.</remarks>
+    public void QuitGame()
+    {
+        Application.Quit();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
 
     /// <summary>
     /// Retrieves a template by its name.
@@ -55,48 +62,56 @@ public class BaseUIController : MonoBehaviour
     /// Shows the document with the specified name. If the document is already visible, it does nothing.
     /// </summary>
     /// <param name="docName"></param>
-    public void ShowDoc(string docName)
+    /// <param name="show">true to show, false to hide</param>
+    public void ShowDoc(string docName, bool show)
     {
+        bool bFound = false;
+
         foreach (BaseDocController controller in docControllers)
         {
             if (controller.DocName == docName)
             {
-                if (controller.DocumentState == DocumentState.Hidden)
+                if (show)
                 {
-                    controller.ShowDoc(true);
-
-                    if (controller.DocBehaviour == DocBehavior.single)
-                    {
-                        SetAllDocsHidden();
-                    }
-
-                    AddActiveDoc(controller);
+                    ShowDoc(controller);
                 }
                 else
-                {
-                    Debug.LogWarning($"Document {docName} is already visible.");
+                { 
+                    HideDoc(controller);
                 }
+
+                bFound = true;
             }
+        }
+
+        if(!bFound)
+        {
+            Debug.LogWarning($"ShowDoc: Document '{docName}' not found.");
+            return;
+        }   
+
+        Debug.Log($"ShowDoc: {docName} - {show}");
+    }
+
+    private void ShowDoc( BaseDocController controller)
+    {
+        if (controller.DocumentState == DocumentState.Hidden)
+        {
+            controller.ShowDoc(true);
+
+            if (controller.DocBehaviour == DocBehavior.single)
+            {
+                SetAllDocsHidden();
+            }
+
+            AddActiveDoc(controller);
         }
     }
 
-    /// <summary>
-    /// Hides the document with the specified name. If the document is not currently visible, it does nothing.
-    /// </summary>
-    /// <param name="docName"></param>
-    public void HideDoc(string docName)
+    private void HideDoc(BaseDocController controller)
     {
-        foreach (BaseDocController controller in activedDocs)
-        {
-            if (controller.DocName == docName)
-            {
-                controller.ShowDoc(false);
-                activedDocs.Remove(controller);
-                return;
-            }
-        }
-
-        Debug.LogWarning($"Document {docName} is not currently active.");
+        controller.ShowDoc(false);
+        activedDocs.Remove(controller);
     }
 
     private void SetAllDocsHidden()

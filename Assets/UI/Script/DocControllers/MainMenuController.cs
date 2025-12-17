@@ -10,8 +10,10 @@ public class MainMenuController : BaseDocController
     Button creditsButton;
     Button exitButton;
 
-    protected override void SetComponents()
+    protected override bool SetComponents()
     {
+        bool bInit = base.SetComponents();
+
         newGameButton = Root.Q<Button>("NewGame");
         newGameButton.clicked += StartGame;
 
@@ -26,12 +28,13 @@ public class MainMenuController : BaseDocController
 
         exitButton = Root.Q<Button>("Exit");
         exitButton.clicked += Exit;
+
+        return bInit;
     }
 
     private void StartGame()
     {
-        LevelLoaderManager.Instance.StartSceneTransition();
-        ShowDoc(false);
+        ((UIController)UiController).LoadLevel();
     }
 
     private void ContinueGame()
@@ -41,7 +44,7 @@ public class MainMenuController : BaseDocController
 
     private void Options()
     {
-
+        ((UIController)UiController).ShowOptions(true);
     }
 
     private void Credits()
@@ -51,10 +54,6 @@ public class MainMenuController : BaseDocController
 
     private void Exit()
     {
-        Application.Quit();
-
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
+        UiController.QuitGame();
     }
 }

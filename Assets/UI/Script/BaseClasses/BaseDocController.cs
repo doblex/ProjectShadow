@@ -18,9 +18,13 @@ public abstract class BaseDocController : MonoBehaviour
     [SerializeField][ShowIf("canFade")] protected float fadeOutDuration = 0.5f;
 
     [Header("Debugging")]
-    [SerializeField] private DocumentState documentState = DocumentState.Hidden;
+    [SerializeField][ReadOnly] private DocumentState documentState = DocumentState.Hidden;
+
     UIDocument doc;
     VisualElement root;
+    BaseUIController uiController;
+
+    bool isInitialized = false;
 
     protected Coroutine currentFadeRoutine;
 
@@ -35,6 +39,11 @@ public abstract class BaseDocController : MonoBehaviour
     public VisualElement Root { get => root; protected set => root = value; }
 
     /// <summary>
+    /// Gets or sets the UI controller responsible for managing user interface interactions.
+    /// </summary>
+    public BaseUIController UiController { get => uiController; }
+
+    /// <summary>
     /// Name of the UI Document, used for identification and debugging purposes.
     /// </summary>
     public string DocName { get => docName; set => docName = value; }
@@ -47,19 +56,48 @@ public abstract class BaseDocController : MonoBehaviour
     /// </summary>
     public DocBehavior DocBehaviour { get => docBehaviour; }
 
-    protected virtual void Awake()
+    /// <summary>
+    /// Called to initialize the UI Document controller. it does nothing if already initialized.
+    /// </summary>
+    /// <param name="baseUIController">Reference to the UI controller managing this document.</param>
+    public void Init(BaseUIController baseUIController)
     {
-        doc = GetComponent<UIDocument>();
-        root = doc.rootVisualElement;
+        if (isInitialized)
+        {
+            Debug.LogWarning($"[{docName}] UI Document is already initialized.");
+            return;
+        }
 
-        if (root != null)
-            SetComponents();
+        if (baseUIController == null)
+        {
+            Debug.LogError($"[{docName}] UI Controller reference is null during initialization.");
+            return;
+        }
+
+        bool bInit = SetComponents();
+
+        if (!bInit)
+        {
+            Debug.LogError($"[{docName}] Failed to initialize UI Document components.");
+        }
+
+        uiController = baseUIController;
+
+        ShowDoc(false, true);
+
+        isInitialized = bInit;
     }
 
     /// <summary>
     /// Override this method to set up the components of the UI Document.
     /// </summary>
-    protected abstract void SetComponents();
+    protected virtual bool SetComponents() 
+    {
+        doc = GetComponent<UIDocument>();
+        root = doc.rootVisualElement;
+
+        return root != null;
+    }
 
     /// <summary>
     /// Shows or hides the UI Document with a fade effect if enabled.
