@@ -1,17 +1,20 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Styles/BaseStyle.uss?fileID=7433441132597879392&amp;guid=68e07a90f95c56a49bc397c5316dfdba&amp;type=3#BaseStyle" />
-    <ui:VisualElement name="BackGround" style="flex-grow: 1; flex-direction: row; background-image: url(&quot;project://database/Assets/Texture/UI/Menu_art.jpg?fileID=2800000&amp;guid=02825665511ea8c43b6e708a5a38f3ec&amp;type=3#Menu_art&quot;);">
-        <ui:VisualElement name="Menu" style="flex-grow: 0; align-self: center; width: 30%; height: 100%;">
-            <ui:VisualElement name="Title_Image" style="flex-grow: 0; -unity-background-scale-mode: scale-to-fit;">
-                <ui:Label text="THE&#10;HIDDEN&#10;LAND" style="font-size: 124px; -unity-text-align: upper-center;" />
+    <Style src="project://database/Assets/UI/Styles/BaseStyle.uss?fileID=7433441132597879392&amp;guid=68e07a90f95c56a49bc397c5316dfdba&amp;type=3" />
+    <ui:VisualElement name="BackGround" style="flex-grow: 1; flex-direction: row; background-image: url(&quot;project://database/Assets/Texture/UI/Menu_art%201.jpg?fileID=2800000&amp;guid=01faaa72752d6454d85bc141364d46c9&amp;type=3#Menu_art 1&quot;);">
+        <ui:VisualElement name="Menu" style="flex-grow: 0; align-self: center; width: 42%; height: 100%;">
+            <ui:VisualElement style="flex-grow: 0; height: 3%;" />
+            <ui:VisualElement name="Title_Image" style="flex-grow: 1; -unity-background-scale-mode: scale-to-fit; background-image: url(&quot;project://database/Assets/Texture/UI/The%20hidden%20land.png?fileID=2800000&amp;guid=0dcde2c1ff350f94f9def39f52ec5465&amp;type=3#The hidden land&quot;); -unity-background-image-tint-color: rgb(238, 237, 192); height: 31%;">
+                <ui:Label text="THE&#10;HIDDEN&#10;LAND" style="font-size: 124px; -unity-text-align: upper-center; display: none;" />
             </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 0; height: 9%;" />
             <ui:VisualElement name="MainMenu" style="flex-grow: 0;">
-                <ui:Button text="New Game" name="NewGame" class="MainMenuButton" style="flex-grow: 0;" />
-                <ui:Button text="Continue" name="Continue" class="MainMenuButton" />
-                <ui:Button text="Options" name="Options" class="MainMenuButton" />
-                <ui:Button text="Credits" name="Credits" class="MainMenuButton" />
-                <ui:Button text="Exit" name="Exit" class="MainMenuButton" />
+                <ui:Button text="New Game" name="NewGame" class="MainMenuButton MainMenuText" style="flex-grow: 0;" />
+                <ui:Button text="Continue" name="Continue" class="MainMenuButton MainMenuText" />
+                <ui:Button text="Options" name="Options" class="MainMenuButton MainMenuText" />
+                <ui:Button text="Credits" name="Credits" class="MainMenuButton MainMenuText" />
+                <ui:Button text="Exit" name="Exit" class="MainMenuButton MainMenuText" />
             </ui:VisualElement>
+            <ui:VisualElement style="flex-grow: 1;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

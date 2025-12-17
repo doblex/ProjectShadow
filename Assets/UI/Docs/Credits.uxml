@@ -1,9 +1,54 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Styles/BaseStyle.uss?fileID=7433441132597879392&amp;guid=68e07a90f95c56a49bc397c5316dfdba&amp;type=3#BaseStyle" />
-    <ui:VisualElement name="BackGround" style="flex-grow: 1; background-color: rgb(255, 255, 255); justify-content: center;">
-        <ui:VisualElement data-source="project://database/Assets/ScriptableObjects/Options.asset?fileID=11400000&amp;guid=65c2a89ac08c0ca4fb599e47979138dd&amp;type=2#Options" name="Options" style="flex-grow: 0; width: 60%; align-self: center; border-top-width: 10px; border-right-width: 10px; border-bottom-width: 10px; border-left-width: 10px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; height: 80%;">
-            <ui:VisualElement name="Buttons" style="flex-grow: 0; flex-direction: row;">
-                <ui:Button name="Back" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=5866165431930342980&amp;guid=26e059c4f02b6f942a7714cc6ed2ab8f&amp;type=3#Remove@2x&quot;); -unity-background-scale-mode: scale-to-fit; flex-shrink: 0; width: auto; background-size: contain; -unity-background-image-tint-color: rgb(255, 0, 0); align-items: flex-start; align-self: flex-start;" />
+    <Style src="project://database/Assets/UI/Styles/BaseStyle.uss?fileID=7433441132597879392&amp;guid=68e07a90f95c56a49bc397c5316dfdba&amp;type=3" />
+    <ui:VisualElement name="BackGround" style="flex-grow: 1; background-color: rgb(255, 255, 255); justify-content: center; background-image: url(&quot;project://database/Assets/Texture/UI/backGrounds/Background%20opzioni.png?fileID=21300000&amp;guid=daecbab96dd23cd469085084cb70468c&amp;type=3#Background opzioni&quot;); -unity-background-scale-mode: scale-to-fit;">
+        <ui:VisualElement name="Options" style="flex-grow: 0; width: 60%; align-self: center; border-top-width: 10px; border-right-width: 10px; border-bottom-width: 10px; border-left-width: 10px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; height: 80%; background-image: url(&quot;project://database/Assets/Texture/UI/backGrounds/Bakcground%20task.png?fileID=485629842&amp;guid=b0a62317d93009b47a05a7b99395d216&amp;type=3#Bakcground task_2&quot;);">
+            <ui:VisualElement style="flex-grow: 1; margin-top: 15px; margin-right: 15px; margin-bottom: 15px; margin-left: 15px;">
+                <ui:VisualElement name="Buttons" style="flex-grow: 0; flex-direction: row; margin-top: 10px; margin-right: 10px; margin-bottom: 10px; margin-left: 10px;">
+                    <ui:Button name="Back" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/Texture/UI/Icons/Freccia%20indietro.png?fileID=2800000&amp;guid=e96b66956c5e658458e693f9705b0aaa&amp;type=3#Freccia indietro&quot;); -unity-background-scale-mode: scale-to-fit; flex-shrink: 0; width: auto; background-size: contain; align-items: flex-start; align-self: center;" />
+                    <ui:VisualElement style="flex-grow: 1;">
+                        <ui:Label text="Crediti" style="font-size: 30px;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:ScrollView>
+                    <ui:VisualElement name="Top" style="flex-grow: 0;">
+                        <ui:Label text="Game Design" class="CreditsTiltle" />
+                        <ui:VisualElement style="flex-grow: 1;">
+                            <ui:Label text="Anna Lombardo" class="CreditsPeople" />
+                            <ui:Label text="Eleonora Ibba" class="CreditsPeople" />
+                            <ui:Label text="Gabriele Sana" class="CreditsPeople" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Top" class="CreditsGroup" style="flex-grow: 0;">
+                        <ui:Label text="Game Programmers" class="CreditsTiltle" />
+                        <ui:VisualElement style="flex-grow: 1;">
+                            <ui:Label text="Giovanni Faldani" class="CreditsPeople" />
+                            <ui:Label text="Matteo Golfetto" class="CreditsPeople" />
+                            <ui:Label text="Riccardo Brunelli" class="CreditsPeople" />
+                            <ui:Label text="Robert Vasiliu" class="CreditsPeople" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Top" class="CreditsGroup" style="flex-grow: 0;">
+                        <ui:Label text="Concept Artists" class="CreditsTiltle" />
+                        <ui:VisualElement style="flex-grow: 1;">
+                            <ui:Label text="Christian Dianin" class="CreditsPeople" />
+                            <ui:Label text="Chiara Parisi" class="CreditsPeople" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Top" class="CreditsGroup" style="flex-grow: 0;">
+                        <ui:Label text="3D" class="CreditsTiltle" />
+                        <ui:VisualElement style="flex-grow: 1;">
+                            <ui:Label text="Erika Berselli" class="CreditsPeople" />
+                            <ui:Label text="Leonardo saladino" class="CreditsPeople" />
+                            <ui:Label text="Maddalena Pastore" class="CreditsPeople" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Top" class="CreditsGroup" style="flex-grow: 0; display: none;">
+                        <ui:Label text="Sound Design" class="CreditsTiltle" />
+                        <ui:VisualElement style="flex-grow: 1;">
+                            <ui:Label text="Edoardo Sana" class="CreditsPeople" />
+                        </ui:VisualElement>
+                    </ui:VisualElement>
+                </ui:ScrollView>
             </ui:VisualElement>
         </ui:VisualElement>
     </ui:VisualElement>

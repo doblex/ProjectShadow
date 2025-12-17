@@ -14,24 +14,22 @@
     border-bottom-left-radius: 15px;
     font-size: 25px;
     padding-left: 80px;
-    flex-grow: 1;
+    flex-grow: 0;
 }
 
 .unity-button:hover {
     transition-duration: 0.2s;
-    scale: 1.1 1.1;
-    background-image: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=-4521532143779581420&guid=26e059c4f02b6f942a7714cc6ed2ab8f&type=3#arrow-right");
-    -unity-background-image-tint-color: rgb(0, 0, 0);
+    background-image: url("project://database/Assets/Texture/UI/Buttons/button%20icon.png?fileID=2800000&guid=974920d87e156f34db3780f0ffa589c6&type=3#button icon");
     background-position-y: center;
     -unity-background-scale-mode: scale-to-fit;
     background-size: 100px 100%;
     background-position-x: left 0;
-    translate: 5% 5%;
 }
 
 .unity-text-element {
-    font-size: 100%;
     -unity-font-definition: url("project://database/Assets/UI/RockThornRegular-0WmjG.otf?fileID=12800000&guid=b2be72689baed7a4cadee9b887b46c29&type=3#RockThornRegular-0WmjG");
+    color: rgb(238, 237, 192);
+    text-shadow: 5px 5px 0 rgb(255, 0, 0);
 }
 
 .whiteText {
@@ -40,19 +38,25 @@
 
 .MainMenuButton {
     width: 50%;
+    height: auto;
+    font-size: 40px;
 }
 
 .OptionHead {
     width: 90%;
-    border-top-width: 1px;
-    border-right-width: 1px;
-    border-bottom-width: 1px;
-    border-left-width: 1px;
-    border-left-color: rgb(111, 102, 55);
-    border-right-color: rgb(111, 102, 55);
-    border-top-color: rgb(111, 102, 55);
-    border-bottom-color: rgb(111, 102, 55);
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-left-color: rgb(238, 237, 192);
+    border-right-color: rgb(238, 237, 192);
+    border-top-color: rgb(238, 237, 192);
+    border-bottom-color: rgb(238, 237, 192);
     align-self: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .OptionChild {
@@ -62,10 +66,18 @@
     border-right-width: 1px;
     border-bottom-width: 1px;
     border-left-width: 1px;
-    border-left-color: rgb(248, 8, 8);
-    border-right-color: rgb(248, 8, 8);
-    border-top-color: rgb(248, 8, 8);
-    border-bottom-color: rgb(248, 8, 8);
+    border-left-color: rgb(238, 237, 192);
+    border-right-color: rgb(238, 237, 192);
+    border-top-color: rgb(238, 237, 192);
+    border-bottom-color: rgb(238, 237, 192);
+    margin-top: 5px;
+    margin-right: 5px;
+    margin-bottom: 0;
+    margin-left: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
 
 .unity-slider__input {
@@ -75,4 +87,75 @@
 
 .unity-slider__label {
     flex-grow: 1;
+}
+
+.unity-slider > .unity-slider__input > #unity-drag-container > #unity-tracker {
+    border-left-color: rgb(240, 237, 204);
+    border-right-color: rgb(240, 237, 204);
+    border-top-color: rgb(240, 237, 204);
+    border-bottom-color: rgb(240, 237, 204);
+    background-color: rgb(238, 237, 191);
+}
+
+.unity-slider > .unity-slider__input > #unity-drag-container > #unity-dragger {
+    background-color: rgb(239, 237, 195);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.unity-popup-field > .unity-popup-field__input {
+    background-color: rgba(235, 238, 191, 0);
+    border-left-color: rgb(238, 237, 191);
+    border-right-color: rgb(238, 237, 191);
+    border-top-color: rgb(238, 237, 191);
+    border-bottom-color: rgb(238, 237, 191);
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.unity-popup-field > .unity-popup-field__input > .unity-base-popup-field__arrow {
+    -unity-background-image-tint-color: rgb(238, 237, 191);
+}
+
+.unity-toggle > .unity-toggle__input > #unity-checkmark {
+    background-color: rgb(238, 237, 191);
+}
+
+.MainMenuText {
+    font-size: 57px;
+}
+
+.PauseButton {
+    width: 60%;
+    height: auto;
+    font-size: 40px;
+}
+
+.CreditsTiltle {
+    -unity-text-align: middle-center;
+    font-size: 40px;
+}
+
+.CreditsPeople {
+    -unity-text-align: middle-center;
+    font-size: 20px;
+}
+
+.CreditsGroup {
+    margin-top: 30px;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
 }
