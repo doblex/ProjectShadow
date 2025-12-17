@@ -1,11 +1,11 @@
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class BaseUIController : MonoBehaviour
 {
     public static BaseUIController Instance;
-
 
     [Header("Docs")]
     [SerializeField] List<BaseDocController> docControllers = new List<BaseDocController>();
@@ -14,7 +14,7 @@ public class BaseUIController : MonoBehaviour
     [Header("Templates")]
     [SerializeField] List<Template> templates = new List<Template>();
 
-    private void Awake()
+    protected virtual void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -25,8 +25,33 @@ public class BaseUIController : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this);
         }
+
+        foreach (BaseDocController controller in docControllers)
+        {
+            controller.Init(this);
+        }
+
+        SetAllDocsHidden();
     }
 
+    /// <summary>
+    /// Exits the application and stops play mode in the Unity Editor.
+    /// </summary>
+    /// <remarks>In a built application, this method closes the application. When running in the Unity Editor,
+    /// it stops play mode instead of closing the editor. This method has no effect in WebGL builds.</remarks>
+    public void QuitGame()
+    {
+        Application.Quit();
+
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
+    }
+
+    public void Pause(bool pauseStatus)
+    { 
+        Time.timeScale = pauseStatus ? 0f : 1f;
+    }
 
     /// <summary>
     /// Retrieves a template by its name.
@@ -51,52 +76,76 @@ public class BaseUIController : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Shows the document with the specified name. If the document is already visible, it does nothing.
-    /// </summary>
-    /// <param name="docName"></param>
-    public void ShowDoc(string docName)
-    {
+    public T GetDoc<T>(string docName) where T : BaseDocController
+    { 
+        T doc = null;
+
         foreach (BaseDocController controller in docControllers)
         {
             if (controller.DocName == docName)
             {
-                if (controller.DocumentState == DocumentState.Hidden)
-                {
-                    controller.ShowDoc(true);
-
-                    if (controller.DocBehaviour == DocBehavior.single)
-                    {
-                        SetAllDocsHidden();
-                    }
-
-                    AddActiveDoc(controller);
-                }
-                else
-                {
-                    Debug.LogWarning($"Document {docName} is already visible.");
-                }
+                doc = (T)controller;
+                break;
             }
         }
+
+        return doc;
     }
 
     /// <summary>
-    /// Hides the document with the specified name. If the document is not currently visible, it does nothing.
+    /// Shows the document with the specified name. If the document is already visible, it does nothing.
     /// </summary>
     /// <param name="docName"></param>
-    public void HideDoc(string docName)
+    /// <param name="show">true to show, false to hide</param>
+    public void ShowDoc(string docName, bool show)
     {
-        foreach (BaseDocController controller in activedDocs)
+        bool bFound = false;
+
+        foreach (BaseDocController controller in docControllers)
         {
             if (controller.DocName == docName)
             {
-                controller.ShowDoc(false);
-                activedDocs.Remove(controller);
-                return;
+                if (show)
+                {
+                    ShowDoc(controller);
+                }
+                else
+                { 
+                    HideDoc(controller);
+                }
+
+                bFound = true;
             }
         }
 
-        Debug.LogWarning($"Document {docName} is not currently active.");
+        if(!bFound)
+        {
+            Debug.LogWarning($"ShowDoc: Document '{docName}' not found.");
+            return;
+        }   
+
+        Debug.Log($"ShowDoc: {docName} - {show}");
+    }
+
+    private void ShowDoc(BaseDocController controller)
+    {
+        if (controller.DocumentState == DocumentState.Hidden)
+        {
+            controller.ShowDoc(true);
+
+            if (controller.DocBehaviour == DocBehavior.single)
+            {
+                SetAllDocsHidden();
+            }
+
+            AddActiveDoc(controller);
+        }
+    }
+
+    private void HideDoc(BaseDocController controller)
+    {
+        controller.ShowDoc(false);
+        activedDocs.Remove(controller);
     }
 
     private void SetAllDocsHidden()

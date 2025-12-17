@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class AbilityController : MonoBehaviour, ISaveable
@@ -7,6 +6,8 @@ public class AbilityController : MonoBehaviour, ISaveable
     // Save ID
     private string id;
     public string ID => id;
+
+    string ISaveable.ID { get => ID; }
 
     // Setup variables
     [Header("Setup Variables")]
@@ -60,7 +61,7 @@ public class AbilityController : MonoBehaviour, ISaveable
     {
         // REGISTER AS SAVEABLE
         id = System.Guid.NewGuid().ToString();
-        PersistenceManager.Instance.RegisterSaveable(this);
+        //PersistenceManager.Instance.RegisterSaveable(this);
     }
 
     private void OnEnable()

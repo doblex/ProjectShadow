@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour, ISaveable
     private string id;
     public string ID => id;
 
+    string ISaveable.ID { get => ID; }
+
+
     [Header("Options")]
     [SerializeField] public PlayerVariables playerVariables;
     [SerializeField,Layer] public LayerMask terrainLayer;
@@ -47,7 +50,7 @@ public class PlayerController : MonoBehaviour, ISaveable
     {
         // REGISTER AS SAVEABLE
         id = System.Guid.NewGuid().ToString();
-        PersistenceManager.Instance?.RegisterSaveable(this);
+        //PersistenceManager.Instance?.RegisterSaveable(this);
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         isCasting = false;
@@ -130,7 +133,7 @@ public class PlayerController : MonoBehaviour, ISaveable
             debugMsg += "\n";
         }
 
-        //Debug.Log(debugMsg);
+        Debug.Log(debugMsg);
     }
 
     private void UpdateStates(PlayerState forcedState = null)
@@ -301,7 +304,7 @@ public class PlayerController : MonoBehaviour, ISaveable
     {
         halfCoverTable[1,1] = isHiding ? 1 : 0;
         GlobalVolumeManager.Instance?.SetHiding(isHiding);
-        //Debug.Log("Set hiding to " + isHiding);
+        Debug.Log("Set hiding to " + isHiding);
     }
 
     private void OnDrawGizmos()

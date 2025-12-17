@@ -1,8 +1,6 @@
-using UnityEngine;
-
 public interface ISaveable
 {
-    string ID { get; }
+    public string ID { get; }
 
     public object Save();
 

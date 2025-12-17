@@ -1,0 +1,25 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/HudStyle.uss?fileID=7433441132597879392&amp;guid=4ad32ef436a156d4fb00832c7fee610d&amp;type=3#HudStyle" />
+    <ui:VisualElement name="BackGround" style="flex-grow: 1;">
+        <ui:VisualElement name="UpperButtons" style="flex-grow: 0; flex-direction: row;">
+            <ui:Button text="Pause" name="Pause" class="MenuButton" />
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; flex-direction: row-reverse;">
+            <ui:VisualElement style="flex-grow: 0; width: 20%; align-self: stretch;">
+                <ui:VisualElement class="WhiteText" style="flex-grow: 0; border-top-width: 1px; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); min-height: 20%; -unity-text-align: middle-center;">
+                    <ui:Label name="Task" style="flex-grow: 1; white-space: pre-wrap;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="FooterButtons" style="flex-grow: 0; flex-direction: row;">
+            <ui:VisualElement name="Spacing" style="flex-grow: 1;" />
+            <ui:VisualElement name="Abilities" style="flex-grow: 1; flex-direction: row; align-self: center; justify-content: space-around;">
+                <ui:Button text="Ability1" name="Ab1" class="abilityButton" />
+                <ui:Button text="Ability2" name="Ab2" class="abilityButton" />
+                <ui:Button text="Ability3" name="Ab3" class="abilityButton" />
+                <ui:Button text="Ability4" name="Ab4" class="abilityButton" />
+            </ui:VisualElement>
+            <ui:VisualElement name="Spacing" style="flex-grow: 1;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

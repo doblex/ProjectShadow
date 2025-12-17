@@ -16,7 +16,7 @@ public class GlobalVolumeManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(this.gameObject);
+            //DontDestroyOnLoad(this.gameObject);
         }
 
         volumeComponent = GetComponent<Volume>();

@@ -1,10 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using System.Linq;
 
 public enum SaveSlot
 {
@@ -22,7 +20,7 @@ public class PersistenceManager : MonoBehaviour
     [SerializeField] private bool useEncryption;
     [SerializeField] private string encryptionKey;
 
-    private List<ISaveable> saveableObjects;
+    //private List<ISaveable> saveableObjects;
 
     // AES Key and IV (Initialization Vector) for encryption
     private byte[] key;
@@ -51,7 +49,7 @@ public class PersistenceManager : MonoBehaviour
             DontDestroyOnLoad(this);
 
             // register saveable objects list
-            saveableObjects = new List<ISaveable>();
+            //saveableObjects = new List<ISaveable>();
 
             // encryption key and iv
             key = System.Text.Encoding.UTF8.GetBytes(encryptionKey.PadRight(16).Substring(0, 16));
@@ -70,8 +68,9 @@ public class PersistenceManager : MonoBehaviour
 
     private void Start()
     {
-        ActionManager.Instance.onSaveRequested += Save;
-        ActionManager.Instance.onLoadRequested += Load;
+        // FIXME Uncomment this to enable saving with f5 and loading with f8
+        //ActionManager.Instance.onSaveRequested += Save;
+        //ActionManager.Instance.onLoadRequested += Load;
         Debug.Log($"PersistenceManager started. Persistent data path: {Application.persistentDataPath}");
     }
 
@@ -80,33 +79,56 @@ public class PersistenceManager : MonoBehaviour
         return Path.Combine(Application.persistentDataPath, saveNames[(int)saveSlot]);
     }
 
-    public void RegisterSaveable(ISaveable saveable)
-    {
-        if (!saveableObjects.Contains(saveable))
-        {
-            saveableObjects.Add(saveable);
-        }
-    }
+    //public void RegisterSaveable(ISaveable saveable)
+    //{
+    //    if (!saveableObjects.Contains(saveable))
+    //    {
+    //        saveableObjects.Add(saveable);
+    //    }
+    //}
 
-    public void UnregisterSaveable(ISaveable saveable)
+    //public void UnregisterSaveable(ISaveable saveable)
+    //{
+    //    if (saveableObjects != null && saveableObjects.Contains(saveable))
+    //    {
+    //        saveableObjects.Remove(saveable);
+    //    }
+    //}
+
+    public void SaveRequest(SaveSlot saveSlot = SaveSlot.Slot1)
     {
-        if (saveableObjects != null && saveableObjects.Contains(saveable))
-        {
-            saveableObjects.Remove(saveable);
-        }
+        Save(saveSlot);
     }
 
     private void Save(SaveSlot saveSlot)
     {
         SaveData data = new SaveData();
 
-        // Write data class
-        foreach (ISaveable saveable in saveableObjects)
-        {
-            object state = saveable.Save();
-            string jsonState = JsonUtility.ToJson(state);
+        SaveableEntity[] entities = FindObjectsByType<SaveableEntity>(FindObjectsSortMode.InstanceID);
 
-            data.Add(saveable.ID, jsonState);
+        foreach (SaveableEntity entity in entities)
+        {
+            ISaveable saveable = entity.GetComponent<ISaveable>();
+            string jsonState = JsonUtility.ToJson(saveable.Save());
+
+            // Write data class
+            if (entity.IsDynamic)
+            {
+                DynamicObjectData dynamicData = new DynamicObjectData
+                {
+                    id = entity.ID,
+                    prefabKey = entity.PrefabKey,
+                    jsonState = jsonState,
+                    position = entity.transform.position,
+                    rotation = entity.transform.rotation
+                };
+                data.dynamicObjects.Add(dynamicData);
+            }
+            else
+            {
+                // Save as Scene Object
+                data.Add(entity.ID, jsonState);
+            }
         }
 
         // Save to disk
@@ -124,6 +146,11 @@ public class PersistenceManager : MonoBehaviour
         }
         Debug.Log($"Saved file {saveSlot} at path: {path}");
 
+    }
+
+    public void LoadRequest(SaveSlot saveSlot = SaveSlot.Slot1)
+    {
+        Load(saveSlot);
     }
 
     private void Load(SaveSlot saveSlot)
@@ -148,12 +175,40 @@ public class PersistenceManager : MonoBehaviour
         }
         SaveData data = JsonUtility.FromJson<SaveData>(jsonPayload);
 
-        // Restore each object's state
-        foreach (ISaveable saveable in saveableObjects)
+        Dictionary<string, SaveableEntity> currentEntities = FindObjectsByType<SaveableEntity>(FindObjectsSortMode.InstanceID).ToDictionary(e => e.ID);
+
+        for (int i = 0; i < data.keys.Count; i++)
         {
-            if (data.TryGetValue(saveable.ID, out string jsonState))
+            string id = data.keys[i];
+            if (currentEntities.TryGetValue(id, out SaveableEntity entity))
             {
-                saveable.Load(jsonState);
+                entity.GetComponent<ISaveable>().Load(data.values[i]);
+            }
+        }
+
+        // Destroy all dynamic objects before loading
+        foreach (SaveableEntity entity in currentEntities.Values)
+        {
+            if (entity.IsDynamic) Destroy(entity.gameObject);
+        }
+
+        foreach (DynamicObjectData dData in data.dynamicObjects)
+        {
+            if (prefabDictionary.TryGetValue(dData.prefabKey, out GameObject prefab))
+            {
+                // Instantiate
+                GameObject newObj = Instantiate(prefab, dData.position, dData.rotation);
+
+                // Restore ID so future saves track it correctly
+                SaveableEntity entityScript = newObj.GetComponent<SaveableEntity>();
+                entityScript.SetId(dData.id); 
+
+                // Load State
+                newObj.GetComponent<ISaveable>().Load(dData.jsonState);
+            }
+            else
+            {
+                Debug.LogWarning($"Could not find prefab for key: {dData.prefabKey}");
             }
         }
 

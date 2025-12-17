@@ -4,7 +4,7 @@ using System;
 [RequireComponent(typeof(ISaveable))] // Enforce the logic component exists
 public class SaveableEntity : MonoBehaviour
 {
-    [SerializeField] private string id = "";
+    private string id = "";
 
     [Tooltip("If true, this object will be re-instantiated on load.")]
     [SerializeField] private bool isDynamic = false;
@@ -23,5 +23,10 @@ public class SaveableEntity : MonoBehaviour
     private void Awake()
     {
         if (string.IsNullOrEmpty(id)) GenerateID();
+    }
+
+    public void SetId(string value)
+    {
+        id = value;
     }
 }

@@ -1,0 +1,13 @@
+.MenuButton {
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.abilityButton {
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.WhiteText {
+    color: rgb(255, 255, 255);
+}

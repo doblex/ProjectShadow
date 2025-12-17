@@ -1,15 +1,21 @@
-using UnityEngine;
 using System.Collections;
+using UnityEngine;
 
-public class RBait : MonoBehaviour
+public class RBait : MonoBehaviour, ISaveable
 {
     [SerializeField] private NoiseOptions iBaitSound;
 
     Rigidbody rb;
 
+    // Save system
+    private string id;
+    public string ID => id;
+    private bool loading = false;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        id = System.Guid.NewGuid().ToString();
     }
 
     public void Despawn()
@@ -19,8 +25,13 @@ public class RBait : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        NoiseSpawnerManager.Instance.SpawnNoiseOrigin(transform.position, iBaitSound);
         StartCoroutine(StopOnlanding());
+        if (loading)
+        {
+            loading = false;
+            return;
+        }
+        NoiseSpawnerManager.Instance.SpawnNoiseOrigin(transform.position, iBaitSound);
     }
 
     private IEnumerator StopOnlanding()
@@ -36,5 +47,30 @@ public class RBait : MonoBehaviour
 
         rb.linearDamping = oldDrag;
         rb.angularDamping = oldAngularDrag;
+    }
+
+    private struct RBaitData
+    {
+        public Vector3 position;
+        public Vector3 rotation;
+    }
+
+    public object Save()
+    {
+        return new RBaitData
+        {
+            position = this.transform.position,
+            rotation = this.transform.eulerAngles,
+        };
+    }
+
+    public void Load(string stateJson)
+    {
+        RBaitData data = JsonUtility.FromJson<RBaitData>(stateJson);
+
+        // apply variables
+        transform.position = data.position;
+        transform.eulerAngles = data.rotation;
+        loading = true;
     }
 }
