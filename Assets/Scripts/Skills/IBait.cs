@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IBait : MonoBehaviour
+public class IBait : MonoBehaviour, ISaveable
 {
+    // Save system
+    private string id;
+    public string ID => id;
+    private bool loading = false;
+
     [SerializeField] private NoiseOptions iBaitSound;
     [SerializeField] private Vector3 origin;
     private Vector3 apex;
@@ -13,8 +18,8 @@ public class IBait : MonoBehaviour
     Rigidbody rb;
 
     int samples = 30; // number of sampling points
-    List<Vector3> pointList = new List<Vector3>();
-    int pointIndex = 0;
+    [SerializeField] List<Vector3> pointList = new List<Vector3>();
+    [SerializeField] int pointIndex = 0;
 
     [SerializeField] bool reached = false;
 
@@ -79,6 +84,8 @@ public class IBait : MonoBehaviour
             rb.useGravity = true;
             rb.linearVelocity = Vector3.zero;
         }
+
+        Debug.Log("Moving...");
     }
 
     public void Despawn()
@@ -88,11 +95,16 @@ public class IBait : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        StartCoroutine(StopOnlanding());
+        if (loading)
+        {
+            loading = false;
+            return;
+        }
         rb.useGravity = true;
         rb.linearVelocity = Vector3.zero;
         reached = true;
         NoiseSpawnerManager.Instance.SpawnNoiseOrigin(transform.position, iBaitSound);
-        StartCoroutine(StopOnlanding());
     }
 
     private IEnumerator StopOnlanding()
@@ -108,5 +120,49 @@ public class IBait : MonoBehaviour
 
         rb.linearDamping = oldDrag;
         rb.angularDamping = oldAngularDrag;
+    }
+
+    private struct IBaitData
+    {
+        public Vector3 position;
+        public Vector3 rotation;
+        public Vector3 origin;
+        public Vector3 destination;
+        public int pointIndex;
+        public bool reached;
+        public float speed;
+        public float throwHeight;
+    }
+
+    public object Save()
+    {
+        return new IBaitData
+        {
+            position = this.transform.position,
+            rotation = this.transform.eulerAngles,
+            origin = this.origin,
+            destination = this.destination,
+            pointIndex = this.pointIndex,
+            reached = this.reached,
+            speed = this.speed,
+            throwHeight = this.throwHeight
+        };
+    }
+
+    public void Load(string stateJson)
+    {
+        IBaitData data = JsonUtility.FromJson<IBaitData>(stateJson);
+
+        // apply variables
+        transform.position = data.position;
+        transform.eulerAngles = data.rotation;
+        origin = data.origin;
+        destination = data.destination;
+        pointIndex = data.pointIndex;
+        reached = data.reached;
+        speed = data.speed;
+        throwHeight = data.throwHeight;
+
+        loading = true;
     }
 }

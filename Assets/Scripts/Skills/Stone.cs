@@ -2,8 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stone : MonoBehaviour
+public class Stone : MonoBehaviour, ISaveable
 {
+    // Save system
+    private string id;
+    public string ID => id;
+    private bool loading = false;
+
     [SerializeField] private float lifetime = 5f;
     [SerializeField] private NoiseOptions stoneSound;
     [SerializeField] private Vector3 origin;
@@ -45,7 +50,7 @@ public class Stone : MonoBehaviour
 
     void Start()
     {
-        lifeTimer = lifetime;
+        if(!loading) lifeTimer = lifetime;
         origin = transform.position;
         apex = .5f * (origin + destination);
         apex.y += throwHeight;
@@ -96,11 +101,16 @@ public class Stone : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        StartCoroutine(StopOnlanding());
+        if (loading)
+        {
+            loading = false;
+            return;
+        }
         rb.useGravity = true;
         rb.linearVelocity = Vector3.zero;
         reached = true;
         NoiseSpawnerManager.Instance.SpawnNoiseOrigin(transform.position, stoneSound);
-        StartCoroutine(StopOnlanding());
     }
 
     private IEnumerator StopOnlanding()
@@ -116,5 +126,52 @@ public class Stone : MonoBehaviour
 
         rb.linearDamping = oldDrag;
         rb.angularDamping = oldAngularDrag;
+    }
+
+    private struct StoneData
+    {
+        public Vector3 position;
+        public Vector3 rotation;
+        public Vector3 origin;
+        public Vector3 destination;
+        public int pointIndex;
+        public bool reached;
+        public float speed;
+        public float throwHeight;
+        public float lifeTimer;
+    }
+
+    public object Save()
+    {
+        return new StoneData
+        {
+            position = this.transform.position,
+            rotation = this.transform.eulerAngles,
+            origin = this.origin,
+            destination = this.destination,
+            pointIndex = this.pointIndex,
+            reached = this.reached,
+            speed = this.speed,
+            throwHeight = this.throwHeight,
+            lifeTimer = this.lifeTimer
+        };
+    }
+
+    public void Load(string stateJson)
+    {
+        StoneData data = JsonUtility.FromJson<StoneData>(stateJson);
+
+        // apply variables
+        transform.position = data.position;
+        transform.eulerAngles = data.rotation;
+        origin = data.origin;
+        destination = data.destination;
+        pointIndex = data.pointIndex;
+        reached = data.reached;
+        speed = data.speed;
+        throwHeight = data.throwHeight;
+        lifeTimer = data.lifeTimer;
+
+        loading = true;
     }
 }

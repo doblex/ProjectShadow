@@ -1,7 +1,5 @@
 using System.Collections;
-using Unity.Loading;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class RBait : MonoBehaviour, ISaveable
 {
@@ -9,11 +7,10 @@ public class RBait : MonoBehaviour, ISaveable
 
     Rigidbody rb;
 
+    // Save system
     private string id;
-
-    private bool loading = false;
-
     public string ID => id;
+    private bool loading = false;
 
     private void Awake()
     {
