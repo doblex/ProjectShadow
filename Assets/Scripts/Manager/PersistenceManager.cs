@@ -68,8 +68,9 @@ public class PersistenceManager : MonoBehaviour
 
     private void Start()
     {
-        ActionManager.Instance.onSaveRequested += Save;
-        ActionManager.Instance.onLoadRequested += Load;
+        // FIXME Uncomment this to enable saving with f5 and loading with f8
+        //ActionManager.Instance.onSaveRequested += Save;
+        //ActionManager.Instance.onLoadRequested += Load;
         Debug.Log($"PersistenceManager started. Persistent data path: {Application.persistentDataPath}");
     }
 
