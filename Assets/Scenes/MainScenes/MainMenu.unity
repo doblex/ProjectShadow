@@ -304,7 +304,7 @@ MonoBehaviour:
   docName: Loading
   docBehaviour: 0
   canFade: 1
-  fadeInDuration: 0.1
+  fadeInDuration: 0
   fadeOutDuration: 0.5
   documentState: 0
   waveHeight: 5
@@ -324,7 +324,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: a0c0d04a156f255498f63066d3cb361c, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 76e731a3a2aaebc4382b623275174a7e, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -472,7 +472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: a0c0d04a156f255498f63066d3cb361c, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 6efad76ea83046f4f9a1d24401e06daa, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -535,6 +535,11 @@ MonoBehaviour:
   docControllers:
   - {fileID: 276928580}
   - {fileID: 1695121216}
+  - {fileID: 537140827}
+  - {fileID: 759691783}
+  - {fileID: 974803518}
+  - {fileID: 1151852029}
+  - {fileID: 237339853}
   templates: []
 --- !u!1 &759691781
 GameObject:
@@ -601,7 +606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: a0c0d04a156f255498f63066d3cb361c, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 7f576b521da7d7f4589b88222db6b824, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -675,7 +680,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: a0c0d04a156f255498f63066d3cb361c, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 4fe03446fe1bd7b49ae2a7ba4ac7a738, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1
@@ -778,7 +783,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HudController
   docName: Hud
   docBehaviour: 0
-  canFade: 1
+  canFade: 0
   fadeInDuration: 0.5
   fadeOutDuration: 0.5
   documentState: 0
@@ -796,7 +801,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
   m_PanelSettings: {fileID: 11400000, guid: a0c0d04a156f255498f63066d3cb361c, type: 2}
   m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 2944cbae4bb6e964a9984b590a2b686c, type: 3}
   m_SortingOrder: 0
   m_Position: 0
   m_WorldSpaceSizeMode: 1

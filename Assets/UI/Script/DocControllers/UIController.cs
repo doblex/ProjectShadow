@@ -1,7 +1,7 @@
+using System;
+
 public class UIController : BaseUIController
 {
-    public static UIController Instance;
-
     protected override void Awake()
     {
         base.Awake();
@@ -21,8 +21,9 @@ public class UIController : BaseUIController
         ShowLoading(true);
         LevelLoaderManager.Instance.LoadMenuScene(() =>
         {
-            ShowLoading(false);
+            ActionManager.Instance.onPauseGame -= ShowPauseMenu;
             ShowMainMenu(true);
+            ShowLoading(false);
         });
     }
 
@@ -31,8 +32,9 @@ public class UIController : BaseUIController
         ShowLoading(true);
         LevelLoaderManager.Instance.StartLevelLoading(() =>
         {
-            ShowLoading(false);
+            ActionManager.Instance.onPauseGame += ShowPauseMenu;
             ShowHud(true);
+            ShowLoading(false);
         });
     }
 
@@ -52,12 +54,24 @@ public class UIController : BaseUIController
 
     public void ShowPauseMenu(bool show)
     {
-        ShowDoc("PauseMenu", show);
+        ShowDoc("Pause", show);
     }
 
     public void ShowHud(bool show)
     {
-        ShowDoc("HUD", show);
+        ShowDoc("Hud", show);
+    }
+
+    internal void ShowCredits(bool show)
+    {
+        ShowDoc("Credits", show);
+    }
+
+    public void AddTask(string text)
+    {
+        HudController controller = GetDoc<HudController>("Hud");
+
+        controller.AddTask(text);
     }
 
 
@@ -65,7 +79,9 @@ public class UIController : BaseUIController
 
     public void ReloadState()
     { 
-        PersistenceManager.Instance.LoadRequest();
+        PersistenceManager.Instance?.LoadRequest();
     }
+
+
 }
 

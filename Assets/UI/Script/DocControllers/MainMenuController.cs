@@ -49,7 +49,7 @@ public class MainMenuController : BaseDocController
 
     private void Credits()
     {
-        
+        ((UIController)UiController).ShowCredits(true);
     }
 
     private void Exit()

@@ -1,3 +1,4 @@
+using UnityEngine;
 using UnityEngine.UIElements;
 
 public class PauseMenuController : BaseDocController
@@ -5,13 +6,12 @@ public class PauseMenuController : BaseDocController
     Button retryButton;
     Button optionsButton;
     Button mainMenuButton;
-    Button exitButton;
 
     protected override bool SetComponents()
     {
         bool bInit = base.SetComponents();
 
-        retryButton = Root.Q<Button>("Continue");
+        retryButton = Root.Q<Button>("Retry");
         retryButton.clicked += Retry;
 
         optionsButton = Root.Q<Button>("Options");
@@ -19,28 +19,30 @@ public class PauseMenuController : BaseDocController
 
         mainMenuButton = Root.Q<Button>("MainMenu");
         mainMenuButton.clicked += ToMainMenu;
-        
-        exitButton = Root.Q<Button>("Exit");
-        exitButton.clicked += Exit;
 
         return bInit;
     }
 
-    private void ToMainMenu()
+    public override void ShowDoc(bool show, bool force = false)
     {
-        ((UIController)UiController).LoadMainMenu();
+        base.ShowDoc(show, force);
+
+        UiController.Pause(show);
     }
 
     private void Retry()
     {
+        ActionManager.Instance.OnPause();
         ((UIController)UiController).ReloadState();
     }
     private void Options()
     {
         ((UIController)UiController).ShowOptions(true);
     }
-    private void Exit()
+
+    private void ToMainMenu()
     {
-        UiController.QuitGame();
+        ActionManager.Instance.OnPause();
+        ((UIController)UiController).LoadMainMenu();
     }
 }

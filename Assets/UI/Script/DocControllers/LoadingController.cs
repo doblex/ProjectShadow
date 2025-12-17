@@ -39,7 +39,7 @@ public class LoadingController : BaseDocController
             for (int i = 0; i < childElements.Count; i++)
             {
                 var label = childElements[i];
-                float offset = Mathf.Sin(Time.time * waveSpeed + i * waveFrequency) * waveHeight;
+                float offset = Mathf.Sin(Time.unscaledDeltaTime * waveSpeed + i * waveFrequency) * waveHeight;
 
                 label.style.top = offset;
             }

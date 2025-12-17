@@ -85,7 +85,9 @@ public class LevelLoaderManager : MonoBehaviour
             }
         }
 
-        levelAOp = SceneManager.LoadSceneAsync(sceneToLoad.name, LoadSceneMode.Additive);
+        LoadSceneMode mode = loadManagerScene ? LoadSceneMode.Additive : LoadSceneMode.Single;
+
+        levelAOp = SceneManager.LoadSceneAsync(sceneToLoad.name, mode);
         levelAOp.allowSceneActivation = false;
 
         while (levelAOp.progress < 0.9f)
@@ -95,11 +97,14 @@ public class LevelLoaderManager : MonoBehaviour
 
         levelAOp.allowSceneActivation = true;
 
-        AsyncOperation Op = SceneManager.UnloadSceneAsync(currentScene);
-
-        while (!Op.isDone)
+        if (loadManagerScene)
         {
-            yield return null;
+            AsyncOperation Op = SceneManager.UnloadSceneAsync(currentScene);
+
+            while (!Op.isDone)
+            {
+                yield return null;
+            }
         }
 
         OnAfterLoad?.Invoke();

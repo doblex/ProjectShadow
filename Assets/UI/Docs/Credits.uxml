@@ -1,0 +1,10 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/BaseStyle.uss?fileID=7433441132597879392&amp;guid=68e07a90f95c56a49bc397c5316dfdba&amp;type=3#BaseStyle" />
+    <ui:VisualElement name="BackGround" style="flex-grow: 1; background-color: rgb(255, 255, 255); justify-content: center;">
+        <ui:VisualElement data-source="project://database/Assets/ScriptableObjects/Options.asset?fileID=11400000&amp;guid=65c2a89ac08c0ca4fb599e47979138dd&amp;type=2#Options" name="Options" style="flex-grow: 0; width: 60%; align-self: center; border-top-width: 10px; border-right-width: 10px; border-bottom-width: 10px; border-left-width: 10px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-top-left-radius: 10px; border-top-right-radius: 10px; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; height: 80%;">
+            <ui:VisualElement name="Buttons" style="flex-grow: 0; flex-direction: row;">
+                <ui:Button name="Back" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=5866165431930342980&amp;guid=26e059c4f02b6f942a7714cc6ed2ab8f&amp;type=3#Remove@2x&quot;); -unity-background-scale-mode: scale-to-fit; flex-shrink: 0; width: auto; background-size: contain; -unity-background-image-tint-color: rgb(255, 0, 0); align-items: flex-start; align-self: flex-start;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

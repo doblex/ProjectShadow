@@ -139,7 +139,7 @@ public abstract class BaseDocController : MonoBehaviour
         documentState = DocumentState.Transitioning;
         while (elapsed < fadeInDuration)
         {
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             float newOpacity = Mathf.Lerp(startOpacity, endOpacity, elapsed / fadeInDuration);
             Root.style.opacity = newOpacity;
             yield return null;
@@ -158,7 +158,7 @@ public abstract class BaseDocController : MonoBehaviour
         documentState = DocumentState.Transitioning;
         while (elapsed < fadeOutDuration)
         {
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             float newOpacity = Mathf.Lerp(startOpacity, endOpacity, elapsed / fadeOutDuration);
             Root.style.opacity = newOpacity;
             yield return null;

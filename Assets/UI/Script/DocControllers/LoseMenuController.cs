@@ -28,7 +28,7 @@ public class LoseMenuController : BaseDocController
 
     private void Retry()
     {
-        //TODO: Implement retry logic
+        ((UIController)UiController).ReloadState();
     }
 
     private void Options()

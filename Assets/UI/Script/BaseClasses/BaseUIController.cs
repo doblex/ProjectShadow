@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class BaseUIController : MonoBehaviour
 {
+    public static BaseUIController Instance;
+
     [Header("Docs")]
     [SerializeField] List<BaseDocController> docControllers = new List<BaseDocController>();
     HashSet<BaseDocController> activedDocs = new HashSet<BaseDocController>();
@@ -13,6 +16,16 @@ public class BaseUIController : MonoBehaviour
 
     protected virtual void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            Instance = this;
+            DontDestroyOnLoad(this);
+        }
+
         foreach (BaseDocController controller in docControllers)
         {
             controller.Init(this);
@@ -33,6 +46,11 @@ public class BaseUIController : MonoBehaviour
 #if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+
+    public void Pause(bool pauseStatus)
+    { 
+        Time.timeScale = pauseStatus ? 0f : 1f;
     }
 
     /// <summary>
@@ -56,6 +74,22 @@ public class BaseUIController : MonoBehaviour
         }
 
         return false;
+    }
+
+    public T GetDoc<T>(string docName) where T : BaseDocController
+    { 
+        T doc = null;
+
+        foreach (BaseDocController controller in docControllers)
+        {
+            if (controller.DocName == docName)
+            {
+                doc = (T)controller;
+                break;
+            }
+        }
+
+        return doc;
     }
 
     /// <summary>
@@ -93,7 +127,7 @@ public class BaseUIController : MonoBehaviour
         Debug.Log($"ShowDoc: {docName} - {show}");
     }
 
-    private void ShowDoc( BaseDocController controller)
+    private void ShowDoc(BaseDocController controller)
     {
         if (controller.DocumentState == DocumentState.Hidden)
         {
