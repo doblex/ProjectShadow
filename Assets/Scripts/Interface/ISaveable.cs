@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public interface ISaveable
 {
     public string ID { get; }
