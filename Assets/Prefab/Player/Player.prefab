@@ -419,6 +419,7 @@ GameObject:
   - component: {fileID: 4590906193794844513}
   - component: {fileID: 5857591385498563234}
   - component: {fileID: 4027193919763178576}
+  - component: {fileID: 78575432321265113}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -443,6 +444,7 @@ Transform:
   - {fileID: 3214610826283793986}
   - {fileID: 4497980939806704708}
   - {fileID: 5394107219186320345}
+  - {fileID: 5328127180831855765}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &2769418333810459495
@@ -559,7 +561,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752fb2530ad9b434ca8cfd3b3e5225d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveableEntity
-  id: 
   isDynamic: 1
   prefabKey: Player
 --- !u!120 &4027193919763178576
@@ -672,7 +673,7 @@ LineRenderer:
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!54 &6019164279233171270
+--- !u!54 &78575432321265113
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
