@@ -127,7 +127,7 @@ public class PlayerController : MonoBehaviour, ISaveable
             debugMsg += "\n";
         }
 
-        //Debug.Log(debugMsg);
+        Debug.Log(debugMsg);
     }
 
     private void UpdateStates(PlayerState forcedState = null)
@@ -298,7 +298,7 @@ public class PlayerController : MonoBehaviour, ISaveable
     {
         halfCoverTable[1,1] = isHiding ? 1 : 0;
         GlobalVolumeManager.Instance?.SetHiding(isHiding);
-        //Debug.Log("Set hiding to " + isHiding);
+        Debug.Log("Set hiding to " + isHiding);
     }
 
     private void OnDrawGizmos()

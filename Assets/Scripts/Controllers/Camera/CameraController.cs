@@ -22,6 +22,7 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         _camera.transform.LookAt(transform.position);
+        transform.position = FindFirstObjectByType<PlayerController>().transform.position;
     }
 
     private void OnVisualRotChanged(Quaternion rotation)

@@ -16,6 +16,8 @@ public class ActionManager : MonoBehaviour
     public delegate void OnHighlight(bool active);
     public delegate void OnPlayerCrouch();
 
+    public delegate void OnPauseGame(bool isPaused);
+
     public OnCameraMovementChanged onMovementChanged;
     public OnCameraRotationChanged onRotationChanged;
 
@@ -25,7 +27,9 @@ public class ActionManager : MonoBehaviour
     public OnHighlight onHighlight;
     public OnPlayerCrouch onPlayerCrouch;
 
-    [SerializeField] private Options Options;
+    public OnPauseGame onPauseGame;
+
+    [SerializeField] private CameraOptions Options;
 
     private InputAction MoveVisual;
     private bool isMoving = false;
@@ -43,6 +47,9 @@ public class ActionManager : MonoBehaviour
     private InputAction MousePositionAction;
 
     private InputAction CrouchAction;
+
+    private InputAction PauseAction;
+    private bool isPaused = false;
 
     // Skills
     public delegate void OnThrowStone();
@@ -88,13 +95,49 @@ public class ActionManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(this);
+            //DontDestroyOnLoad(this);
         }
     }
 
     private void Start()
     {
         SetupCommands();
+    }
+
+    private void OnDisable()
+    {
+        MoveVisual.performed -= OnMoveDown;
+        MoveVisual.canceled -= OnMoveUp;
+
+        RotateVisual.performed -= OnRotateDown;
+        RotateVisual.canceled -= OnRotateUp;
+
+        InteractAction.performed -= OnInteractInput;
+
+        HighlightAction.performed -= OnHighlightInput;
+
+        PlayerMovementAction.performed -= OnMovePlayer;
+
+        CrouchAction.performed -= OnCrouch;
+
+        PauseAction.performed -= OnPause;
+
+
+        ThrowStoneAction.performed -= OnThrowStoneCall;
+
+        WhistleAction.performed -= OnWhistleCall;
+
+        ThrowIBaitAction.performed -= OnThrowIBaitCall;
+            
+        RBaitAction.performed -= OnRBaitCall;
+
+        CastAbilityAction.performed -= OnCastAbilityCall;
+
+        CancelSkillAction.performed -= OnCancelSkillCall;
+
+        SaveAction.performed -= OnSaveRequestedCall;
+
+        LoadAction.performed -= OnLoadRequestedCall;
     }
 
     private void SetupCommands()
@@ -120,6 +163,10 @@ public class ActionManager : MonoBehaviour
 
         CrouchAction = InputSystem.actions.FindAction("Crouch");
         CrouchAction.performed += OnCrouch;
+
+        PauseAction = InputSystem.actions.FindAction("Pause");
+        PauseAction.performed += OnPause;
+
 
         // Ability bindings
         ThrowStoneAction = InputSystem.actions.FindAction("Throw Stone");
@@ -155,6 +202,8 @@ public class ActionManager : MonoBehaviour
 
     private void OnMoveDown(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         Vector2 movement2D = ctx.ReadValue<Vector2>();
         Vector3 converted = new Vector3(movement2D.x, 0, movement2D.y);
 
@@ -167,6 +216,7 @@ public class ActionManager : MonoBehaviour
 
     private void OnMoveUp(InputAction.CallbackContext ctx)
     {
+
         Vector2 movement2D = ctx.ReadValue<Vector2>();
         Vector3 converted = new Vector3(movement2D.x, 0, movement2D.y);
 
@@ -190,6 +240,8 @@ public class ActionManager : MonoBehaviour
 
     private void OnRotateDown(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         float rotationValue = ctx.ReadValue<float>();
 
 
@@ -203,6 +255,7 @@ public class ActionManager : MonoBehaviour
 
     private void OnRotateUp(InputAction.CallbackContext ctx)
     {
+
         float rotationValue = ctx.ReadValue<float>();
 
 
@@ -230,16 +283,22 @@ public class ActionManager : MonoBehaviour
 
     private void OnInteractInput(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         onInteract?.Invoke();
     }
     private void OnHighlightInput(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         HighlightActive = !HighlightActive;
         onHighlight?.Invoke(HighlightActive);
     }
 
     private void OnMovePlayer(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         Vector2 v = MousePositionAction.ReadValue<Vector2>();
         bool isDoubleClick = false;
 
@@ -276,47 +335,105 @@ public class ActionManager : MonoBehaviour
 
     private void OnCrouch(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         onPlayerCrouch?.Invoke();
     }
 
+    public void OnPause()
+    {
+        InputAction.CallbackContext ctx = new InputAction.CallbackContext();
+        OnPause(ctx);
+    }
+    private void OnPause(InputAction.CallbackContext ctx)
+    {
+        isPaused = !isPaused;
+        onPauseGame?.Invoke(isPaused);
+    }
+
+    public void OnAbility(int AbNumber)
+    {
+        if (isPaused) return;
+
+        InputAction.CallbackContext ctx = new InputAction.CallbackContext();
+
+        switch (AbNumber)
+        {
+            case 1:
+                OnThrowStoneCall(ctx);
+                break;
+
+            case 2:
+                OnThrowIBaitCall(ctx);
+                break;
+
+            case 3:
+                OnWhistleCall(ctx);
+                break;
+
+            case 4:
+                OnRBaitCall(ctx);
+                break;
+
+            default:
+                Debug.LogError("L'abilità selezionata non esiste");
+                break;
+        }
+    }
 
     private void OnThrowStoneCall(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         onThrowStone?.Invoke();
     }
 
     private void OnWhistleCall(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         onWhistle?.Invoke();
     }
 
     private void OnThrowIBaitCall(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         onThrowIBait?.Invoke();
     }
 
     private void OnRBaitCall(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         onRBait?.Invoke();
     }
 
     private void OnCancelSkillCall(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         onCancelSkill?.Invoke();
     }
 
     private void OnCastAbilityCall(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         onCastAbility?.Invoke();
     }
 
     private void OnSaveRequestedCall(InputAction.CallbackContext ctx)
     {
+        if (isPaused) return;
+
         onSaveRequested?.Invoke(SaveSlot.Slot1);
     }
 
     private void OnLoadRequestedCall(InputAction.CallbackContext ctx)
-    {
+    {   
+        if (isPaused) return;
+
         onLoadRequested?.Invoke(SaveSlot.Slot1);
     }
 }

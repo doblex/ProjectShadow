@@ -1,0 +1,13 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI/Styles/BaseStyle.uss?fileID=7433441132597879392&amp;guid=68e07a90f95c56a49bc397c5316dfdba&amp;type=3#BaseStyle" />
+    <ui:VisualElement name="BackGround" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.28); flex-direction: column; -unity-background-image-tint-color: rgb(0, 0, 0);">
+        <ui:VisualElement style="flex-grow: 1; width: 30%; flex-direction: row; align-self: center; justify-content: center;">
+            <ui:VisualElement style="flex-grow: 0; flex-direction: column; align-self: center; background-color: rgba(253, 253, 253, 0.31); width: 100%; height: auto; align-items: stretch; justify-content: center;">
+                <ui:Button text="Retry" name="Retry" class="MainMenuButton" />
+                <ui:Button text="Options&#10;" name="Options" class="MainMenuButton" />
+                <ui:Button text="Main menu" name="MainMenu" class="MainMenuButton" />
+                <ui:Button text="Exit" name="Exit" enabled="true" class="MainMenuButton" style="display: flex;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
