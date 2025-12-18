@@ -77,6 +77,8 @@ public class AIController : MonoBehaviour
     [HideInInspector] Vector3 sentryOriginalPosition;
     [HideInInspector] Quaternion sentryOriginalRotation;
     [HideInInspector] Quaternion sentryTargetRotation;
+    [HideInInspector] bool sentryLookingAround = true;
+
 
     [HideInInspector] public NavMeshAgent agent;
     [HideInInspector] public Transform player;
@@ -208,6 +210,9 @@ public class AIController : MonoBehaviour
     {
         if (visibleTargets.Count > 0)
         {
+            if (sentryLookingAround)
+                sentryLookingAround = false;
+
             player = visibleTargets[0];
             Vector3 currentPlayerPos = player.position;
             lastSeenPlayerPosition = currentPlayerPos;
@@ -242,6 +247,8 @@ public class AIController : MonoBehaviour
         }
         else
         {
+            if (phase == Phase.Patrol && role == EnemyRole.Sentry)
+                sentryLookingAround = true;
             player = null;
             alarmDelayTimer = 0f;
             if (phase != Phase.Alarm && agent.isStopped)
@@ -405,6 +412,9 @@ public class AIController : MonoBehaviour
     {
         agent.SetDestination(sentryOriginalPosition);
 
+        if (!sentryLookingAround)
+            return;
+
         sentryLookTimer -= Time.deltaTime;
         if (sentryLookTimer <= 0f)
         {
@@ -419,6 +429,7 @@ public class AIController : MonoBehaviour
             headLookSpeed * Time.deltaTime
         );
     }
+
     // Ritorna il sentinella al suo posto originale
     IEnumerator ReturnSentryToPost()
     {
