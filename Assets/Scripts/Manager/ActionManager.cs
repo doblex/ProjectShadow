@@ -72,6 +72,8 @@ public class ActionManager : MonoBehaviour
     private InputAction RBaitAction;
     private InputAction CastAbilityAction;
     private InputAction CancelSkillAction;
+    private InputAction SelectEnemyAction;
+
 
     Coroutine MovementCoroutine;
     Coroutine RotationCoroutine;
@@ -85,6 +87,12 @@ public class ActionManager : MonoBehaviour
 
     private InputAction SaveAction;
     private InputAction LoadAction;
+
+    public delegate void OnEnemySelected(AIController enemy);
+    public OnEnemySelected onEnemySelected;
+    [SerializeField] private Camera mainCamera;
+    private AIController currentSelectedEnemy;
+
 
     private void Awake()
     {
@@ -138,6 +146,10 @@ public class ActionManager : MonoBehaviour
         SaveAction.performed -= OnSaveRequestedCall;
 
         LoadAction.performed -= OnLoadRequestedCall;
+
+        SelectEnemyAction = InputSystem.actions.FindAction("SelectEnemy");
+        SelectEnemyAction.performed += OnSelectEnemy;
+
     }
 
     private void SetupCommands()
@@ -435,5 +447,39 @@ public class ActionManager : MonoBehaviour
         if (isPaused) return;
 
         onLoadRequested?.Invoke(SaveSlot.Slot1);
+    }
+    private void OnSelectEnemy(InputAction.CallbackContext ctx)
+    {
+        if (isPaused) return;
+
+        Ray ray = mainCamera.ScreenPointToRay(MousePositionAction.ReadValue<Vector2>());
+        if (Physics.Raycast(ray, out RaycastHit hit, 1000f))
+        {
+            var ai = hit.collider.GetComponentInParent<AIController>();
+            if (ai != null)
+            {
+                if (currentSelectedEnemy != null && currentSelectedEnemy != ai)
+                    currentSelectedEnemy.SetSelected(false);
+
+                currentSelectedEnemy = ai;
+                ai.SetSelected(true);
+            }
+            else
+            {
+                if (currentSelectedEnemy != null)
+                {
+                    currentSelectedEnemy.SetSelected(false);
+                    currentSelectedEnemy = null;
+                }
+            }
+        }
+        else
+        {
+            if (currentSelectedEnemy != null)
+            {
+                currentSelectedEnemy.SetSelected(false);
+                currentSelectedEnemy = null;
+            }
+        }
     }
 }

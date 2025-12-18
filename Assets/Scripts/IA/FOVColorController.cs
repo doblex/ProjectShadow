@@ -28,11 +28,14 @@ public class FOVColorController : MonoBehaviour
         rend.material = mat;
         rend.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         rend.receiveShadows = false;
+
+        rend.enabled = false;
     }
+
 
     void Update()
     {
-        if (owner == null) return;
+        if (owner == null || !rend.enabled) return;
 
         Color baseColor;
         Color fillColor;
@@ -66,5 +69,16 @@ public class FOVColorController : MonoBehaviour
         mat.SetColor("_BaseColor", baseColor);
         mat.SetColor("_FillColor", fillColor);
         mat.SetFloat("_FillAmount", Mathf.Clamp01(fillAmount));
+    }
+    public void UpdateVisibility()
+    {
+        if (owner == null)
+        {
+            Debug.LogWarning($"{name}: owner NULL");
+            return;
+        }
+
+        bool visible = owner.IsSelected;
+        rend.enabled = visible;
     }
 }

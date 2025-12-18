@@ -3,86 +3,99 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static ActionManager;
 
 public class AIController : MonoBehaviour
 {
     #region Variables
     public enum Phase { Patrol, Investigation, Alarm }
     public enum EnemyRole { Patrol, Sentry }
-    public enum EnemyType { Sentinel, ParanoidSentinel, Guard}
+    public enum EnemyType { Sentinel, ParanoidSentinel, Guard }
 
-    [Header("Enemy Phase")]
+    [HideInInspector] public Phase phase = Phase.Patrol;
+
+    [Header("Roles")]
     public EnemyRole role = EnemyRole.Patrol;
-
-    [Header("Role")]
-    public Phase phase = Phase.Patrol;
 
     [Header("Enemy Type")]
     public EnemyType enemyType = EnemyType.Sentinel;
 
     [Header("Patrol")]
     public Transform[] patrolPoints;
-    int patrolIndex = 0;
-    int lastPatrolIndex = 0;
+    [HideInInspector] public int patrolIndex = 0;
+    [HideInInspector] public int lastPatrolIndex = 0;
 
     [Header("Field of View")]
     public float viewRadius = 10f;
     [Range(0, 360)] public float viewAngle = 110f;
+    [Range(0f, 1f)] public float innerRadiusFactor = 0.5f;
     public LayerMask playerAndBaitMask;
     public LayerMask obstacleMask;
     [HideInInspector] public List<Transform> visibleTargets = new List<Transform>();
 
     [Header("Investigation")]
     public float investigationTime = 20f;
-    public float investigationTimer;
-    public Vector3 investigationPosition;
-    public float searchAreaRadius = 5f;
-    public float searchPauseTime = 2f;
-    float searchTimer;
-    bool isSearchingArea = false;
-    Vector3 searchCenter;
+    [HideInInspector] public float investigationTimer;
+    [HideInInspector] public Vector3 investigationPosition;
+    [HideInInspector] public float searchAreaRadius = 5f;
+    [HideInInspector] public float searchPauseTime = 2f;
+    [HideInInspector] float searchTimer;
+    [HideInInspector] bool isSearchingArea = false;
+    [HideInInspector] Vector3 searchCenter;
 
     [Header("Look Around / Head")]
-    public float headLookSpeed = 2f;
-    float headLookTimer;
-    float headLookAngle;
+    [HideInInspector] public float headLookSpeed = 2f;
+    [HideInInspector] float headLookTimer;
+    [HideInInspector] float headLookAngle;
 
     [Header("Alarm")]
-    public float alarmSearchTime = 15f;
-    public float alarmTimer;
-    Vector3 lastSeenPlayerPosition;
-    Vector3 lastAlarmPosition;
-    public float alarmMinMoveDist = 2f;
+    [HideInInspector] public float alarmSearchTime = 15f;
+    [HideInInspector] public float alarmTimer;
+    [HideInInspector] Vector3 lastSeenPlayerPosition;
+    [HideInInspector] Vector3 lastAlarmPosition;
+    [HideInInspector] public float alarmMinMoveDist = 2f;
     public float alarmRadius = 5f;
     public LayerMask enemyMask;
 
     [Header("Reaction Priority")]
-    public float reactionDelay = 2f;
-    float alarmDelayTimer = 0f;
-    bool alarmTriggered = false;
+    [HideInInspector] public float reactionDelay = 2f;
+    [HideInInspector] float alarmDelayTimer = 0f;
+    [HideInInspector] bool alarmTriggered = false;
 
-    float lastDistractionTime = -9999f;
-    Vector3 lastDistractionPosition;
+    [HideInInspector] float lastDistractionTime = -9999f;
+    [HideInInspector] Vector3 lastDistractionPosition;
 
     [Header("Patrol Look")]
-    public float lookAroundTime = 2f;
-    float lookTimer;
-    bool isLookingAround = false;
+    [HideInInspector] public float lookAroundTime = 2f;
+    [HideInInspector] float lookTimer;
+    [HideInInspector] bool isLookingAround = false;
 
     [Header("Sentry Settings")]
     public float sentryLookInterval = 3f;
-    public float sentryLookAngleRange = 360f;
-    float sentryLookTimer;
-    Vector3 sentryOriginalPosition;
-    Quaternion sentryOriginalRotation;
-    Quaternion sentryTargetRotation;
+    [HideInInspector] public float sentryLookAngleRange = 360f;
+    [HideInInspector] float sentryLookTimer;
+    [HideInInspector] Vector3 sentryOriginalPosition;
+    [HideInInspector] Quaternion sentryOriginalRotation;
+    [HideInInspector] Quaternion sentryTargetRotation;
 
-    NavMeshAgent agent;
-    Transform player;
+    [HideInInspector] public NavMeshAgent agent;
+    [HideInInspector] public Transform player;
+
+    [HideInInspector] public bool debugFovVisible;
+    [HideInInspector] public bool playerInFOVNow;
+    bool _lastPlayerInFOV;
+
+    [Header("Animation")]
+    public Animator animator;
+    [HideInInspector] public string speedParam = "Speed";
+
+    public bool IsSelected { get; private set; }
     #endregion
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
         if (role == EnemyRole.Sentry)
         {
             sentryOriginalPosition = transform.position;
@@ -127,9 +140,21 @@ public class AIController : MonoBehaviour
                 Alarm();
                 break;
         }
+        UpdateAnimation();
+    }
+    private void OnEnable()
+    {
+        if (ActionManager.Instance != null)
+            ActionManager.Instance.onEnemySelected += OnEnemySelected;
+    }
+
+    private void OnDisable()
+    {
+        if (ActionManager.Instance != null)
+            ActionManager.Instance.onEnemySelected -= OnEnemySelected;
     }
     #region look for player
-
+    // Cerca i bersagli visibili ogni tot secondi
     IEnumerator FindTargetsWithDelay(float delay)
     {
         while (true)
@@ -138,35 +163,47 @@ public class AIController : MonoBehaviour
             FindVisibleTargets();
         }
     }
-
+    // Trova i bersagli visibili nell'FOV
     void FindVisibleTargets()
     {
         visibleTargets.Clear();
         Collider[] targetsInViewRadius = Physics.OverlapSphere(transform.position, viewRadius, playerAndBaitMask);
-
         for (int i = 0; i < targetsInViewRadius.Length; i++)
         {
             Transform target = targetsInViewRadius[i].transform;
+            if (!target.CompareTag("Player") && !target.CompareTag("Bait"))
+                continue;
             Vector3 dirToTarget = (target.position - transform.position).normalized;
-
-            if (Vector3.Angle(transform.forward, dirToTarget) < viewAngle / 2f)
+            float angleToTarget = Vector3.Angle(transform.forward, dirToTarget);
+            if (angleToTarget > viewAngle * 0.5f)
+                continue;
+            float dstToTarget = Vector3.Distance(transform.position, target.position);
+            if (Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
+                continue;
+            if (target.CompareTag("Bait"))
             {
-                float dstToTarget = Vector3.Distance(transform.position, target.position);
-                if (!Physics.Raycast(transform.position, dirToTarget, dstToTarget, obstacleMask))
-                {
-                    if (target.CompareTag("Player"))
-                    {
-                        visibleTargets.Add(target);
-                    }
-                    else if (target.CompareTag("Bait"))
-                    {
-                        OnBaitSeen(target.position);
-                    }
-                }
+                OnBaitSeen(target.position);
+                continue;
+            }
+            PlayerController playerCtrl = target.GetComponent<PlayerController>();
+            if (playerCtrl == null)
+                continue;
+            bool isHiddenFromThisEnemy = playerCtrl.IsHidingInHalfCover(transform.position);
+            bool hiddenFromRight = playerCtrl.IsHidingInHalfCover(transform.position + transform.right * 0.5f);
+            bool hiddenFromLeft = playerCtrl.IsHidingInHalfCover(transform.position - transform.right * 0.5f);
+            bool isInFullCover = isHiddenFromThisEnemy && hiddenFromRight && hiddenFromLeft;
+            if (isInFullCover)
+                continue;
+            float innerRadius = viewRadius * innerRadiusFactor;
+            bool inInnerCone = dstToTarget <= innerRadius;
+            if (!isHiddenFromThisEnemy || inInnerCone)
+            {
+                Debug.Log($"[{name}] VEDO il player");
+                visibleTargets.Add(target);
             }
         }
     }
-
+    // Gestisce il comportamento in base alla visione del giocatore
     void LookForPlayer()
     {
         if (visibleTargets.Count > 0)
@@ -178,7 +215,11 @@ public class AIController : MonoBehaviour
             if (phase == Phase.Patrol || phase == Phase.Investigation)
             {
                 alarmDelayTimer += Time.deltaTime;
-                agent.isStopped = true;
+
+                if (alarmDelayTimer < reactionDelay * 0.5f)
+                    agent.isStopped = true;
+                else
+                    agent.isStopped = false;
 
                 if (alarmDelayTimer >= reactionDelay)
                 {
@@ -201,14 +242,31 @@ public class AIController : MonoBehaviour
         }
         else
         {
+            player = null;
             alarmDelayTimer = 0f;
             if (phase != Phase.Alarm && agent.isStopped)
                 agent.isStopped = false;
+        }
+        playerInFOVNow = visibleTargets.Count > 0;
+
+        if (playerInFOVNow != _lastPlayerInFOV)
+        {
+            _lastPlayerInFOV = playerInFOVNow;
+
+            foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
+            {
+                fov.isPlayerInsideFOV = playerInFOVNow;
+                fov.UpdateVisibility();
+            }
+
+            foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
+                fovColor.UpdateVisibility();
         }
     }
 
     #endregion
     #region patrol
+    // Comportamento di pattugliamento
     void Patrol()
     {
         if (Time.time < lastDistractionTime + 1f)
@@ -238,6 +296,7 @@ public class AIController : MonoBehaviour
     }
     #endregion
     #region investigation
+    // Inizia l'investigazione in un punto specifico
     public void StartInvestigation(Vector3 position)
     {
         investigationPosition = position;
@@ -253,7 +312,7 @@ public class AIController : MonoBehaviour
         alarmTriggered = false;
         alarmDelayTimer = 0f;
     }
-
+    // Comportamento di investigazione
     void Investigate()
     {
         if (!isSearchingArea)
@@ -297,7 +356,7 @@ public class AIController : MonoBehaviour
         if (agent.enabled && agent.velocity.magnitude > 0.1f)
             WanderLook();
     }
-
+    // Cerca un punto casuale nell'area di ricerca
     void SearchAroundArea()
     {
         searchTimer -= Time.deltaTime;
@@ -315,7 +374,7 @@ public class AIController : MonoBehaviour
             }
         }
     }
-
+    // Movimento della testa durante l'investigazione
     void WanderLook()
     {
         headLookTimer += Time.deltaTime;
@@ -341,6 +400,7 @@ public class AIController : MonoBehaviour
     }
     #endregion
     #region sentry
+    // Comportamento del sentinella
     void SentryBehavior()
     {
         agent.SetDestination(sentryOriginalPosition);
@@ -359,6 +419,7 @@ public class AIController : MonoBehaviour
             headLookSpeed * Time.deltaTime
         );
     }
+    // Ritorna il sentinella al suo posto originale
     IEnumerator ReturnSentryToPost()
     {
         phase = Phase.Patrol;
@@ -375,6 +436,7 @@ public class AIController : MonoBehaviour
     }
     #endregion
     #region Bait
+    // Reazione alla vista di un'esca
     public void OnBaitSeen(Vector3 baitPos)
     {
         switch (enemyType)
@@ -397,6 +459,7 @@ public class AIController : MonoBehaviour
     }
     #endregion
     #region Sound
+    // Reazione all'udire un suono
     public void OnSoundHeard(Vector3 soundPos)
     {
         switch (enemyType)
@@ -418,6 +481,7 @@ public class AIController : MonoBehaviour
     }
     #endregion
     #region Alarms
+    // Comportamento di allarme
     void Alarm()
     {
         if (!alarmTriggered)
@@ -427,12 +491,29 @@ public class AIController : MonoBehaviour
             RaiseLocalAlarm(lastAlarmPosition);
             lastDistractionTime = Time.time;
             lastDistractionPosition = lastSeenPlayerPosition;
+        }
+        if (playerInFOVNow && player != null)
+        {
             agent.isStopped = false;
-            StartInvestigation(lastSeenPlayerPosition);
-            phase = Phase.Investigation;
+            agent.SetDestination(player.position);
+        }
+        else
+        {
+            if (Vector3.Distance(transform.position, lastSeenPlayerPosition) > 0.5f)
+            {
+                agent.isStopped = false;
+                agent.SetDestination(lastSeenPlayerPosition);
+            }
+            else
+            {
+                StartInvestigation(lastSeenPlayerPosition);
+                phase = Phase.Investigation;
+                alarmTriggered = false;
+            }
         }
     }
 
+    // Propaga l'allarme ai nemici vicini
     void RaiseLocalAlarm(Vector3 alarmPos)
     {
         Collider[] hits = Physics.OverlapSphere(alarmPos, alarmRadius, enemyMask);
@@ -446,6 +527,7 @@ public class AIController : MonoBehaviour
             }
         }
     }
+    // Reazione all'udire un allarme
     public void OnAlarmHeard(Vector3 alarmPos)
     {
         if (phase == Phase.Alarm)
@@ -456,6 +538,37 @@ public class AIController : MonoBehaviour
         }
     }
     #endregion
+    // Aggiorna i parametri dell'animazione
+    void UpdateAnimation()
+    {
+        if (animator == null || agent == null) return;
+
+        Vector3 vel = agent.velocity;
+        vel.y = 0f;
+        float speed = vel.magnitude;
+
+        animator.SetFloat(speedParam, speed);
+    }
+    // Gestisce la selezione del nemico
+    private void OnEnemySelected(AIController selected)
+    {
+        IsSelected = (selected == this);
+
+        foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
+            fov.UpdateVisibility();
+        foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
+            fovColor.UpdateVisibility();
+    }
+    // Imposta lo stato di selezione del nemico
+    public void SetSelected(bool selected)
+    {
+        IsSelected = selected;
+
+        foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
+            fov.UpdateVisibility();
+        foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
+            fovColor.UpdateVisibility();
+    }
     #region gyzmos
     void OnDrawGizmosSelected()
     {

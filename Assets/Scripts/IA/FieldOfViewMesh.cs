@@ -11,21 +11,31 @@ public class FieldOfViewMesh : MonoBehaviour
 
     Mesh mesh;
     MeshRenderer rend;
+    public bool isPlayerInsideFOV;
 
     void Awake()
     {
+        // DEBUG per capire quale oggetto è
+        Debug.Log($"{gameObject.name}: Awake FieldOfViewMesh");
+
+        // Mesh
         mesh = new Mesh();
         mesh.name = "FOV Mesh";
         GetComponent<MeshFilter>().mesh = mesh;
 
+        // Renderer
         rend = GetComponent<MeshRenderer>();
+        if (rend == null)
+            Debug.LogError($"{gameObject.name}: MeshRenderer mancante!");
+
         rend.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         rend.receiveShadows = false;
+        rend.enabled = false;
     }
-
     void LateUpdate()
     {
-        if (owner == null) return;
+        if (owner == null || rend == null || !rend.enabled) return;
+
 
         float fov = owner.viewAngle;
         float viewDistance = owner.viewRadius * radiusMultiplier;
@@ -61,4 +71,22 @@ public class FieldOfViewMesh : MonoBehaviour
         mesh.triangles = triangles;
         mesh.RecalculateNormals();
     }
+    public void UpdateVisibility()
+    {
+        if (owner == null)
+        {
+            Debug.LogWarning($"{gameObject.name}: owner NULL in UpdateVisibility");
+            return;
+        }
+        if (rend == null)
+        {
+            Debug.LogWarning($"{gameObject.name}: rend NULL in UpdateVisibility");
+            return;
+        }
+
+        bool visible = owner.IsSelected || isPlayerInsideFOV;
+        Debug.Log($"{gameObject.name}: UpdateVisibility -> selected={owner.IsSelected}, inFOV={isPlayerInsideFOV}, visible={visible}");
+        rend.enabled = visible;
+    }
+
 }
