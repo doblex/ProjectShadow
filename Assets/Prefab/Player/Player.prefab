@@ -539,10 +539,10 @@ MonoBehaviour:
   controller: {fileID: 3014211741085355850}
   raycastHeight: 1
   throwableStonePrefab: {fileID: 2686772543481402752, guid: 4c540e55680472d418e4ffb4af721b5b, type: 3}
-  stoneThrowRadius: 20
+  stoneThrowRadius: 10
   stoneThrowNoiseRadius: 5
   stoneThrowSpeed: 10
-  stoneThrowHeight: 5
+  stoneThrowHeight: 10
   stoneThrowCooldown: 5
   whistleRadius: 5
   whistleCooldown: 10
