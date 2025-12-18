@@ -457,7 +457,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 8725282404745937860}
   m_Enabled: 1
   m_AgentTypeID: -1372625422
-  m_Radius: 0.5
+  m_Radius: 0.2
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -550,7 +550,7 @@ MonoBehaviour:
   whistleRadius: 10
   whistleCooldown: 10
   iBaitPrefab: {fileID: 7185442932511163888, guid: ca80fdc1895e9394e9df3f3e74f70b20, type: 3}
-  iBaitCount: 5
+  iBaitCount: 0
   iBaitThrowRadius: 20
   iBaitThrowNoiseRadius: 0
   iBaitThrowSpeed: 20
