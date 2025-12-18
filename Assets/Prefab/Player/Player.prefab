@@ -541,16 +541,16 @@ MonoBehaviour:
   throwableStonePrefab: {fileID: 2686772543481402752, guid: 4c540e55680472d418e4ffb4af721b5b, type: 3}
   stoneThrowRadius: 10
   stoneThrowNoiseRadius: 5
-  stoneThrowSpeed: 10
-  stoneThrowHeight: 10
+  stoneThrowSpeed: 1
+  stoneThrowHeight: 20
   stoneThrowCooldown: 5
-  whistleRadius: 5
+  whistleRadius: 10
   whistleCooldown: 10
   iBaitPrefab: {fileID: 7185442932511163888, guid: ca80fdc1895e9394e9df3f3e74f70b20, type: 3}
   iBaitCount: 5
   iBaitThrowRadius: 20
-  iBaitThrowNoiseRadius: 5
-  iBaitThrowSpeed: 10
+  iBaitThrowNoiseRadius: 0
+  iBaitThrowSpeed: 20
   iBaitThrowHeight: 5
   rBaitPrefab: {fileID: 4143692173027679908, guid: 8d00399f940fb6546b7b87436603d109, type: 3}
   rBaitCooldown: 10

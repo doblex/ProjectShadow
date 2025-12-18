@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 850285759788653597}
   - component: {fileID: 3936544168446694584}
   - component: {fileID: 9188580536928997655}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BaseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -54,8 +54,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 2, y: 1, z: 1}
+  m_Center: {x: 0.4, y: 0, z: 0}
 --- !u!23 &850285759788653597
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -141,7 +141,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6142213751541756488}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BaseWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -232,6 +232,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 215603e20c016e2498bd9ac0de1d7a9d, type: 3}
       propertyPath: m_Name
       value: Ruin3_LP
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 215603e20c016e2498bd9ac0de1d7a9d, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

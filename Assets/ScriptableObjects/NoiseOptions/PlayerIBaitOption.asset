@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerIBaitOption
   m_EditorClassIdentifier: Assembly-CSharp::NoiseOptions
   duration: 2
-  startSize: 10
+  startSize: 0
   sizeOverLifeTime:
     m_Mode: 1
     m_CurveMultiplier: 1

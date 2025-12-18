@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayerNoiseOption
   m_EditorClassIdentifier: Assembly-CSharp::SoundOptions
   duration: 2
-  startSize: 10
+  startSize: 2
   sizeOverLifeTime:
     m_Mode: 1
     m_CurveMultiplier: 1
