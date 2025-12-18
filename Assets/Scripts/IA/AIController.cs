@@ -90,6 +90,8 @@ public class AIController : MonoBehaviour
     public Animator animator;
     [HideInInspector] public string speedParam = "Speed";
 
+    [HideInInspector] public Transform currentBait;
+
     public bool IsSelected { get; private set; }
     #endregion
     void Start()
@@ -141,6 +143,27 @@ public class AIController : MonoBehaviour
                 break;
         }
         UpdateAnimation();
+        if (currentBait != null)
+        {
+            float dist = Vector3.Distance(transform.position, currentBait.position);
+            if (dist <= 1.0f)
+            {
+                IBait iBait = currentBait.GetComponent<IBait>();
+                if (iBait != null)
+                {
+                    iBait.Despawn();
+                }
+                else
+                {
+                    RBait rBait = currentBait.GetComponent<RBait>();
+                    if (rBait != null)
+                        rBait.Despawn();
+                }
+
+                currentBait = null;
+            }
+        }
+
     }
     private void OnEnable()
     {
@@ -182,7 +205,7 @@ public class AIController : MonoBehaviour
                 continue;
             if (target.CompareTag("Bait"))
             {
-                OnBaitSeen(target.position);
+                OnBaitSeen(target.position, target);
                 continue;
             }
             PlayerController playerCtrl = target.GetComponent<PlayerController>();
@@ -444,8 +467,10 @@ public class AIController : MonoBehaviour
     #endregion
     #region Bait
     // Reazione alla vista di un'esca
-    public void OnBaitSeen(Vector3 baitPos)
+    public void OnBaitSeen(Vector3 baitPos, Transform baitTransform)
     {
+        currentBait = baitTransform;
+
         switch (enemyType)
         {
             case EnemyType.Sentinel:

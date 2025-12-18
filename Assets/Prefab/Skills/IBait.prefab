@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 4091857979644622974}
   m_Layer: 9
   m_Name: IBait
-  m_TagString: Untagged
+  m_TagString: Bait
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -156,6 +156,8 @@ MonoBehaviour:
   iBaitSound: {fileID: 11400000, guid: e3f8ef53fc108e44790d6ceee9387dc1, type: 2}
   origin: {x: 0, y: 0, z: 0}
   destination: {x: 0, y: 0, z: 0}
+  pointList: []
+  pointIndex: 0
   reached: 0
 --- !u!114 &4091857979644622974
 MonoBehaviour:
@@ -169,6 +171,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752fb2530ad9b434ca8cfd3b3e5225d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveableEntity
-  id: 
   isDynamic: 1
   prefabKey: IBait

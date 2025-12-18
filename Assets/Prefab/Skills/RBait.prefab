@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 7095801588837423550}
   m_Layer: 9
   m_Name: RBait
-  m_TagString: Untagged
+  m_TagString: Bait
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,6 +166,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752fb2530ad9b434ca8cfd3b3e5225d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveableEntity
-  id: 
   isDynamic: 1
   prefabKey: RBait
