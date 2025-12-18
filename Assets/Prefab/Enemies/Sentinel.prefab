@@ -141,6 +141,7 @@ GameObject:
   - component: {fileID: 8935213545153402030}
   - component: {fileID: 6630173917672648710}
   - component: {fileID: 3964684009558181043}
+  - component: {fileID: 5160384138559954077}
   m_Layer: 10
   m_Name: Sentinel
   m_TagString: Enemy
@@ -263,7 +264,7 @@ MonoBehaviour:
   player: {fileID: 0}
   debugFovVisible: 0
   playerInFOVNow: 0
-  animator: {fileID: 0}
+  animator: {fileID: 8499654638947970841}
   speedParam: Speed
 --- !u!195 &8935213545153402030
 NavMeshAgent:
@@ -337,6 +338,19 @@ CapsuleCollider:
   m_Height: 1.2771326
   m_Direction: 1
   m_Center: {x: -0.023562431, y: 0.5627381, z: -0.050000012}
+--- !u!114 &5160384138559954077
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4468013301770659722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb69092630def3a4ca5dbb0f445b9f4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Highlighter
+  HLMaterial: {fileID: 0}
 --- !u!1 &7813370252378434756
 GameObject:
   m_ObjectHideFlags: 0
@@ -516,6 +530,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: E1_SK
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 46acbaa1dcd40d94a8b37dd92a842526, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6d11543d244c082438934021abf126cf, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -524,5 +542,10 @@ PrefabInstance:
 --- !u!4 &2527920207129965923 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 46acbaa1dcd40d94a8b37dd92a842526, type: 3}
+  m_PrefabInstance: {fileID: 2638620603895911048}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8499654638947970841 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 46acbaa1dcd40d94a8b37dd92a842526, type: 3}
   m_PrefabInstance: {fileID: 2638620603895911048}
   m_PrefabAsset: {fileID: 0}
