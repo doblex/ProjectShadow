@@ -17,8 +17,6 @@ public class AbilityController : MonoBehaviour, ISaveable
     [Header("Throw Height")]
     [SerializeField] private float raycastHeight; // horizontal raycast height from player center to determine if skill can be cast
 
-    // Use linerenderer for throwing arc display
-
     //Throwable stone
     [Header("Throwable Stone")]
     [SerializeField] public GameObject throwableStonePrefab;
@@ -41,7 +39,7 @@ public class AbilityController : MonoBehaviour, ISaveable
     // Irreplaceable Bait
     [Header("Irreplaceable Bait")]
     [SerializeField] public GameObject iBaitPrefab;
-    [SerializeField] private float iBaitCount;
+    [SerializeField] private int iBaitCount;
     [SerializeField] private float iBaitThrowRadius;
     [SerializeField] private float iBaitThrowNoiseRadius;
     [SerializeField] private float iBaitThrowSpeed;
@@ -59,9 +57,7 @@ public class AbilityController : MonoBehaviour, ISaveable
 
     private void Awake()
     {
-        // REGISTER AS SAVEABLE
         id = System.Guid.NewGuid().ToString();
-        //PersistenceManager.Instance.RegisterSaveable(this);
     }
 
     private void OnEnable()
@@ -129,6 +125,11 @@ public class AbilityController : MonoBehaviour, ISaveable
 
     }
 
+    public float GetStoneThrowTimer()
+    {
+        return stoneThrowTimer;
+    }
+
     public void ResetStoneThrowTimer()
     {
         stoneThrowTimer = stoneThrowCooldown;
@@ -143,6 +144,11 @@ public class AbilityController : MonoBehaviour, ISaveable
             whistleRadius);
        controller.SetCast(true);
 
+    }
+
+    public float GetWhistleTimer()
+    {
+        return whistleTimer;
     }
 
     public void ResetWhistleTimer()
@@ -160,6 +166,10 @@ public class AbilityController : MonoBehaviour, ISaveable
         controller.SetCast(true);
     }
 
+    public int GetIBaitCount()
+    {
+        return iBaitCount;
+    }
     public void AddIBait()
     {
         iBaitCount++;
@@ -177,6 +187,11 @@ public class AbilityController : MonoBehaviour, ISaveable
         controller.SetCast(true);
     }
 
+    public float GetRBaitTimer()
+    {
+        return rBaitTimer;
+    }
+
     public void ResetRBaitTimer()
     {
         rBaitTimer = rBaitCooldown;
@@ -189,7 +204,7 @@ public class AbilityController : MonoBehaviour, ISaveable
     {
         public float stoneThrowTimer;
         public float whistleTimer;
-        public float iBaitCount;
+        public int iBaitCount;
         public float rBaitTimer;
     }
 
