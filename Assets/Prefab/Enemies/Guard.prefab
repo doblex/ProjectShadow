@@ -139,7 +139,7 @@ MonoBehaviour:
   player: {fileID: 0}
   debugFovVisible: 0
   playerInFOVNow: 0
-  animator: {fileID: 0}
+  animator: {fileID: 6935102736838530094}
   speedParam: Speed
 --- !u!195 &6228876070019177563
 NavMeshAgent:
@@ -226,7 +226,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Highlighter
   HLMaterial: {fileID: 2100000, guid: 3d64fa66e4e145442b004776f7e5f804, type: 2}
-  HLcolor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &478876452412806123
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,6 +532,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: E3_SK
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 42b7063aaec9e3b44a5ed13f971d07d5, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6d11543d244c082438934021abf126cf, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -541,5 +544,10 @@ PrefabInstance:
 --- !u!4 &3953672180203802196 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 42b7063aaec9e3b44a5ed13f971d07d5, type: 3}
+  m_PrefabInstance: {fileID: 3554741553787906495}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6935102736838530094 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 42b7063aaec9e3b44a5ed13f971d07d5, type: 3}
   m_PrefabInstance: {fileID: 3554741553787906495}
   m_PrefabAsset: {fileID: 0}
