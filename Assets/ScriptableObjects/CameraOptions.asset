@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CameraOptions
   m_EditorClassIdentifier: Assembly-CSharp::PlayerOptions
   _moveSpeed: 10
-  _angleSpeed: 10
+  _angleSpeed: 50
