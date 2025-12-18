@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -11,12 +12,14 @@ public class CameraController : MonoBehaviour
     {
         ActionManager.Instance.onMovementChanged += OnVisualPosChanged;
         ActionManager.Instance.onRotationChanged += OnVisualRotChanged;
+        ActionManager.Instance.onResetCamera += OnCameraReset;
     }
 
     private void OnDisable()
     {
         ActionManager.Instance.onMovementChanged -= OnVisualPosChanged;
         ActionManager.Instance.onRotationChanged -= OnVisualRotChanged;
+        ActionManager.Instance.onResetCamera += OnCameraReset;
     }
 
     private void Start()
@@ -41,6 +44,11 @@ public class CameraController : MonoBehaviour
         newPos.z = Mathf.Clamp(newPos.z, transform.parent.position.z - halfHeight, transform.parent.position.z + halfHeight);
 
         transform.position = newPos;
+    }
+
+    private void OnCameraReset()
+    {
+        transform.position = FindFirstObjectByType<PlayerController>().transform.position;
     }
 
     private void OnDrawGizmos()

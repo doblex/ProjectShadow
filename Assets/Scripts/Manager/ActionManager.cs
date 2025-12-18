@@ -11,6 +11,7 @@ public class ActionManager : MonoBehaviour
     public delegate void OnCameraRotationChanged(Quaternion rotation);
 
     public delegate void OnPlayerMovement(Vector2 mousePos, bool dash);
+    public delegate void OnResetCamera();
 
     public delegate void OnInteract();
     public delegate void OnHighlight(bool active);
@@ -20,6 +21,7 @@ public class ActionManager : MonoBehaviour
 
     public OnCameraMovementChanged onMovementChanged;
     public OnCameraRotationChanged onRotationChanged;
+    public OnResetCamera onResetCamera;
 
     public OnPlayerMovement onPlayerMovement;
 
@@ -37,8 +39,10 @@ public class ActionManager : MonoBehaviour
 
 
     private InputAction RotateVisual;
+    private InputAction ResetCamera;
 
     private InputAction InteractAction;
+
     private InputAction HighlightAction;
     private bool HighlightActive = false;
 
@@ -119,6 +123,7 @@ public class ActionManager : MonoBehaviour
 
         RotateVisual.performed -= OnRotateDown;
         RotateVisual.canceled -= OnRotateUp;
+        ResetCamera.performed -= OnCameraReset;
 
         InteractAction.performed -= OnInteractInput;
 
@@ -161,6 +166,9 @@ public class ActionManager : MonoBehaviour
         RotateVisual = InputSystem.actions.FindAction("RotateCamera");
         RotateVisual.performed += OnRotateDown;
         RotateVisual.canceled += OnRotateUp;
+
+        ResetCamera = InputSystem.actions.FindAction("ResetCamera");
+        ResetCamera.performed += OnCameraReset;
 
         InteractAction = InputSystem.actions.FindAction("Interact");
         InteractAction.performed += OnInteractInput;
@@ -292,6 +300,14 @@ public class ActionManager : MonoBehaviour
             yield return null;
         }
     }
+
+    private void OnCameraReset(InputAction.CallbackContext ctx)
+    {
+        if (isPaused) return;
+
+        onResetCamera?.Invoke();
+    }
+
 
     private void OnInteractInput(InputAction.CallbackContext ctx)
     {
