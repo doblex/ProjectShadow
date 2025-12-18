@@ -130,6 +130,11 @@ public class AbilityController : MonoBehaviour, ISaveable
         return stoneThrowTimer;
     }
 
+    public float GetStonThrowTotalCooldown()
+    {
+        return stoneThrowCooldown;
+    }
+
     public void ResetStoneThrowTimer()
     {
         stoneThrowTimer = stoneThrowCooldown;
@@ -149,6 +154,11 @@ public class AbilityController : MonoBehaviour, ISaveable
     public float GetWhistleTimer()
     {
         return whistleTimer;
+    }
+
+    public float GetWhistleTotalCooldown()
+    {
+        return whistleCooldown;
     }
 
     public void ResetWhistleTimer()
@@ -190,6 +200,11 @@ public class AbilityController : MonoBehaviour, ISaveable
     public float GetRBaitTimer()
     {
         return rBaitTimer;
+    }
+
+    public float GetRBaitTotalCooldown()
+    {
+        return rBaitCooldown;
     }
 
     public void ResetRBaitTimer()
