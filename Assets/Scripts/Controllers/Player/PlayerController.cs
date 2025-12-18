@@ -34,13 +34,13 @@ public class PlayerController : MonoBehaviour, ISaveable
     [SerializeField] NoiseOptions whistleSound;
     [SerializeField] Transform throwOrigin;
 
-    [Header("Animations")]
-    [SerializeField] Animator animatorController;
-    [SerializeField] float animNormalSpeed = 1.0f;
-    [SerializeField] float animRunSpeed = 2.5f;
-    string animIsCrouch = "IsCrouching";
-    string animIsWalking = "IsWalking";
-    string animSpeedMult = "Speed";
+    //[Header("Animations")]
+    //[SerializeField] Animator animatorController;
+    //[SerializeField] float animNormalSpeed = 1.0f;
+    //[SerializeField] float animRunSpeed = 2.5f;
+    //string animIsCrouch = "IsCrouching";
+    //string animIsWalking = "IsWalking";
+    //string animSpeedMult = "Speed";
 
     bool isCrouching = false;
 
@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour, ISaveable
         navMeshAgent = GetComponent<NavMeshAgent>();
         isCasting = false;
 
-        animatorController.SetFloat(animSpeedMult, animNormalSpeed);
+        //animatorController.SetFloat(animSpeedMult, animNormalSpeed);
 
     }
 
@@ -164,7 +164,7 @@ public class PlayerController : MonoBehaviour, ISaveable
             currentState?.Exit();
             currentState = GetComponent<AbilityController>().currentCast;
             currentState.Enter();
-            animatorController.SetBool(animIsWalking, false);
+            //animatorController.SetBool(animIsWalking, false);
         }
         else
         {
@@ -231,9 +231,9 @@ public class PlayerController : MonoBehaviour, ISaveable
 
         if (dash)
         {
-            animatorController.SetBool(animIsCrouch, false);
-            animatorController.SetFloat(animSpeedMult, animRunSpeed);
-            animatorController.SetBool(animIsWalking, true);
+            //animatorController.SetBool(animIsCrouch, false);
+            //animatorController.SetFloat(animSpeedMult, animRunSpeed);
+            //animatorController.SetBool(animIsWalking, true);
             UpdateStates(new DashMovePlayerState(this, hit.point, playerVariables,isCrouching));
         }
         else
@@ -241,22 +241,22 @@ public class PlayerController : MonoBehaviour, ISaveable
             if (isCrouching)
             {
                 UpdateStates(new CrouchingPlayerState(this, hit.point, playerVariables));
-                animatorController.SetBool(animIsWalking, true);
+                //animatorController.SetBool(animIsWalking, true);
             }
             else
             {
                 UpdateStates(new WalkMovePlayerState(this, hit.point, playerVariables));
-                animatorController.SetFloat(animSpeedMult, animNormalSpeed);
-                animatorController.SetBool(animIsWalking, true);
+                //animatorController.SetFloat(animSpeedMult, animNormalSpeed);
+                //animatorController.SetBool(animIsWalking, true);
             }
         }
     }
 
     public void SetIntoIdle(bool isCrouching)
     {
-        animatorController.SetFloat(animSpeedMult, animNormalSpeed);
-        animatorController.SetBool(animIsWalking, false);
-        animatorController.SetBool(animIsCrouch, isCrouching);
+        //animatorController.SetFloat(animSpeedMult, animNormalSpeed);
+        //animatorController.SetBool(animIsWalking, false);
+        //animatorController.SetBool(animIsCrouch, isCrouching);
     }
 
     public void ThrowStone(Vector3 destination, float speed, float throwHeight)

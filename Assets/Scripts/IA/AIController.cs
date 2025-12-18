@@ -88,7 +88,7 @@ public class AIController : MonoBehaviour
     bool _lastPlayerInFOV;
 
     [Header("Animation")]
-    public Animator animator;
+    //public Animator animator;
     [HideInInspector] public string speedParam = "Speed";
 
     public bool IsSelected { get; private set; }
@@ -96,8 +96,8 @@ public class AIController : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        if (animator == null)
-            animator = GetComponentInChildren<Animator>();
+        //if (animator == null)
+        //    animator = GetComponentInChildren<Animator>();
         if (role == EnemyRole.Sentry)
         {
             sentryOriginalPosition = transform.position;
@@ -552,13 +552,13 @@ public class AIController : MonoBehaviour
     // Aggiorna i parametri dell'animazione
     void UpdateAnimation()
     {
-        if (animator == null || agent == null) return;
+        //if (animator == null || agent == null) return;
 
-        Vector3 vel = agent.velocity;
-        vel.y = 0f;
-        float speed = vel.magnitude;
+        //Vector3 vel = agent.velocity;
+        //vel.y = 0f;
+        //float speed = vel.magnitude;
 
-        animator.SetFloat(speedParam, speed);
+        //animator.SetFloat(speedParam, speed);
     }
     // Gestisce la selezione del nemico
     private void OnEnemySelected(AIController selected)
