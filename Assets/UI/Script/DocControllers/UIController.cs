@@ -1,11 +1,7 @@
-using System;
-
 public class UIController : BaseUIController
 {
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
-
         ShowMainMenu(true);
     }
 
@@ -21,6 +17,8 @@ public class UIController : BaseUIController
         ShowLoading(true);
         LevelLoaderManager.Instance.LoadMenuScene(() =>
         {
+            CheckAllDocs();
+
             ActionManager.Instance.onPauseGame -= ShowPauseMenu;
             ShowMainMenu(true);
             ShowLoading(false);
@@ -32,6 +30,8 @@ public class UIController : BaseUIController
         ShowLoading(true);
         LevelLoaderManager.Instance.StartLevelLoading(() =>
         {
+            CheckAllDocs();
+
             ActionManager.Instance.onPauseGame += ShowPauseMenu;
             ShowHud(true);
             ShowLoading(false);

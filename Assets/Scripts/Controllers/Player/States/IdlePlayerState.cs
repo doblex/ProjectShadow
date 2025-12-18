@@ -13,19 +13,12 @@ public class IdlePlayerState : PlayerState
     {
         Debug.Log("Idle state");
 
-        if (IsCrouching)
-        {
-            // TODO : SetPlayerModel crouch
-        }
-        else
-        {
-
-            // TODO : SetPlayerModel idle
-        }
-
         Controller.navMeshAgent.isStopped = true;
         Controller.navMeshAgent.ResetPath();
-        
+
+        Controller.SetIntoIdle();
+
+
     }
 
     public override void Update()

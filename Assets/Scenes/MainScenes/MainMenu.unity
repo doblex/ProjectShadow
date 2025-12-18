@@ -532,6 +532,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18f12f4f2eaf8d245ab8f04db9652dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIController
+  debug: 0
   docControllers:
   - {fileID: 276928580}
   - {fileID: 1695121216}
