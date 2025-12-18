@@ -444,6 +444,7 @@ Transform:
   - {fileID: 3214610826283793986}
   - {fileID: 4497980939806704708}
   - {fileID: 5394107219186320345}
+  - {fileID: 4609780384083649197}
   - {fileID: 5328127180831855765}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -460,7 +461,7 @@ NavMeshAgent:
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 360
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -481,6 +482,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 37898a785faf57848a2bb0174d05eda6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  debug: 0
   playerVariables: {fileID: 11400000, guid: cf59b51771c6b154e86312606af21eb8, type: 2}
   terrainLayer:
     serializedVersion: 2
@@ -496,6 +498,9 @@ MonoBehaviour:
     m_Bits: 2048
   whistleSound: {fileID: 11400000, guid: 4cd2fb497f8e672458f20d059794ccb9, type: 2}
   throwOrigin: {fileID: 5328127180831855765}
+  animatorController: {fileID: 1706587610877458589}
+  animNormalSpeed: 1
+  animRunSpeed: 2.5
 --- !u!136 &5386119233879636275
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -700,6 +705,98 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1001 &4067739648496223558
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4108403547803092565}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      propertyPath: m_Name
+      value: BreathingIdleCarlo
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1706587610877458589}
+  m_SourcePrefab: {fileID: 100100000, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+--- !u!1 &3797355243242453015 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+  m_PrefabInstance: {fileID: 4067739648496223558}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1706587610877458589
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3797355243242453015}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d07a0ad0e88f0a6409b1654f318359e3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &4609780384083649197 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ad5c5d5ab3a633f4498b112009e1b506, type: 3}
+  m_PrefabInstance: {fileID: 4067739648496223558}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5571250237370393650
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -763,6 +860,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 921a2e1f7fe0077499311b7c6494c400, type: 3}
       propertyPath: m_Name
       value: Carlo
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 921a2e1f7fe0077499311b7c6494c400, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

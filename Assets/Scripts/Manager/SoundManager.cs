@@ -14,7 +14,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] AudioSource sfxSource;
 
     // OST management
-    [SerializeField] AudioSource ostSouce;
+    [SerializeField] AudioSource ostSource;
     [SerializeField] AudioClip ostClip;
     [SerializeField] AudioClip muffledOstClip;
 
@@ -37,10 +37,11 @@ public class SoundManager : MonoBehaviour
         sfxSource.loop = false;
         sfxSource.outputAudioMixerGroup = sfxMixerGroup;
 
-        ostSouce.clip = ostClip;
-        ostSouce.playOnAwake = true;
-        ostSouce.loop = true;
-        ostSouce.outputAudioMixerGroup = musicMixerGroup;
+        ostSource.clip = ostClip;
+        ostSource.loop = true;
+        ostSource.outputAudioMixerGroup = musicMixerGroup;
+
+        ostSource.Play();
     }
 
     public void PlaySFXOnPos(AudioClip clip, Vector3 pos)
@@ -68,16 +69,16 @@ public class SoundManager : MonoBehaviour
 
     public void StopMusic() 
     {
-        ostSouce.Stop();
+        ostSource.Stop();
     }
 
     public void ChangeOstOnCrouch(bool isCrouching)
     { 
-        float duration = ostSouce.time;
+        float duration = ostSource.time;
 
-        ostSouce.clip = isCrouching ? muffledOstClip : ostClip;
-        ostSouce.time = duration;
-        ostSouce.Play();
+        ostSource.clip = isCrouching ? muffledOstClip : ostClip;
+        ostSource.time = duration;
+        ostSource.Play();
     }
 
     private GameObject GetPooledSFXObj()

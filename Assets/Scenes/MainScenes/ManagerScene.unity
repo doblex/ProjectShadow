@@ -228,7 +228,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -424,9 +424,9 @@ MonoBehaviour:
   sfxMixerGroup: {fileID: -4781949719926627316, guid: e122bdc7db9fdf44ea36bbd7b81c516d, type: 2}
   musicMixerGroup: {fileID: -1085115179717483168, guid: e122bdc7db9fdf44ea36bbd7b81c516d, type: 2}
   sfxSource: {fileID: 672537005}
-  ostSouce: {fileID: 672537004}
-  ostClip: {fileID: 0}
-  muffledOstClip: {fileID: 0}
+  ostSource: {fileID: 672537004}
+  ostClip: {fileID: 8300000, guid: 65f622510cdd0f548bef6ec8123a9a41, type: 3}
+  muffledOstClip: {fileID: 8300000, guid: a923aa79453603742ae21617264886dd, type: 3}
 --- !u!1 &1454006774
 GameObject:
   m_ObjectHideFlags: 0

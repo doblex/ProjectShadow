@@ -16,7 +16,7 @@ public class IdlePlayerState : PlayerState
         Controller.navMeshAgent.isStopped = true;
         Controller.navMeshAgent.ResetPath();
 
-        Controller.SetIntoIdle();
+        Controller.SetIntoIdle(IsCrouching);
 
 
     }
