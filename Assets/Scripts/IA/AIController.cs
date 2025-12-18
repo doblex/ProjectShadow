@@ -97,6 +97,9 @@ public class AIController : MonoBehaviour, ISaveable
 
     [HideInInspector] public Transform currentBait;
 
+
+    GameObject pg;
+
     public bool IsSelected { get; private set; }
 
     #endregion
@@ -135,6 +138,7 @@ public class AIController : MonoBehaviour, ISaveable
 
     void Update()
     {
+        Spotplayer();
         LookForPlayer();
         switch (phase)
         {
@@ -176,6 +180,21 @@ public class AIController : MonoBehaviour, ISaveable
         }
 
     }
+
+    private void Spotplayer()
+    {
+        if (pg == null)
+        { 
+            pg = GameObject.FindGameObjectWithTag("Player");
+        }
+
+
+       float distance = Vector3.Distance(transform.position, pg.transform.position);
+
+        if(distance < 1.5f)
+            ((UIController)UIController.Instance).ShowLose(true);
+    }
+
     private void OnEnable()
     {
         if (ActionManager.Instance != null)
@@ -629,14 +648,6 @@ public class AIController : MonoBehaviour, ISaveable
             fovColor.UpdateVisibility(isSelected);
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        { 
-            ((UIController)UIController.Instance).ShowLose(true);
-        }
-    }
-
     #region gyzmos
     void OnDrawGizmosSelected()
     {
@@ -694,6 +705,8 @@ public class AIController : MonoBehaviour, ISaveable
 
     public object Save()
     {
+        pg = null;
+
         return new AIControllerData
         {
             position = this.transform.position,
