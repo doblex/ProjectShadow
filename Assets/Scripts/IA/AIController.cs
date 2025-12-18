@@ -85,7 +85,6 @@ public class AIController : MonoBehaviour
 
     [HideInInspector] public bool debugFovVisible;
     [HideInInspector] public bool playerInFOVNow;
-    bool _lastPlayerInFOV;
 
     [Header("Animation")]
     public Animator animator;
@@ -124,7 +123,6 @@ public class AIController : MonoBehaviour
     void Update()
     {
         LookForPlayer();
-
         switch (phase)
         {
             case Phase.Patrol:
@@ -200,7 +198,6 @@ public class AIController : MonoBehaviour
             bool inInnerCone = dstToTarget <= innerRadius;
             if (!isHiddenFromThisEnemy || inInnerCone)
             {
-                Debug.Log($"[{name}] VEDO il player");
                 visibleTargets.Add(target);
             }
         }
@@ -212,6 +209,13 @@ public class AIController : MonoBehaviour
         {
             if (sentryLookingAround)
                 sentryLookingAround = false;
+
+            foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
+            {
+                fov.UpdateVisibility(true);
+            }
+            foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
+                fovColor.UpdateVisibility(true);
 
             player = visibleTargets[0];
             Vector3 currentPlayerPos = player.position;
@@ -229,8 +233,8 @@ public class AIController : MonoBehaviour
                 if (alarmDelayTimer >= reactionDelay)
                 {
                     bool canRaise =
-                        lastAlarmPosition == Vector3.zero ||
-                        Vector3.Distance(currentPlayerPos, lastAlarmPosition) >= alarmMinMoveDist;
+                    lastAlarmPosition == Vector3.zero ||
+                    Vector3.Distance(currentPlayerPos, lastAlarmPosition) >= alarmMinMoveDist;
 
                     if (canRaise)
                     {
@@ -253,21 +257,6 @@ public class AIController : MonoBehaviour
             alarmDelayTimer = 0f;
             if (phase != Phase.Alarm && agent.isStopped)
                 agent.isStopped = false;
-        }
-        playerInFOVNow = visibleTargets.Count > 0;
-
-        if (playerInFOVNow != _lastPlayerInFOV)
-        {
-            _lastPlayerInFOV = playerInFOVNow;
-
-            foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
-            {
-                fov.isPlayerInsideFOV = playerInFOVNow;
-                fov.UpdateVisibility();
-            }
-
-            foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
-                fovColor.UpdateVisibility();
         }
     }
 
@@ -343,6 +332,14 @@ public class AIController : MonoBehaviour
             investigationTimer -= Time.deltaTime;
             if (investigationTimer <= 0f)
             {
+
+                foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
+                {
+                    fov.UpdateVisibility(false);
+                }
+                foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
+                    fovColor.UpdateVisibility(false);
+
                 if (role == EnemyRole.Sentry)
                 {
                     agent.SetDestination(sentryOriginalPosition);
@@ -424,12 +421,11 @@ public class AIController : MonoBehaviour
         }
 
         transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            sentryTargetRotation,
-            headLookSpeed * Time.deltaTime
+        transform.rotation,
+        sentryTargetRotation,
+        headLookSpeed * Time.deltaTime
         );
     }
-
     // Ritorna il sentinella al suo posto originale
     IEnumerator ReturnSentryToPost()
     {
@@ -503,14 +499,16 @@ public class AIController : MonoBehaviour
             lastDistractionTime = Time.time;
             lastDistractionPosition = lastSeenPlayerPosition;
         }
-        if (playerInFOVNow && player != null)
+
+        if (playerInFOVNow && player != null && agent.isOnNavMesh)
         {
             agent.isStopped = false;
             agent.SetDestination(player.position);
         }
         else
         {
-            if (Vector3.Distance(transform.position, lastSeenPlayerPosition) > 0.5f)
+            if (agent.isOnNavMesh &&
+            Vector3.Distance(transform.position, lastSeenPlayerPosition) > 0.5f)
             {
                 agent.isStopped = false;
                 agent.SetDestination(lastSeenPlayerPosition);
@@ -523,6 +521,7 @@ public class AIController : MonoBehaviour
             }
         }
     }
+
 
     // Propaga l'allarme ai nemici vicini
     void RaiseLocalAlarm(Vector3 alarmPos)
@@ -566,9 +565,9 @@ public class AIController : MonoBehaviour
         IsSelected = (selected == this);
 
         foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
-            fov.UpdateVisibility();
+            fov.UpdateVisibility(IsSelected);
         foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
-            fovColor.UpdateVisibility();
+            fovColor.UpdateVisibility(IsSelected);
     }
     // Imposta lo stato di selezione del nemico
     public void SetSelected(bool selected)
@@ -576,9 +575,9 @@ public class AIController : MonoBehaviour
         IsSelected = selected;
 
         foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
-            fov.UpdateVisibility();
+            fov.UpdateVisibility(playerInFOVNow);
         foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
-            fovColor.UpdateVisibility();
+            fovColor.UpdateVisibility(playerInFOVNow);
     }
     #region gyzmos
     void OnDrawGizmosSelected()
@@ -598,9 +597,9 @@ public class AIController : MonoBehaviour
             angleInDegrees += transform.eulerAngles.y;
 
         return new Vector3(
-            Mathf.Sin(angleInDegrees * Mathf.Deg2Rad),
-            0f,
-            Mathf.Cos(angleInDegrees * Mathf.Deg2Rad)
+        Mathf.Sin(angleInDegrees * Mathf.Deg2Rad),
+        0f,
+        Mathf.Cos(angleInDegrees * Mathf.Deg2Rad)
         );
     }
     #endregion

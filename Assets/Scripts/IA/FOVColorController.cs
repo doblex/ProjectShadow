@@ -70,15 +70,14 @@ public class FOVColorController : MonoBehaviour
         mat.SetColor("_FillColor", fillColor);
         mat.SetFloat("_FillAmount", Mathf.Clamp01(fillAmount));
     }
-    public void UpdateVisibility()
+    public void UpdateVisibility(bool visible)
     {
+        Debug.Log("1");
         if (owner == null)
         {
-            Debug.LogWarning($"{name}: owner NULL");
+            Debug.Log("2");
             return;
         }
-
-        bool visible = owner.IsSelected;
         rend.enabled = visible;
     }
 }
