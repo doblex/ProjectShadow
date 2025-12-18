@@ -1,6 +1,6 @@
-using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Highlighter))]
 public class IrreplacableBaitPickup : MonoBehaviour, IInteractable
 {
     public void Interact()

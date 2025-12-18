@@ -1,52 +1,77 @@
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
 public class Highlighter : MonoBehaviour
 {
     public Material HLMaterial;
-    public Color HLcolor;
 
-    public bool overrideActive = false;
     private bool hasMat = false;
+
+    List<Renderer> renderers = new List<Renderer>();
+
+
+    private void Awake()
+    {
+        CollectChildComponentsRecursive<Renderer>(transform, ref renderers);
+    }
 
     private void OnEnable()
     {
-        FindAnyObjectByType<ActionManager>().onHighlight += ShowHighlight;
+        ActionManager.Instance.onHighlight += ShowHighlight;
     }
 
     private void OnDisable()
     {
-        FindAnyObjectByType<ActionManager>().onHighlight -= ShowHighlight;
+        ActionManager.Instance.onHighlight -= ShowHighlight;
     }
 
     public void ShowHighlight(bool active)
     {
-        if (active)
-        {
-            if (!hasMat)
-            {
-                Material[] mArray = new Material[(this.GetComponent<Renderer>().materials.Length + 1)];
-                this.GetComponent<Renderer>().materials.CopyTo(mArray, 0);
+        if(HLMaterial == null) return;
+        
+        if(renderers.Count <= 0) return;
 
-                Material m = new Material(HLMaterial);
-                m.color = HLcolor;
-                mArray[mArray.Length - 1] = m;
-                this.GetComponent<Renderer>().materials = mArray;
-                hasMat = true;
+        foreach (Renderer renderer in renderers)
+        {
+            if (active)
+            {
+                if (!hasMat)
+                {
+                    List<Material> materials =  renderer.sharedMaterials.ToList<Material>();
+                    materials.Add(HLMaterial);
+                    
+                    renderer.sharedMaterials = materials.ToArray();
+                }
+            }
+            else
+            {
+                if (hasMat)
+                {
+                    List<Material> materials = renderer.sharedMaterials.ToList<Material>();
+                    materials.Remove(HLMaterial);
+
+                    renderer.sharedMaterials = materials.ToArray();
+                }
             }
         }
-        else
+
+        hasMat = !hasMat;
+    }
+
+    public void CollectChildComponentsRecursive<T>(Transform root, ref List<T> result) where T : Component
+    {
+        foreach (Transform child in root)
         {
-            if (hasMat)
+            // Prova a prendere il componente (può non esistere)
+            if (child.TryGetComponent<T>(out var component))
             {
-                Material[] mArray = new Material[(this.GetComponent<Renderer>().materials.Length - 1)];
-                for (int i = 0; i < this.GetComponent<Renderer>().materials.Length - 1; i++)
-                {
-                    mArray[i] = this.GetComponent<Renderer>().materials[i];
-                }
-                this.GetComponent<Renderer>().materials = mArray;
-                hasMat = false;
+                result.Add(component);
             }
+
+            // Continua SEMPRE la ricorsione
+            CollectChildComponentsRecursive(child, ref result);
         }
     }
 }

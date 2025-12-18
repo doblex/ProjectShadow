@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5906384156381063330}
+  - component: {fileID: -3816940308266522506}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -33,6 +34,19 @@ Transform:
   - {fileID: 7415324555991039046}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-3816940308266522506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790687585271639600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb69092630def3a4ca5dbb0f445b9f4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Highlighter
+  HLMaterial: {fileID: 2100000, guid: 25d0045c17bded043b3c5a703dace9a3, type: 2}
 --- !u!1 &5614941370572194888
 GameObject:
   m_ObjectHideFlags: 0
