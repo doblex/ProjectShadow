@@ -64,11 +64,11 @@ public class Stone : MonoBehaviour, ISaveable
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (lifeTimer > 0)
         {
-            lifeTimer -= Time.deltaTime;
+            lifeTimer -= Time.fixedDeltaTime;
             if (lifeTimer <= 0)
             {
                 Destroy(gameObject);
@@ -80,7 +80,7 @@ public class Stone : MonoBehaviour, ISaveable
             // movement code
             else if (Vector3.Distance(transform.position, pointList[pointIndex]) > .25f)
             {
-                transform.position = Vector3.MoveTowards(transform.position, pointList[pointIndex], speed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, pointList[pointIndex], speed * Time.fixedDeltaTime);
             }
             else if (pointIndex < pointList.Count - 1)
             {
