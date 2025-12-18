@@ -141,6 +141,7 @@ MonoBehaviour:
   playerInFOVNow: 0
   animator: {fileID: 6935102736838530094}
   speedParam: Speed
+  currentBait: {fileID: 0}
 --- !u!195 &6228876070019177563
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -225,7 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb69092630def3a4ca5dbb0f445b9f4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Highlighter
-  HLMaterial: {fileID: 2100000, guid: 3d64fa66e4e145442b004776f7e5f804, type: 2}
+  HLMaterial: {fileID: 2100000, guid: fb91f1b936f69be48999dc0b0e7cbc27, type: 2}
 --- !u!1 &478876452412806123
 GameObject:
   m_ObjectHideFlags: 0
@@ -352,7 +353,6 @@ MonoBehaviour:
   owner: {fileID: 4386990860044135930}
   rayCount: 50
   radiusMultiplier: 1
-  isPlayerInsideFOV: 0
 --- !u!1 &6355649061782693162
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,7 +479,6 @@ MonoBehaviour:
   owner: {fileID: 4386990860044135930}
   rayCount: 10
   radiusMultiplier: 0.5
-  isPlayerInsideFOV: 0
 --- !u!1001 &3554741553787906495
 PrefabInstance:
   m_ObjectHideFlags: 0

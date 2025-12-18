@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class Highlighter : MonoBehaviour
 {
+    public delegate void OnHightlight(bool active);
+
+    public OnHightlight onHightlight;
+
     public Material HLMaterial;
 
     private bool hasMat = false;
@@ -58,6 +62,7 @@ public class Highlighter : MonoBehaviour
         }
 
         hasMat = !hasMat;
+        onHightlight?.Invoke(hasMat);
     }
 
     public void CollectChildComponentsRecursive<T>(Transform root, ref List<T> result) where T : Component

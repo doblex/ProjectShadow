@@ -96,6 +96,11 @@ public class AIController : MonoBehaviour
     #endregion
     void Start()
     {
+        Highlighter highlighter = GetComponent<Highlighter>();
+
+        if(highlighter != null)
+            highlighter.onHightlight += ForceSetSelected;
+
         agent = GetComponent<NavMeshAgent>();
         if (animator == null)
             animator = GetComponentInChildren<Animator>();
@@ -603,6 +608,16 @@ public class AIController : MonoBehaviour
             fov.UpdateVisibility(playerInFOVNow);
         foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
             fovColor.UpdateVisibility(playerInFOVNow);
+    }
+
+    public void ForceSetSelected(bool isSelected)
+    {
+        IsSelected = isSelected;
+
+        foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
+            fov.UpdateVisibility(isSelected);
+        foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
+            fovColor.UpdateVisibility(isSelected);
     }
     #region gyzmos
     void OnDrawGizmosSelected()
