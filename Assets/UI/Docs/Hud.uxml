@@ -13,11 +13,13 @@
         </ui:VisualElement>
         <ui:VisualElement name="FooterButtons" style="flex-grow: 0; flex-direction: row; height: 9%;">
             <ui:VisualElement name="Spacing" style="flex-grow: 1;" />
-            <ui:VisualElement name="Abilities" style="flex-grow: 0; flex-direction: row; align-self: center; justify-content: space-around; height: 82%; width: 24%;">
-                <ui:Button name="Ab1" class="abilityButton" style="background-image: url(&quot;project://database/Assets/Texture/UI/Icons/Icone%20abilit%C3%A0.png?fileID=-1121146726&amp;guid=3941bbb6599bbca458b41a5cb33e8dd6&amp;type=3#Icone abilità_0&quot;); flex-grow: 1;" />
-                <ui:Button name="Ab2" class="abilityButton" style="background-image: url(&quot;project://database/Assets/Texture/UI/Icons/Icone%20abilit%C3%A0.png?fileID=1656497075&amp;guid=3941bbb6599bbca458b41a5cb33e8dd6&amp;type=3#Icone abilità_1&quot;); flex-grow: 1;" />
-                <ui:Button name="Ab3" class="abilityButton" style="background-image: url(&quot;project://database/Assets/Texture/UI/Icons/Icone%20abilit%C3%A0.png?fileID=94771987&amp;guid=3941bbb6599bbca458b41a5cb33e8dd6&amp;type=3#Icone abilità_2&quot;); flex-grow: 1;" />
-                <ui:Button name="Ab4" class="abilityButton" style="background-image: url(&quot;project://database/Assets/Texture/UI/Icons/Icone%20abilit%C3%A0.png?fileID=-1812843877&amp;guid=3941bbb6599bbca458b41a5cb33e8dd6&amp;type=3#Icone abilità_3&quot;); flex-grow: 1;" />
+            <ui:VisualElement style="flex-grow: 1; background-image: url(&quot;project://database/Assets/Texture/UI/backGrounds/Fascia%20abilit%C3%A0%20icone.png?fileID=-188053397&amp;guid=ff80e400e432e6e4c865720a265fa070&amp;type=3#Fascia abilità icone_1&quot;); -unity-background-scale-mode: scale-to-fit; flex-direction: row; align-items: center; justify-content: center;">
+                <ui:VisualElement name="Abilities" style="flex-grow: 0; flex-direction: row; height: 67%; background-image: none; -unity-background-scale-mode: scale-to-fit; width: 65%;">
+                    <ui:Button name="Ab1" class="abilityButton" style="background-image: url(&quot;project://database/Assets/Texture/UI/Icons/Icone%20abilit%C3%A0.png?fileID=-1121146726&amp;guid=3941bbb6599bbca458b41a5cb33e8dd6&amp;type=3#Icone abilità_0&quot;); flex-grow: 1; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+                    <ui:Button name="Ab2" class="abilityButton" style="background-image: url(&quot;project://database/Assets/Texture/UI/Icons/Icone%20abilit%C3%A0.png?fileID=1656497075&amp;guid=3941bbb6599bbca458b41a5cb33e8dd6&amp;type=3#Icone abilità_1&quot;); flex-grow: 1; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+                    <ui:Button name="Ab3" class="abilityButton" style="background-image: url(&quot;project://database/Assets/Texture/UI/Icons/Icone%20abilit%C3%A0.png?fileID=94771987&amp;guid=3941bbb6599bbca458b41a5cb33e8dd6&amp;type=3#Icone abilità_2&quot;); flex-grow: 1; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+                    <ui:Button name="Ab4" class="abilityButton" style="background-image: url(&quot;project://database/Assets/Texture/UI/Icons/Icone%20abilit%C3%A0.png?fileID=-1812843877&amp;guid=3941bbb6599bbca458b41a5cb33e8dd6&amp;type=3#Icone abilità_3&quot;); flex-grow: 1; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;" />
+                </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="Spacing" style="flex-grow: 1;" />
         </ui:VisualElement>

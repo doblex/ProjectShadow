@@ -19,11 +19,20 @@ public class Options : ScriptableObject
 
     [SerializeField] bool isFullScreen = true;
 
-    public int selectedResolutionIndex = 0;
+    public int selectedResolutionIndex = 1;
     public List<string> resolutions;
 
     private void OnEnable()
     {
+        foreach (Resolution res in Screen.resolutions)
+        {
+            resolutions.Add(res.ToString());
+        }
+    }
+
+    public void ReloadOptions()
+    {
+        resolutions.Clear();
 
         foreach (Resolution res in Screen.resolutions)
         {

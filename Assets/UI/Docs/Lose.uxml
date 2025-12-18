@@ -1,7 +1,7 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Styles/BaseStyle.uss?fileID=7433441132597879392&amp;guid=68e07a90f95c56a49bc397c5316dfdba&amp;type=3" />
-    <ui:VisualElement name="BackGround" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.28); flex-direction: column; -unity-background-image-tint-color: rgb(0, 0, 0);">
-        <ui:VisualElement style="flex-grow: 1; width: 30%; flex-direction: column; align-self: stretch; justify-content: center;">
+    <Style src="project://database/Assets/UI/Styles/BaseStyle.uss?fileID=7433441132597879392&amp;guid=68e07a90f95c56a49bc397c5316dfdba&amp;type=3#BaseStyle" />
+    <ui:VisualElement name="BackGround" style="flex-grow: 1; flex-direction: column; background-image: url(&quot;project://database/Assets/Texture/UI/backGrounds/Lose_Art.jpg?fileID=2800000&amp;guid=36c41e2244f63d94aa8a61373b1635ac&amp;type=3#Lose_Art&quot;); -unity-background-scale-mode: scale-to-fit;">
+        <ui:VisualElement style="flex-grow: 1; width: 37%; flex-direction: column; align-self: stretch; justify-content: center;">
             <ui:VisualElement style="flex-grow: 1;" />
             <ui:VisualElement name="Buttons" style="flex-grow: 0; flex-direction: column; align-self: flex-end; width: 100%; height: auto; align-items: stretch; justify-content: center;">
                 <ui:Button text="Retry" name="Retry" class="MainMenuButton" />

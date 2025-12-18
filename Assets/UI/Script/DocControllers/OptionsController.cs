@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UIElements;
@@ -21,6 +22,16 @@ public class OptionsController : BaseDocController
     {
         OnValidate();
         ShowDoc(false);
+    }
+
+    public override void ShowDoc(bool show, bool force = false)
+    {
+        base.ShowDoc(show, force);
+
+        if (show)
+        {
+            options.ReloadOptions();
+        }
     }
 
     private void OnValidate()
