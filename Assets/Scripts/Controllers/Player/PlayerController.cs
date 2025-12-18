@@ -292,12 +292,12 @@ public class PlayerController : MonoBehaviour, ISaveable
     {
         Collider[] objectsInRadius = Physics.OverlapSphere(transform.position, playerVariables.maxInteractDistance, ~0);
 
-        Interactable closestInteractable = null;
+        IInteractable closestInteractable = null;
         float shortestDistance = playerVariables.maxInteractDistance;
 
         foreach (Collider obj in objectsInRadius)
         {
-            Interactable interactable = obj.GetComponent<Interactable>();
+            IInteractable interactable = obj.GetComponent<IInteractable>();
             if (interactable != null)
             {
                 float objDistance = (obj.transform.position - transform.position).sqrMagnitude;

@@ -160,6 +160,10 @@ public class AbilityController : MonoBehaviour, ISaveable
         controller.SetCast(true);
     }
 
+    public void AddIBait()
+    {
+        iBaitCount++;
+    }
     public void ConsumeIBait()
     {
         iBaitCount--;
@@ -213,4 +217,6 @@ public class AbilityController : MonoBehaviour, ISaveable
         this.iBaitCount = data.iBaitCount;
         this.rBaitTimer = data.rBaitTimer;
     }
+
+
 }
