@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static ActionManager;
 
+[RequireComponent(typeof(Highlighter))]
 public class AIController : MonoBehaviour
 {
     #region Variables

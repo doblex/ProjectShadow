@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 453463284994226155}
   - component: {fileID: 9036400174162170003}
+  - component: {fileID: 7927512533064233357}
   m_Layer: 0
   m_Name: Bait
   m_TagString: Untagged
@@ -45,6 +46,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77a4ddc4f843c2445943cd8a382b6c72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IrreplacableBaitPickup
+--- !u!114 &7927512533064233357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6892871111314107978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb69092630def3a4ca5dbb0f445b9f4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Highlighter
+  HLMaterial: {fileID: 2100000, guid: 7c06335c9f1198742897bf620eb6d9e3, type: 2}
 --- !u!1001 &2382885721294128958
 PrefabInstance:
   m_ObjectHideFlags: 0

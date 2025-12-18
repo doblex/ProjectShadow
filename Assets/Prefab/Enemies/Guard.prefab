@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6228876070019177563}
   - component: {fileID: 3385468281487236719}
   - component: {fileID: 5873829718913046829}
+  - component: {fileID: 4563425739926639219}
   m_Layer: 10
   m_Name: Guard
   m_TagString: Untagged
@@ -212,6 +213,20 @@ CapsuleCollider:
   m_Height: 1.2771326
   m_Direction: 1
   m_Center: {x: -0.023562431, y: 0.5627381, z: -0.050000012}
+--- !u!114 &4563425739926639219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117773027191515742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb69092630def3a4ca5dbb0f445b9f4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Highlighter
+  HLMaterial: {fileID: 2100000, guid: 3d64fa66e4e145442b004776f7e5f804, type: 2}
+  HLcolor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &478876452412806123
 GameObject:
   m_ObjectHideFlags: 0
