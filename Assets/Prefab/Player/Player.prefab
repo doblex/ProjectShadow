@@ -541,8 +541,8 @@ MonoBehaviour:
   throwableStonePrefab: {fileID: 2686772543481402752, guid: 4c540e55680472d418e4ffb4af721b5b, type: 3}
   stoneThrowRadius: 10
   stoneThrowNoiseRadius: 5
-  stoneThrowSpeed: 1
-  stoneThrowHeight: 20
+  stoneThrowSpeed: 1e+12
+  stoneThrowHeight: 10
   stoneThrowCooldown: 5
   whistleRadius: 10
   whistleCooldown: 10
