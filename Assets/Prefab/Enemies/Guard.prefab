@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AIController
   phase: 0
-  role: 0
+  role: 1
   enemyType: 2
   patrolPoints:
   - {fileID: 0}
