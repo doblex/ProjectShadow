@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI/Styles/BaseStyle.uss?fileID=7433441132597879392&amp;guid=68e07a90f95c56a49bc397c5316dfdba&amp;type=3" />
-    <ui:VisualElement name="BackGround" style="flex-grow: 1; flex-direction: row; background-image: url(&quot;project://database/Assets/Texture/UI/Menu_art%201.jpg?fileID=2800000&amp;guid=01faaa72752d6454d85bc141364d46c9&amp;type=3#Menu_art 1&quot;);">
+    <Style src="project://database/Assets/UI/Styles/BaseStyle.uss?fileID=7433441132597879392&amp;guid=68e07a90f95c56a49bc397c5316dfdba&amp;type=3#BaseStyle" />
+    <ui:VisualElement name="BackGround" style="flex-grow: 1; flex-direction: row; background-image: url(&quot;project://database/Assets/Texture/UI/backGrounds/Menu%20art.jpg?fileID=2800000&amp;guid=01c784016ad52274f9d28b9474836dfd&amp;type=3#Menu art&quot;);">
         <ui:VisualElement name="Menu" style="flex-grow: 0; align-self: center; width: 42%; height: 100%;">
             <ui:VisualElement style="flex-grow: 0; height: 3%;" />
             <ui:VisualElement name="Title_Image" style="flex-grow: 1; -unity-background-scale-mode: scale-to-fit; background-image: url(&quot;project://database/Assets/Texture/UI/The%20hidden%20land.png?fileID=2800000&amp;guid=0dcde2c1ff350f94f9def39f52ec5465&amp;type=3#The hidden land&quot;); -unity-background-image-tint-color: rgb(238, 237, 192); height: 31%;">

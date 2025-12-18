@@ -29,7 +29,6 @@
 .unity-text-element {
     -unity-font-definition: url("project://database/Assets/UI/RockThornRegular-0WmjG.otf?fileID=12800000&guid=b2be72689baed7a4cadee9b887b46c29&type=3#RockThornRegular-0WmjG");
     color: rgb(238, 237, 192);
-    text-shadow: 5px 5px 0 rgb(255, 0, 0);
 }
 
 .whiteText {
