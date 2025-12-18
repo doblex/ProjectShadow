@@ -20,8 +20,6 @@ public class PersistenceManager : MonoBehaviour
     [SerializeField] private bool useEncryption;
     [SerializeField] private string encryptionKey;
 
-    //private List<ISaveable> saveableObjects;
-
     // AES Key and IV (Initialization Vector) for encryption
     private byte[] key;
     private byte[] iv;
@@ -48,9 +46,6 @@ public class PersistenceManager : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this);
 
-            // register saveable objects list
-            //saveableObjects = new List<ISaveable>();
-
             // encryption key and iv
             key = System.Text.Encoding.UTF8.GetBytes(encryptionKey.PadRight(16).Substring(0, 16));
             iv = System.Text.Encoding.UTF8.GetBytes(encryptionKey.PadRight(16).Substring(0, 16));
@@ -68,9 +63,6 @@ public class PersistenceManager : MonoBehaviour
 
     private void Start()
     {
-        // FIXME Uncomment this to enable saving with f5 and loading with f8
-        //ActionManager.Instance.onSaveRequested += Save;
-        //ActionManager.Instance.onLoadRequested += Load;
         Debug.Log($"PersistenceManager started. Persistent data path: {Application.persistentDataPath}");
     }
 
@@ -78,22 +70,6 @@ public class PersistenceManager : MonoBehaviour
     {
         return Path.Combine(Application.persistentDataPath, saveNames[(int)saveSlot]);
     }
-
-    //public void RegisterSaveable(ISaveable saveable)
-    //{
-    //    if (!saveableObjects.Contains(saveable))
-    //    {
-    //        saveableObjects.Add(saveable);
-    //    }
-    //}
-
-    //public void UnregisterSaveable(ISaveable saveable)
-    //{
-    //    if (saveableObjects != null && saveableObjects.Contains(saveable))
-    //    {
-    //        saveableObjects.Remove(saveable);
-    //    }
-    //}
 
     public void SaveRequest(SaveSlot saveSlot = SaveSlot.Slot1)
     {
