@@ -10,7 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5906384156381063330}
   - component: {fileID: -3816940308266522506}
-  m_Layer: 0
+  - component: {fileID: 3153914816270646928}
+  - component: {fileID: 4749636154239652778}
+  - component: {fileID: 476506013276834330}
+  m_Layer: 13
   m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,6 +50,95 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Highlighter
   HLMaterial: {fileID: 2100000, guid: 25d0045c17bded043b3c5a703dace9a3, type: 2}
+--- !u!114 &3153914816270646928
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790687585271639600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a84758ccd7a159a49af7ec4eac56213c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Door
+  doorLeft: {fileID: 5849958052263321945}
+  doorRight: {fileID: 2081259290735072438}
+  doorCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxAngle: 60
+  duration: 1
+  activate: 0
+--- !u!65 &4749636154239652778
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790687585271639600}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3, y: 2, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &476506013276834330
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1790687585271639600}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5614941370572194888
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,8 +149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2591281548812520764}
   - component: {fileID: 5370095887220498269}
-  - component: {fileID: 2082041939878422634}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -88,27 +179,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5614941370572194888}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!65 &2082041939878422634
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5614941370572194888}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &7017240542659402669
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -173,15 +243,49 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7609145667655734672, guid: 484d0377f1eba184ebfdf15e4bb1ad9c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: -7235015103121818086, guid: 484d0377f1eba184ebfdf15e4bb1ad9c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: -5266785677919700964, guid: 484d0377f1eba184ebfdf15e4bb1ad9c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: -3133498875991405556, guid: 484d0377f1eba184ebfdf15e4bb1ad9c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: -344004081357383697, guid: 484d0377f1eba184ebfdf15e4bb1ad9c, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 484d0377f1eba184ebfdf15e4bb1ad9c, type: 3}
       propertyPath: m_Name
       value: Door_LP
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 484d0377f1eba184ebfdf15e4bb1ad9c, type: 3}
+      propertyPath: m_Layer
+      value: 13
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 484d0377f1eba184ebfdf15e4bb1ad9c, type: 3}
+--- !u!4 &2081259290735072438 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9043264698519129883, guid: 484d0377f1eba184ebfdf15e4bb1ad9c, type: 3}
+  m_PrefabInstance: {fileID: 7017240542659402669}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5849958052263321945 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -5742926517106001164, guid: 484d0377f1eba184ebfdf15e4bb1ad9c, type: 3}
+  m_PrefabInstance: {fileID: 7017240542659402669}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7415324555991039046 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 484d0377f1eba184ebfdf15e4bb1ad9c, type: 3}
