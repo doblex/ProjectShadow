@@ -1,11 +1,13 @@
 using System.Collections.Generic;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class BaseUIController : MonoBehaviour
 {
     public static BaseUIController Instance;
+
+    [Header("Debug")]
+    public bool debug;
 
     [Header("Docs")]
     [SerializeField] List<BaseDocController> docControllers = new List<BaseDocController>();
@@ -18,12 +20,13 @@ public class BaseUIController : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(this);
+            Destroy(gameObject);
+            return;
         }
         else
         {
             Instance = this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(gameObject);
         }
 
         foreach (BaseDocController controller in docControllers)
@@ -33,6 +36,17 @@ public class BaseUIController : MonoBehaviour
 
         SetAllDocsHidden();
     }
+
+    public void CheckAllDocs()
+    { 
+        if(!debug) return;
+
+        foreach (BaseDocController controller in docControllers) 
+        {
+            Debug.Log(controller + " Name:" + controller.name);
+        }
+    }
+
 
     /// <summary>
     /// Exits the application and stops play mode in the Unity Editor.
@@ -124,7 +138,7 @@ public class BaseUIController : MonoBehaviour
             return;
         }   
 
-        Debug.Log($"ShowDoc: {docName} - {show}");
+        if(debug) Debug.Log($"ShowDoc: {docName} - {show}");
     }
 
     private void ShowDoc(BaseDocController controller)

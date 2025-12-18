@@ -36,7 +36,9 @@ public class LevelLoaderManager : MonoBehaviour
     /// <param name="OnAfterLoad">An action to invoke after the menu scene has been loaded. Can be null if no callback is required.</param>
     public void LoadMenuScene(Action OnAfterLoad)
     {
-        LoadScene(MenuScene, false, OnAfterLoad);
+        SceneManager.LoadScene(MenuScene.name);
+
+        OnAfterLoad?.Invoke();
     }
 
     /// <summary>

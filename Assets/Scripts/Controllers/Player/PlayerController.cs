@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(AnimatorController))]
 public class PlayerController : MonoBehaviour, ISaveable
 {
     // save ID
@@ -12,6 +14,8 @@ public class PlayerController : MonoBehaviour, ISaveable
 
     string ISaveable.ID { get => ID; }
 
+    [Header("Debug")]
+    public bool debug;
 
     [Header("Options")]
     [SerializeField] public PlayerVariables playerVariables;
@@ -30,6 +34,13 @@ public class PlayerController : MonoBehaviour, ISaveable
     [SerializeField] NoiseOptions whistleSound;
     [SerializeField] Transform throwOrigin;
 
+    //[Header("Animations")]
+    //[SerializeField] Animator animatorController;
+    //[SerializeField] float animNormalSpeed = 1.0f; 
+    //[SerializeField] float animRunSpeed = 2.5f; 
+    //string animIsCrouch = "IsCrouching";
+    //string animIsWalking = "IsWalking";
+    //string animSpeedMult = "Speed";
 
     bool isCrouching = false;
 
@@ -54,6 +65,9 @@ public class PlayerController : MonoBehaviour, ISaveable
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         isCasting = false;
+
+        //animatorController.SetFloat(animSpeedMult, animNormalSpeed);
+        
     }
 
     private void OnEnable()
@@ -133,7 +147,7 @@ public class PlayerController : MonoBehaviour, ISaveable
             debugMsg += "\n";
         }
 
-        Debug.Log(debugMsg);
+        if(debug) Debug.Log(debugMsg);
     }
 
     private void UpdateStates(PlayerState forcedState = null)
@@ -150,6 +164,7 @@ public class PlayerController : MonoBehaviour, ISaveable
             currentState?.Exit();
             currentState = GetComponent<AbilityController>().currentCast;
             currentState.Enter();
+            //animatorController.SetBool(animIsWalking, false);
         }
         else
         {
@@ -191,10 +206,22 @@ public class PlayerController : MonoBehaviour, ISaveable
 
         isCrouching = !isCrouching;
 
-        Debug.Log("Crouch toggled. Now crouching: " + isCrouching);
+        SetAnimatorOnCrouch(isCrouching);
+
+        if(debug) Debug.Log("Crouch toggled. Now crouching: " + isCrouching);
 
         SoundManager.Instance?.ChangeOstOnCrouch(isCrouching);
         UpdateStates( new IdlePlayerState(this, playerVariables, isCrouching));
+    }
+
+    private void SetAnimatorOnCrouch(bool isCrouching)
+    {
+        if (isCrouching)
+        {
+            //animatorController.SetFloat(animSpeedMult, animNormalSpeed);
+        }
+
+        //animatorController.SetBool(animIsCrouch, isCrouching);
     }
 
     private void HandlePlayerMovement(Vector2 mousePos, bool dash)
@@ -210,6 +237,8 @@ public class PlayerController : MonoBehaviour, ISaveable
         if (dash)
         {
             UpdateStates(new DashMovePlayerState(this, hit.point, playerVariables,isCrouching));
+            //animatorController.SetFloat(animSpeedMult, animRunSpeed);
+            //animatorController.SetBool(animIsWalking, true);
         }
         else
         {
@@ -220,8 +249,16 @@ public class PlayerController : MonoBehaviour, ISaveable
             else
             {
                 UpdateStates(new WalkMovePlayerState(this, hit.point, playerVariables));
+                //animatorController.SetFloat(animSpeedMult, animNormalSpeed);
+                //animatorController.SetBool(animIsWalking, true);
             }
         }
+    }
+
+    public void SetIntoIdle()
+    {
+        //animatorController.SetFloat(animSpeedMult, animNormalSpeed);
+        //animatorController.SetBool(animIsWalking, false);
     }
 
     public void ThrowStone(Vector3 destination, float speed, float throwHeight)
@@ -255,12 +292,12 @@ public class PlayerController : MonoBehaviour, ISaveable
     {
         Collider[] objectsInRadius = Physics.OverlapSphere(transform.position, playerVariables.maxInteractDistance, ~0);
 
-        Interactable closestInteractable = null;
+        IInteractable closestInteractable = null;
         float shortestDistance = playerVariables.maxInteractDistance;
 
         foreach (Collider obj in objectsInRadius)
         {
-            Interactable interactable = obj.GetComponent<Interactable>();
+            IInteractable interactable = obj.GetComponent<IInteractable>();
             if (interactable != null)
             {
                 float objDistance = (obj.transform.position - transform.position).sqrMagnitude;
@@ -304,7 +341,8 @@ public class PlayerController : MonoBehaviour, ISaveable
     {
         halfCoverTable[1,1] = isHiding ? 1 : 0;
         GlobalVolumeManager.Instance?.SetHiding(isHiding);
-        Debug.Log("Set hiding to " + isHiding);
+
+        if(debug) Debug.Log("Set hiding to " + isHiding);
     }
 
     private void OnDrawGizmos()
