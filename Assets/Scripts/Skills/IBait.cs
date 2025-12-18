@@ -61,7 +61,7 @@ public class IBait : MonoBehaviour, ISaveable
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // destination check
         if (reached) return;
@@ -69,7 +69,7 @@ public class IBait : MonoBehaviour, ISaveable
         // movement code
         else if (Vector3.Distance(transform.position, pointList[pointIndex]) > .001f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, pointList[pointIndex], speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, pointList[pointIndex], speed * Time.fixedDeltaTime);
         }
         else if (pointIndex < pointList.Count - 1)
         {
