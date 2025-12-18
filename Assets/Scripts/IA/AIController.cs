@@ -3,14 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Highlighter))]
-public class AIController : MonoBehaviour
+public class AIController : MonoBehaviour, ISaveable
 {
     #region Variables
     public enum Phase { Patrol, Investigation, Alarm }
     public enum EnemyRole { Patrol, Sentry }
     public enum EnemyType { Sentinel, ParanoidSentinel, Guard }
+
+    private string id;
+
+    public string ID => id;
 
     [HideInInspector] public Phase phase = Phase.Patrol;
 
@@ -93,6 +98,7 @@ public class AIController : MonoBehaviour
     [HideInInspector] public Transform currentBait;
 
     public bool IsSelected { get; private set; }
+
     #endregion
     void Start()
     {
@@ -651,5 +657,194 @@ public class AIController : MonoBehaviour
         Mathf.Cos(angleInDegrees * Mathf.Deg2Rad)
         );
     }
+    #endregion
+
+    #region save
+
+    public struct AIControllerData
+    {
+        public Vector3 position;
+        public Vector3 rotation;
+        public Phase phase;
+        public EnemyRole role;
+
+        // Patrol values
+        public Transform[] patrolPoints;
+        public int patrolIndex;
+        public int lastPatrolIndex;
+
+        // Field of view values
+        public float viewRadius;
+        public float viewAngle;
+        public float innerRadiusFactor;
+        public LayerMask playerAndBaitMask;
+        public LayerMask obstacleMask;
+        public List<Transform> visibleTargets;
+
+        // Investigation values
+        public float investigationTime;
+        public float investigationTimer;
+        public Vector3 investigationPosition;
+        public float searchAreaRadius;
+        public float searchPauseTime;
+        public float searchTimer;
+        public bool isSearchingArea;
+        public Vector3 searchCenter;
+
+        // Look around / Head values
+        public float headLookSpeed;
+        public float headLookTimer;
+        public float headLookAngle;
+
+        // Alarm values
+        public float alarmSearchTime;
+        public float alarmTimer;
+        public Vector3 lastSeenPlayerPosition;
+        public Vector3 lastAlarmPosition;
+        public float alarmMinMoveDist;
+        public float alarmRadius;
+        public LayerMask enemyMask;
+
+        // Reaction priority values
+        public float reactionDelay;
+        public float alarmDelayTimer;
+        public bool alarmTriggered;
+        public float lastDistractionTime;
+        public Vector3 lastDistractionPosition;
+
+        // Patrol look values
+        public float lookAroundTime;
+        public float lookTimer;
+        public bool isLookingAround;
+
+        // Sentry settings values
+        public float sentryLookInterval;
+        public float sentryLookAngleRange;
+        public float sentryLookTimer;
+        public Vector3 sentryOriginalPosition;
+        public Quaternion sentryOriginalRotation;
+        public Quaternion sentryTargetRotation;
+        public bool sentryLookingAround;
+        public bool debugFovVisible;
+        public bool playerInFOVNow;
+
+        // Animation settings
+        public Transform currentBait;
+    }
+
+    public object Save()
+    {
+        return new AIControllerData
+        {
+            position = this.transform.position,
+            rotation = this.transform.eulerAngles,
+            phase = this.phase,
+            role = this.role,
+            patrolPoints = this.patrolPoints,
+            patrolIndex = this.patrolIndex,
+            lastPatrolIndex = this.lastPatrolIndex,
+            viewRadius = this.viewRadius,
+            viewAngle = this.viewAngle,
+            innerRadiusFactor = this.innerRadiusFactor,
+            playerAndBaitMask = this.playerAndBaitMask,
+            obstacleMask = this.obstacleMask,
+            visibleTargets = this.visibleTargets,
+            investigationTime = this.investigationTime,
+            investigationTimer = this.investigationTimer,
+            investigationPosition = this.investigationPosition,
+            searchAreaRadius = this.searchAreaRadius,
+            searchPauseTime = this.searchPauseTime,
+            searchTimer = this.searchTimer,
+            isSearchingArea = this.isSearchingArea,
+            searchCenter = this.searchCenter,
+            headLookSpeed = this.headLookSpeed,
+            headLookTimer = this.headLookTimer,
+            headLookAngle = this.headLookAngle,
+            alarmSearchTime = this.alarmSearchTime,
+            alarmTimer = this.alarmTimer,
+            lastSeenPlayerPosition = this.lastSeenPlayerPosition,
+            lastAlarmPosition = this.lastAlarmPosition,
+            alarmMinMoveDist = this.alarmMinMoveDist,
+            alarmRadius = this.alarmRadius,
+            enemyMask = this.enemyMask,
+            reactionDelay = this.reactionDelay,
+            alarmDelayTimer = this.alarmDelayTimer,
+            alarmTriggered = this.alarmTriggered,
+            lastDistractionTime = this.lastDistractionTime,
+            lastDistractionPosition = this.lastDistractionPosition,
+            lookAroundTime = this.lookAroundTime,
+            lookTimer = this.lookTimer,
+            isLookingAround = this.isLookingAround,
+            sentryLookInterval = this.sentryLookInterval,
+            sentryLookAngleRange = this.sentryLookAngleRange,
+            sentryLookTimer = this.sentryLookTimer,
+            sentryOriginalPosition = this.sentryOriginalPosition,
+            sentryOriginalRotation = this.sentryOriginalRotation,
+            sentryTargetRotation = this.sentryTargetRotation,
+            sentryLookingAround = this.sentryLookingAround,
+            debugFovVisible = this.debugFovVisible,
+            playerInFOVNow = this.playerInFOVNow,
+            currentBait = this.currentBait
+        };
+    }
+
+    public void Load(string stateJson)
+    {
+        AIControllerData data = JsonUtility.FromJson<AIControllerData>(stateJson);
+
+        transform.position = data.position;
+        transform.eulerAngles = data.rotation;
+        phase = data.phase;
+        role = data.role;
+        patrolPoints = data.patrolPoints;
+        patrolIndex = data.patrolIndex;
+        lastPatrolIndex = data.lastPatrolIndex;
+        viewRadius = data.viewRadius;
+        viewAngle = data.viewAngle;
+        innerRadiusFactor = data.innerRadiusFactor;
+        playerAndBaitMask = data.playerAndBaitMask;
+        obstacleMask = data.obstacleMask;
+        visibleTargets = data.visibleTargets;
+        investigationTime = data.investigationTime;
+        investigationTimer = data.investigationTimer;
+        investigationPosition = data.investigationPosition;
+        searchAreaRadius = data.searchAreaRadius;
+        searchPauseTime = data.searchPauseTime;
+        searchTimer = data.searchTimer;
+        isSearchingArea = data.isSearchingArea;
+        searchCenter = data.searchCenter;
+        headLookSpeed = data.headLookSpeed;
+        headLookTimer = data.headLookTimer;
+        headLookAngle = data.headLookAngle;
+        alarmSearchTime = data.alarmSearchTime;
+        alarmTimer = data.alarmTimer;
+        lastSeenPlayerPosition = data.lastSeenPlayerPosition;
+        lastAlarmPosition = data.lastAlarmPosition;
+        alarmMinMoveDist = data.alarmMinMoveDist;
+        alarmRadius = data.alarmRadius;
+        enemyMask = data.enemyMask;
+        reactionDelay = data.reactionDelay;
+        alarmDelayTimer = data.alarmDelayTimer;
+        alarmTriggered = data.alarmTriggered;
+        lastDistractionTime = data.lastDistractionTime;
+        lastDistractionPosition = data.lastDistractionPosition;
+        lookAroundTime = data.lookAroundTime;
+        lookTimer = data.lookTimer;
+        isLookingAround = data.isLookingAround;
+        sentryLookInterval = data.sentryLookInterval;
+        sentryLookAngleRange = data.sentryLookAngleRange;
+        sentryLookTimer = data.sentryLookTimer;
+        sentryOriginalPosition = data.sentryOriginalPosition;
+        sentryOriginalRotation = data.sentryOriginalRotation;
+        sentryTargetRotation = data.sentryTargetRotation;
+        sentryLookingAround = data.sentryLookingAround;
+        debugFovVisible = data.debugFovVisible;
+        playerInFOVNow = data.playerInFOVNow;
+        currentBait = data.currentBait;
+        
+        ForceSetSelected(false);
+    }
+
+
     #endregion
 }

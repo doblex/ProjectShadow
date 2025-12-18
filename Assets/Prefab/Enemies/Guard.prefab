@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3385468281487236719}
   - component: {fileID: 5873829718913046829}
   - component: {fileID: 4563425739926639219}
+  - component: {fileID: -3762575850461885686}
   m_Layer: 10
   m_Name: Guard
   m_TagString: Enemy
@@ -227,6 +228,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Highlighter
   HLMaterial: {fileID: 2100000, guid: fb91f1b936f69be48999dc0b0e7cbc27, type: 2}
+--- !u!114 &-3762575850461885686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117773027191515742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 752fb2530ad9b434ca8cfd3b3e5225d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveableEntity
+  isDynamic: 1
+  prefabKey: Guard
 --- !u!1 &478876452412806123
 GameObject:
   m_ObjectHideFlags: 0
