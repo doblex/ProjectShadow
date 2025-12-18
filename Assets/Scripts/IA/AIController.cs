@@ -260,6 +260,8 @@ public class AIController : MonoBehaviour, ISaveable
     {
         if (visibleTargets.Count > 0)
         {
+            playerInFOVNow = true;
+
             if (sentryLookingAround)
                 sentryLookingAround = false;
 
@@ -304,6 +306,7 @@ public class AIController : MonoBehaviour, ISaveable
         }
         else
         {
+            playerInFOVNow = false;
             if (phase == Phase.Patrol && role == EnemyRole.Sentry)
                 sentryLookingAround = true;
             player = null;
