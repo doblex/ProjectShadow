@@ -26,11 +26,18 @@ public class LoseMenuController : BaseDocController
         return bInit;
     }
 
-    private void Retry()
+    public override void ShowDoc(bool show, bool force = false)
     {
-        ((UIController)UiController).ReloadState();
+        base.ShowDoc(show, force);
+
+        UiController.Pause(show);
     }
 
+    private void Retry()
+    {
+        ShowDoc(false);
+        ((UIController)UiController).ReloadState();
+    }
     private void Options()
     {
         ((UIController)UiController).ShowOptions(true);
@@ -38,6 +45,7 @@ public class LoseMenuController : BaseDocController
 
     private void ToMainMenu()
     {
+        ShowDoc(false);
         ((UIController)UiController).LoadMainMenu();
     }
 

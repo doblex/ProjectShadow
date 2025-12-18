@@ -619,6 +619,15 @@ public class AIController : MonoBehaviour
         foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
             fovColor.UpdateVisibility(isSelected);
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        { 
+            ((UIController)UIController.Instance).ShowLose(true);
+        }
+    }
+
     #region gyzmos
     void OnDrawGizmosSelected()
     {

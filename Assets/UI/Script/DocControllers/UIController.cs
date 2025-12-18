@@ -62,9 +62,14 @@ public class UIController : BaseUIController
         ShowDoc("Hud", show);
     }
 
-    internal void ShowCredits(bool show)
+    public void ShowCredits(bool show)
     {
         ShowDoc("Credits", show);
+    }
+
+    public void ShowLose(bool show)
+    {
+        ShowDoc("Lose", show);
     }
 
     public void AddTask(string text)
