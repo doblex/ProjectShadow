@@ -501,6 +501,9 @@ MonoBehaviour:
   animatorController: {fileID: 1706587610877458589}
   animNormalSpeed: 1
   animRunSpeed: 2.5
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!136 &5386119233879636275
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -42,6 +42,9 @@ public class PlayerController : MonoBehaviour, ISaveable
     string animIsWalking = "IsWalking";
     string animSpeedMult = "Speed";
 
+    [Header("Interactable")]
+    [SerializeField, Layer] LayerMask interactableLayer;
+
     bool isCrouching = false;
 
     int[,] halfCoverTable = {
@@ -59,9 +62,7 @@ public class PlayerController : MonoBehaviour, ISaveable
 
     private void Awake()
     {
-        // REGISTER AS SAVEABLE
         id = System.Guid.NewGuid().ToString();
-        //PersistenceManager.Instance?.RegisterSaveable(this);
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         isCasting = false;
@@ -288,7 +289,7 @@ public class PlayerController : MonoBehaviour, ISaveable
 
     private void HandleInteract()
     {
-        Collider[] objectsInRadius = Physics.OverlapSphere(transform.position, playerVariables.maxInteractDistance, ~0);
+        Collider[] objectsInRadius = Physics.OverlapSphere(transform.position, playerVariables.maxInteractDistance, interactableLayer);
 
         IInteractable closestInteractable = null;
         float shortestDistance = playerVariables.maxInteractDistance;
