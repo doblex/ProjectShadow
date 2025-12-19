@@ -543,7 +543,7 @@ MonoBehaviour:
   raycastHeight: 1
   throwableStonePrefab: {fileID: 2686772543481402752, guid: 4c540e55680472d418e4ffb4af721b5b, type: 3}
   stoneThrowRadius: 10
-  stoneThrowNoiseRadius: 5
+  stoneThrowNoiseRadius: 2
   stoneThrowSpeed: 1e+12
   stoneThrowHeight: 10
   stoneThrowCooldown: 5
