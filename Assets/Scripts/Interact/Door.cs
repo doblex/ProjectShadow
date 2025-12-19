@@ -1,7 +1,9 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Video;
 
-public class Door : MonoBehaviour, IBooleanInteractable
+[RequireComponent(typeof(VideoPlayer))]
+public class Door : MonoBehaviour, IInteractable
 {
     [Header("Door Transforms")]
     [SerializeField] private Transform doorLeft;
@@ -15,7 +17,14 @@ public class Door : MonoBehaviour, IBooleanInteractable
     private bool isAnimating = false;
     private bool isOpen = false;
 
-    public bool Activated { get; set; }
+    public bool Activated;
+
+    VideoPlayer Vp;
+
+    private void Awake()
+    {
+        Vp = GetComponent<VideoPlayer>();
+    }
 
     private void Update()
     {
@@ -65,7 +74,19 @@ public class Door : MonoBehaviour, IBooleanInteractable
         // Optional: trigger cutscene when opening
         if (opening)
         {
-            // TODO: Start cutscene
+            Play();
         }
+    }
+
+    public void Play()
+    {
+        Vp.Play();
+
+        Vp.loopPointReached += Vp_loopPointReached;
+    }
+
+    private void Vp_loopPointReached(VideoPlayer source)
+    {
+        LevelLoaderManager.Instance.LoadMenuScene(null);
     }
 }
