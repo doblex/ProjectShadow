@@ -12,14 +12,14 @@ EditorBuildSettings:
     path: Assets/Scenes/MainScenes/ManagerScene.unity
     guid: e20ec09a485647c408b00065a82c2033
   - enabled: 1
-    path: Assets/Scenes/MainScenes/MainLevel.unity
-    guid: 939f045a2ae790b4aa1232bf55b9505c
-  - enabled: 1
-    path: Assets/Scenes/ProvePlayer.unity
-    guid: ab0ffe9afed2d2c4396bb07a5a881914
-  - enabled: 1
     path: Assets/Scenes/LevelDesign.unity
     guid: b717df139c154c848a0d4c91ce3b6660
+  - enabled: 0
+    path: Assets/Scenes/MainScenes/MainLevel.unity
+    guid: 939f045a2ae790b4aa1232bf55b9505c
+  - enabled: 0
+    path: Assets/Scenes/ProvePlayer.unity
+    guid: ab0ffe9afed2d2c4396bb07a5a881914
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
