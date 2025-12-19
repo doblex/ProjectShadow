@@ -1,11 +1,10 @@
 using System;
 using System.Collections;
-using UnityEditor.Animations;
+//using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
 
-[RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(AnimatorController))]
+//[RequireComponent(typeof(AnimatorController))]
 public class PlayerController : MonoBehaviour, ISaveable
 {
     // save ID
