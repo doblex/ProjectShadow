@@ -8,9 +8,9 @@ public class LevelLoaderManager : MonoBehaviour
 {
     public static LevelLoaderManager Instance;
 
-    [SerializeField] SceneAsset MenuScene;
-    [SerializeField] SceneAsset ManagersScene;
-    [SerializeField] SceneAsset Level;
+    [SerializeField] string MenuScene;
+    [SerializeField] string ManagersScene;
+    [SerializeField] string Level;
 
     AsyncOperation managerAOp;
     AsyncOperation levelAOp;
@@ -36,7 +36,7 @@ public class LevelLoaderManager : MonoBehaviour
     /// <param name="OnAfterLoad">An action to invoke after the menu scene has been loaded. Can be null if no callback is required.</param>
     public void LoadMenuScene(Action OnAfterLoad)
     {
-        SceneManager.LoadScene(MenuScene.name);
+        SceneManager.LoadScene(MenuScene);
 
         OnAfterLoad?.Invoke();
     }
@@ -50,7 +50,7 @@ public class LevelLoaderManager : MonoBehaviour
         LoadScene(Level, true, OnAfterLoad);
     }
 
-    private void LoadScene(SceneAsset sceneToLoad, bool loadManagerScene, Action OnAfterLoad)
+    private void LoadScene(string sceneToLoad, bool loadManagerScene, Action OnAfterLoad)
     {
         if (isLoadingLevel)
         { 
@@ -73,13 +73,13 @@ public class LevelLoaderManager : MonoBehaviour
     /// <param name="sceneToLoad">The scene asset representing the level to load. Must not be null.</param>
     /// <param name="loadManagerScene">true to load the manager scene before loading the level; otherwise, false.</param>
     /// <param name="OnAfterLoad">An optional callback invoked after the level has been loaded and the current scene unloaded.</param>
-    private IEnumerator LoadLevelAsync(SceneAsset sceneToLoad, bool loadManagerScene, Action OnAfterLoad)
+    private IEnumerator LoadLevelAsync(string sceneToLoad, bool loadManagerScene, Action OnAfterLoad)
     {
         Scene currentScene = SceneManager.GetActiveScene();
 
         if (loadManagerScene)
         {
-            managerAOp = SceneManager.LoadSceneAsync(ManagersScene.name, LoadSceneMode.Additive);
+            managerAOp = SceneManager.LoadSceneAsync(ManagersScene, LoadSceneMode.Additive);
 
             while (!managerAOp.isDone)
             {
@@ -89,7 +89,7 @@ public class LevelLoaderManager : MonoBehaviour
 
         LoadSceneMode mode = loadManagerScene ? LoadSceneMode.Additive : LoadSceneMode.Single;
 
-        levelAOp = SceneManager.LoadSceneAsync(sceneToLoad.name, mode);
+        levelAOp = SceneManager.LoadSceneAsync(sceneToLoad, mode);
         levelAOp.allowSceneActivation = false;
 
         while (levelAOp.progress < 0.9f)
