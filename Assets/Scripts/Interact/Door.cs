@@ -80,6 +80,8 @@ public class Door : MonoBehaviour, IInteractable
 
     public void Play()
     {
+        ((UIController)UIController.Instance).ShowHud(false);
+
         Vp.Play();
 
         Vp.loopPointReached += Vp_loopPointReached;
@@ -93,6 +95,7 @@ public class Door : MonoBehaviour, IInteractable
         Vp.clip = null;
 
         Time.timeScale = 1f;
+        ((UIController)UIController.Instance).ShowMainMenu(true);
         LevelLoaderManager.Instance.LoadMenuScene(null);
     }
 }

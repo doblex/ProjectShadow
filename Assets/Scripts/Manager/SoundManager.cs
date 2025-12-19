@@ -30,7 +30,7 @@ public class SoundManager : MonoBehaviour
         else
         {
             Instance = this;
-            DontDestroyOnLoad(this);
+            //DontDestroyOnLoad(this);
         }
 
         sfxSource.playOnAwake = false;
