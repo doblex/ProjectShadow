@@ -12,3 +12,8 @@
 .WhiteText {
     color: rgb(255, 255, 255);
 }
+
+.Locked {
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-image-tint-color: rgb(67, 67, 67);
+}
