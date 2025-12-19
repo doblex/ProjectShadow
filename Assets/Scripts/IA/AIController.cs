@@ -47,6 +47,7 @@ public class AIController : MonoBehaviour, ISaveable
     [HideInInspector] float searchTimer;
     [HideInInspector] bool isSearchingArea = false;
     [HideInInspector] Vector3 searchCenter;
+    [HideInInspector] bool isEnemyInvestigatinOrInAlarm;
 
     [Header("Look Around / Head")]
     [HideInInspector] public float headLookSpeed = 2f;
@@ -174,11 +175,9 @@ public class AIController : MonoBehaviour, ISaveable
                     if (rBait != null)
                         rBait.Despawn();
                 }
-
                 currentBait = null;
             }
         }
-
     }
 
     private void Spotplayer()
@@ -188,23 +187,10 @@ public class AIController : MonoBehaviour, ISaveable
             pg = GameObject.FindGameObjectWithTag("Player");
         }
 
-
        float distance = Vector3.Distance(transform.position, pg.transform.position);
 
         if(distance < 1.5f)
             ((UIController)UIController.Instance).ShowLose(true);
-    }
-
-    private void OnEnable()
-    {
-        if (ActionManager.Instance != null)
-            ActionManager.Instance.onEnemySelected += OnEnemySelected;
-    }
-
-    private void OnDisable()
-    {
-        if (ActionManager.Instance != null)
-            ActionManager.Instance.onEnemySelected -= OnEnemySelected;
     }
     #region look for player
     // Cerca i bersagli visibili ogni tot secondi
@@ -260,11 +246,10 @@ public class AIController : MonoBehaviour, ISaveable
     {
         if (visibleTargets.Count > 0)
         {
+            IsSelected = true;
             playerInFOVNow = true;
-
             if (sentryLookingAround)
                 sentryLookingAround = false;
-
             foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
             {
                 fov.UpdateVisibility(true);
@@ -395,7 +380,8 @@ public class AIController : MonoBehaviour, ISaveable
                 }
                 foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
                     fovColor.UpdateVisibility(false);
-
+                IsSelected = false;
+                Debug.Log(IsSelected);
                 if (role == EnemyRole.Sentry)
                 {
                     agent.SetDestination(sentryOriginalPosition);
@@ -617,35 +603,17 @@ public class AIController : MonoBehaviour, ISaveable
 
         animator.SetFloat(speedParam, speed);
     }
-    // Gestisce la selezione del nemico
-    private void OnEnemySelected(AIController selected)
-    {
-        IsSelected = (selected == this);
-
-        foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
-            fov.UpdateVisibility(IsSelected);
-        foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
-            fovColor.UpdateVisibility(IsSelected);
-    }
     // Imposta lo stato di selezione del nemico
-    public void SetSelected(bool selected)
-    {
-        IsSelected = selected;
-
-        foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
-            fov.UpdateVisibility(playerInFOVNow);
-        foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
-            fovColor.UpdateVisibility(playerInFOVNow);
-    }
-
     public void ForceSetSelected(bool isSelected)
     {
-        IsSelected = isSelected;
-
-        foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
-            fov.UpdateVisibility(isSelected);
-        foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
-            fovColor.UpdateVisibility(isSelected);
+        if (IsSelected == true)
+        {
+            return;
+        }
+            foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
+                fov.UpdateVisibility(isSelected);
+            foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
+                fovColor.UpdateVisibility(isSelected);
     }
 
     #region gyzmos
