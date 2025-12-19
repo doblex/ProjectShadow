@@ -3,14 +3,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Highlighter))]
-public class AIController : MonoBehaviour
+public class AIController : MonoBehaviour, ISaveable
 {
     #region Variables
     public enum Phase { Patrol, Investigation, Alarm }
     public enum EnemyRole { Patrol, Sentry }
     public enum EnemyType { Sentinel, ParanoidSentinel, Guard }
+
+    private string id;
+
+    public string ID => id;
 
     [HideInInspector] public Phase phase = Phase.Patrol;
 
@@ -42,6 +47,7 @@ public class AIController : MonoBehaviour
     [HideInInspector] float searchTimer;
     [HideInInspector] bool isSearchingArea = false;
     [HideInInspector] Vector3 searchCenter;
+    [HideInInspector] bool isEnemyInvestigatinOrInAlarm;
 
     [Header("Look Around / Head")]
     [HideInInspector] public float headLookSpeed = 2f;
@@ -92,7 +98,11 @@ public class AIController : MonoBehaviour
 
     [HideInInspector] public Transform currentBait;
 
+
+    GameObject pg;
+
     public bool IsSelected { get; private set; }
+
     #endregion
     void Start()
     {
@@ -129,6 +139,7 @@ public class AIController : MonoBehaviour
 
     void Update()
     {
+        Spotplayer();
         LookForPlayer();
         switch (phase)
         {
@@ -164,22 +175,22 @@ public class AIController : MonoBehaviour
                     if (rBait != null)
                         rBait.Despawn();
                 }
-
                 currentBait = null;
             }
         }
-
-    }
-    private void OnEnable()
-    {
-        if (ActionManager.Instance != null)
-            ActionManager.Instance.onEnemySelected += OnEnemySelected;
     }
 
-    private void OnDisable()
+    private void Spotplayer()
     {
-        if (ActionManager.Instance != null)
-            ActionManager.Instance.onEnemySelected -= OnEnemySelected;
+        if (pg == null)
+        { 
+            pg = GameObject.FindGameObjectWithTag("Player");
+        }
+
+       float distance = Vector3.Distance(transform.position, pg.transform.position);
+
+        if(distance < 1.5f)
+            ((UIController)UIController.Instance).ShowLose(true);
     }
     #region look for player
     // Cerca i bersagli visibili ogni tot secondi
@@ -235,9 +246,10 @@ public class AIController : MonoBehaviour
     {
         if (visibleTargets.Count > 0)
         {
+            IsSelected = true;
+            playerInFOVNow = true;
             if (sentryLookingAround)
                 sentryLookingAround = false;
-
             foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
             {
                 fov.UpdateVisibility(true);
@@ -279,6 +291,7 @@ public class AIController : MonoBehaviour
         }
         else
         {
+            playerInFOVNow = false;
             if (phase == Phase.Patrol && role == EnemyRole.Sentry)
                 sentryLookingAround = true;
             player = null;
@@ -367,7 +380,8 @@ public class AIController : MonoBehaviour
                 }
                 foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
                     fovColor.UpdateVisibility(false);
-
+                IsSelected = false;
+                Debug.Log(IsSelected);
                 if (role == EnemyRole.Sentry)
                 {
                     agent.SetDestination(sentryOriginalPosition);
@@ -589,43 +603,17 @@ public class AIController : MonoBehaviour
 
         animator.SetFloat(speedParam, speed);
     }
-    // Gestisce la selezione del nemico
-    private void OnEnemySelected(AIController selected)
-    {
-        IsSelected = (selected == this);
-
-        foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
-            fov.UpdateVisibility(IsSelected);
-        foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
-            fovColor.UpdateVisibility(IsSelected);
-    }
     // Imposta lo stato di selezione del nemico
-    public void SetSelected(bool selected)
-    {
-        IsSelected = selected;
-
-        foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
-            fov.UpdateVisibility(playerInFOVNow);
-        foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
-            fovColor.UpdateVisibility(playerInFOVNow);
-    }
-
     public void ForceSetSelected(bool isSelected)
     {
-        IsSelected = isSelected;
-
-        foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
-            fov.UpdateVisibility(isSelected);
-        foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
-            fovColor.UpdateVisibility(isSelected);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.CompareTag("Player"))
-        { 
-            ((UIController)UIController.Instance).ShowLose(true);
+        if (IsSelected == true)
+        {
+            return;
         }
+            foreach (var fov in GetComponentsInChildren<FieldOfViewMesh>())
+                fov.UpdateVisibility(isSelected);
+            foreach (var fovColor in GetComponentsInChildren<FOVColorController>())
+                fovColor.UpdateVisibility(isSelected);
     }
 
     #region gyzmos
@@ -651,5 +639,83 @@ public class AIController : MonoBehaviour
         Mathf.Cos(angleInDegrees * Mathf.Deg2Rad)
         );
     }
+    #endregion
+
+    #region save
+
+    public struct AIControllerData
+    {
+        public Vector3 position;
+        public Vector3 rotation;
+        public Phase phase;
+
+        // Patrol
+        public int patrolIndex;
+        public int lastPatrolIndex;
+
+        // Investigation
+        public float investigationTimer;
+        public Vector3 investigationPosition;
+
+        // Alarm
+        public float alarmTimer;
+        public Vector3 lastSeenPlayerPosition;
+        public Vector3 lastAlarmPosition;
+
+        // Reaction / distrazioni
+        public bool alarmTriggered;
+        public float lastDistractionTime;
+        public Vector3 lastDistractionPosition;
+
+        // Stato FOV minimo
+        public bool playerInFOVNow;
+    }
+
+    public object Save()
+    {
+        pg = null;
+
+        return new AIControllerData
+        {
+            position = this.transform.position,
+            rotation = this.transform.eulerAngles,
+            phase = this.phase,
+            patrolIndex = this.patrolIndex,
+            lastPatrolIndex = this.lastPatrolIndex,
+            investigationTimer = this.investigationTimer,
+            investigationPosition = this.investigationPosition,
+            alarmTimer = this.alarmTimer,
+            lastSeenPlayerPosition = this.lastSeenPlayerPosition,
+            lastAlarmPosition = this.lastAlarmPosition,
+            alarmTriggered = this.alarmTriggered,
+            lastDistractionTime = this.lastDistractionTime,
+            lastDistractionPosition = this.lastDistractionPosition,
+            playerInFOVNow = this.playerInFOVNow,
+        };
+    }
+
+    public void Load(string stateJson)
+    {
+        AIControllerData data = JsonUtility.FromJson<AIControllerData>(stateJson);
+
+        transform.position = data.position;
+        transform.eulerAngles = data.rotation;
+        phase = data.phase;
+        patrolIndex = data.patrolIndex;
+        lastPatrolIndex = data.lastPatrolIndex;
+        investigationTimer = data.investigationTimer;
+        investigationPosition = data.investigationPosition;
+        alarmTimer = data.alarmTimer;
+        lastSeenPlayerPosition = data.lastSeenPlayerPosition;
+        lastAlarmPosition = data.lastAlarmPosition;
+        alarmTriggered = data.alarmTriggered;
+        lastDistractionTime = data.lastDistractionTime;
+        lastDistractionPosition = data.lastDistractionPosition;
+        playerInFOVNow = data.playerInFOVNow;
+        
+        ForceSetSelected(false);
+    }
+
+
     #endregion
 }
