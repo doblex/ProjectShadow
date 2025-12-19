@@ -5,6 +5,6 @@ public interface IInteractable
 
 public interface IBooleanInteractable : IInteractable
 {
-    bool Active { get; set; }
+    bool Activated { get; set; }
 }
 

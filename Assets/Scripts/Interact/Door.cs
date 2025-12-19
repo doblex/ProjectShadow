@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Door : MonoBehaviour, IInteractable
+public class Door : MonoBehaviour, IBooleanInteractable
 {
     [Header("Door Transforms")]
     [SerializeField] private Transform doorLeft;
@@ -15,13 +15,13 @@ public class Door : MonoBehaviour, IInteractable
     private bool isAnimating = false;
     private bool isOpen = false;
 
-    [SerializeField] bool activate;
+    public bool Activated { get; set; }
 
     private void Update()
     {
-        if (activate)
+        if (Activated)
         {
-            activate = false;
+            Activated = false;
             Interact();
         }
     }
