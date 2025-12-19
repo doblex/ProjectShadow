@@ -9,7 +9,7 @@
             <ui:VisualElement style="flex-grow: 0; height: 9%;" />
             <ui:VisualElement name="MainMenu" style="flex-grow: 0;">
                 <ui:Button text="New Game" name="NewGame" class="MainMenuButton MainMenuText" style="flex-grow: 0;" />
-                <ui:Button text="Continue" name="Continue" class="MainMenuButton MainMenuText" />
+                <ui:Button text="Continue" name="Continue" class="MainMenuButton MainMenuText" style="display: none;" />
                 <ui:Button text="Options" name="Options" class="MainMenuButton MainMenuText" />
                 <ui:Button text="Credits" name="Credits" class="MainMenuButton MainMenuText" />
                 <ui:Button text="Exit" name="Exit" class="MainMenuButton MainMenuText" />
