@@ -87,6 +87,9 @@ public class Door : MonoBehaviour, IInteractable
 
     private void Vp_loopPointReached(VideoPlayer source)
     {
+        Vp.Stop();
+        Vp.clip = null;
+
         LevelLoaderManager.Instance.LoadMenuScene(null);
     }
 }
