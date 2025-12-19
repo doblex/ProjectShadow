@@ -83,10 +83,16 @@ public class Door : MonoBehaviour, IInteractable
         Vp.Play();
 
         Vp.loopPointReached += Vp_loopPointReached;
+        Time.timeScale = 0f;
+
     }
 
     private void Vp_loopPointReached(VideoPlayer source)
     {
+        Vp.Stop();
+        Vp.clip = null;
+
+        Time.timeScale = 1f;
         LevelLoaderManager.Instance.LoadMenuScene(null);
     }
 }
