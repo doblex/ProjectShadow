@@ -916,9 +916,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d551d34ac0af27d4995d84bc817fd615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  MenuScene: {fileID: 102900000, guid: 7af7af1acf8190e4894b6c081eef6aea, type: 3}
-  ManagersScene: {fileID: 102900000, guid: e20ec09a485647c408b00065a82c2033, type: 3}
-  Level: {fileID: 102900000, guid: b717df139c154c848a0d4c91ce3b6660, type: 3}
+  MenuScene: MainMenu
+  ManagersScene: ManagerScene
+  Level: LevelDesign
 --- !u!4 &1071918467
 Transform:
   m_ObjectHideFlags: 0
