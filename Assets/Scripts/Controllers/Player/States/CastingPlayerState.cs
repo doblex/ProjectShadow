@@ -146,7 +146,7 @@ public class CastingPlayerState : PlayerState
         Vector3 destination = new Vector3(target.x, Controller.transform.position.y + raycastHeight, target.z);
 
         // Disable throw if LOS is interrupted
-        if (Physics.Linecast(start, destination))
+        if (Physics.Linecast(start, destination, LayerMask.GetMask("Ground")))
         {
             noiseRadiusPreview.positionCount = 0;
             canThrow = false;
