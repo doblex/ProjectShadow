@@ -520,6 +520,8 @@ MonoBehaviour:
     prefab: {fileID: 4468013301770659722, guid: fdbe9c5a40d324c4dbac351d1ea6b11e, type: 3}
   - key: Sentinel
     prefab: {fileID: 4468013301770659722, guid: d237ee0ce4ce7ef488f151f8f198156d, type: 3}
+  - key: Bait
+    prefab: {fileID: 6892871111314107978, guid: b557f446e73289747874f5fcf2e02b32, type: 3}
 --- !u!4 &1507059045
 Transform:
   m_ObjectHideFlags: 0
@@ -565,7 +567,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActionManager
   Options: {fileID: 11400000, guid: 4ebef669509ca9c448f94c8d2f3f7adb, type: 2}
-  mainCamera: {fileID: 0}
 --- !u!4 &2116589482
 Transform:
   m_ObjectHideFlags: 0

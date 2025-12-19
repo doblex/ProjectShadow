@@ -364,7 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752fb2530ad9b434ca8cfd3b3e5225d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SaveableEntity
-  isDynamic: 1
+  isDynamic: 0
   prefabKey: Paranoid Sentinel
 --- !u!1 &7813370252378434756
 GameObject:

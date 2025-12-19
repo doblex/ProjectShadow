@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 7927512533064233357}
   - component: {fileID: 3751450248384370233}
   - component: {fileID: 2790514493409517673}
+  - component: {fileID: -1617207602609897544}
   m_Layer: 13
   m_Name: Bait
   m_TagString: Bait
@@ -109,6 +110,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!114 &-1617207602609897544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6892871111314107978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 752fb2530ad9b434ca8cfd3b3e5225d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SaveableEntity
+  isDynamic: 1
+  prefabKey: Bait
 --- !u!1001 &5078624159716264761
 PrefabInstance:
   m_ObjectHideFlags: 0

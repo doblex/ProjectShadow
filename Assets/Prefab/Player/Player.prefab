@@ -550,7 +550,7 @@ MonoBehaviour:
   whistleRadius: 10
   whistleCooldown: 10
   iBaitPrefab: {fileID: 7185442932511163888, guid: ca80fdc1895e9394e9df3f3e74f70b20, type: 3}
-  iBaitCount: 0
+  iBaitCount: 1
   iBaitThrowRadius: 20
   iBaitThrowNoiseRadius: 0
   iBaitThrowSpeed: 20
